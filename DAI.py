@@ -27,10 +27,11 @@ def _run(profile, reg_addr, field, field_id):
             session.close()
             time.sleep(20)
         except KeyboardInterrupt:
+            print(field, ': exit')
             break
             dan.deregister()
         except Exception as e:
-            print(e)
+            print('[ERROR]:', e)
             continue
 
 def main():
@@ -44,7 +45,7 @@ def main():
                    'dm_name': 'DataServer',
                    'df_list': [],
                    'is_sim': False}
-        query_df = (session.query(db.models.sensor.df_name)
+        query_df = (session.query(db.models.field_sensor.df_name)
                            .select_from(db.models.field_sensor)
                            .join(db.models.sensor)
                            .filter(db.models.field_sensor.field == field.id)
@@ -58,8 +59,8 @@ def main():
         thread.start()
         threads.append(thread)
 
-    if threads:
-        threads[0].join()
+    for thread in threads:
+        thread.join()
 
 if __name__ == "__main__":
     main()
