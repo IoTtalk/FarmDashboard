@@ -1,0 +1,87 @@
+{% extends 'base/base.html' %} 
+
+{% macro tab_title(field) -%}
+  <li {% if field.is_active %}class="active"{% endif %} id="tab_{{field.name}}">
+    <a href="#{{field.name}}" data-toggle="tab">{{field.alias}}</a>
+  </li>
+{%- endmacro %}
+
+{% macro content_box(fieldname, sensor, value='0') -%}
+  <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+    <!-- small box -->
+    <div class="small-box {{sensor.bg_color}}">
+      <div class="inner">
+        <h3 id="{{fieldname}}_{{sensor.df_name}}">{{value}}</h3>
+        <p>{{sensor.alias}} ({{sensor.unit}})</p>
+      </div>
+      <div class="icon">
+        <i class="ion {{sensor.icon}}"></i>
+      </div>
+      <a href="/history#{{fieldname}},{{sensor.df_name}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+  </div>
+{%- endmacro %}
+
+{% macro tab_content(field) -%}
+  <div class="tab-pane{% if field.is_active %} active{% endif %}" id="{{field.name}}">
+    <div class="row">
+      {% for sensor in field.sensors %}
+        {{ content_box(field.name, sensor)}}
+      {% endfor %}
+    </div>
+  </div>
+{%- endmacro %}
+
+{# ------------------------------------------------------------------------- #}
+                                                                                                                                                          
+{% block page_title %} 即時資料監控 {% endblock %}
+
+{% block page_content %}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+      {% for field in fields %}
+        {{ tab_title(field)}}
+      {% endfor %}
+    </ul>
+    <div class="tab-content">
+      {% for field in fields %}
+        {{ tab_content(field) }}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block page_script %}
+  <!-- Page script -->
+  <script>
+    $(() => {
+      // auto change to tab if given from url hash
+      let hash = window.location.hash.replace('#', '');
+      if($('#tab_' + hash).length){
+        $('#tab_' + hash).find('a').click();
+      }
+
+      // update monitor date
+      function update() {
+        if (!$('.active').length) {
+          setTimeout(update, 1000);
+          return;
+        }
+        let field = $('.active').attr('id').replace('tab_', '');
+        let ajax_obj = $.ajax({
+          url: '/datas/' + field +'?limit=1',
+          type:'GET'
+        }).done((data) => {
+          for(key in data) {
+            if(data[key][0]) {
+              $('#' + field + '_' + key).text(data[key][0][1]);
+            }
+          }
+        }).always(() => {
+          setTimeout(update, 1000);
+        });
+      }
+      update(); 
+    })
+  </script>
+{% endblock %}
