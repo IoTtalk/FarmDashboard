@@ -28,8 +28,8 @@ class DAN():
         self.mac_addr = mac_addr
 
         # for control channel
-        self.state = 'SUSPEND'
-        #self.state = 'RESUME'
+        #self.state = 'SUSPEND'
+        self.state = 'RESUME'                                                  #new
 
         self.selected_DF = set()
         self.pre_data_timestamp = {}
@@ -45,7 +45,7 @@ class DAN():
 
     def control_channel(self):
         while True:
-            time.sleep(2)
+            time.sleep(10)
             try:
                 cc = self.csmapi.pull(self.mac_addr, '__Ctl_O__')
                 if not cc:
@@ -67,6 +67,8 @@ class DAN():
                     for index, status in enumerate(df_status):
                         if status == '1':
                             self.selected_DF.add(self.profile['df_list'][index])
+                else: self.state = 'RESUME'                                            #new
+
             except Exception as e:
                 print ('Control error', e)
 
@@ -100,6 +102,9 @@ class DAN():
             self.profile = profile
         elif not self.profile:
             raise DANError('profile should be given.')
+
+        self.selected_DF = self.profile['df_list'].copy()                        # new
+
 
         if host:
             self.csmapi.host = 'http://{host}:9999'.format(host=host)

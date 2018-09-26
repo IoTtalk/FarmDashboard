@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 base = declarative_base()
-models = ['AtPressure', 'CO2', 'Temperature', 'Humidity', 'WindSpeed', 'RainMeter', 'Bugs', 'UV1', 'UV2', 'UV3', 'Moisture1', 'PH1', 'Moisture2', 'PH2', 'Moisture3', 'PH3', 'Moisture4', 'PH4', 'Moisture5', 'PH5', 'Moisture6', 'PH6', 'Volt1', 'Volt2', 'Current1', 'Current2', 'Power1', 'Power2']
+models = ['AtPressure', 'CO2', 'Temperature', 'Humidity', 'WindSpeed', 'RainMeter', 'Bugs', 'UV1', 'UV2', 'UV3', 'Moisture1', 'PH1', 'Moisture2', 'PH2', 'Moisture3', 'PH3', 'Moisture4', 'PH4', 'Moisture5', 'PH5', 'Moisture6', 'PH6', 'Volt1', 'Volt2', 'Current1', 'Current2', 'Power1', 'Power2', 'Consumption', 'Spore', 'Ovum']
 
 class AtPressure(base):
     __tablename__ = 'atpressure'
@@ -271,6 +271,37 @@ class Power2(base):
     __table_args__ = (UniqueConstraint('field',
                                        'timestamp',
                                        name='UC_field_time'),)
+
+
+class Consumption(base):
+    __tablename__ = 'consumption'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+
+class Spore(base):
+    __tablename__ = 'spore'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+
+class Ovum(base):
+    __tablename__ = 'Ovum'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
 
 
 ####################################################
