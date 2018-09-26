@@ -45,7 +45,7 @@ class DAN():
 
     def control_channel(self):
         while True:
-            time.sleep(10)
+            time.sleep(60)
             try:
                 cc = self.csmapi.pull(self.mac_addr, '__Ctl_O__')
                 if not cc:

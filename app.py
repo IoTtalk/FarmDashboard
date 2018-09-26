@@ -545,6 +545,7 @@ def api_query_field():
                                    .select_from(db.models.field_sensor)
                                    .join(db.models.sensor)
                                    .filter(db.models.field_sensor.field == field.id)
+                                   .order_by(db.models.field_sensor.id)
                                    .all())
             temp_field['sensors'] = []
             for sensor in query_field_sensor:
@@ -580,7 +581,7 @@ def api_query_field():
                 icon=sensor.get('icon'),
                 bg_color=sensor.get('bg_color'))
             g.session.add(new_sensor)
-        g.session.commit()
+            g.session.commit()
 
         return json.dumps(utils.row2dict(new_field))
     elif request.method == 'PUT':
@@ -614,7 +615,7 @@ def api_query_field():
             new_sensor.field = id_
             new_sensor.id = None
             g.session.add(new_sensor)
-        g.session.commit()
+            g.session.commit()
 
         return 'ok'
     elif request.method == 'DELETE':
