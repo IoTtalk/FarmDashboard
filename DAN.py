@@ -67,7 +67,7 @@ class DAN():
                     for index, status in enumerate(df_status):
                         if status == '1':
                             self.selected_DF.add(self.profile['df_list'][index])
-                else: self.state = 'RESUME'                                            #new
+                #else: self.state = 'RESUME'                                            #new
 
             except Exception as e:
                 print ('Control error', e)
@@ -140,13 +140,14 @@ class DAN():
             print ('This device has successfully registered.')
             print ('Device name = ' + self.profile['d_name'])
 
+            '''
             if self.control_channel_thread is None:
                 print ('Create control threading')
                 # for control channel
                 self.control_channel_thread = threading.Thread(target=self.control_channel)
                 self.control_channel_thread.daemon = True
                 self.control_channel_thread.start()
-
+            '''
             return True
         else:
             print ('Registration failed.')

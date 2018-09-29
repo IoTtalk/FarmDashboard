@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 base = declarative_base()
-models = ['AtPressure', 'CO2', 'Temperature', 'Humidity', 'WindSpeed', 'RainMeter', 'Bugs', 'UV1', 'UV2', 'UV3', 'Moisture1', 'PH1', 'Moisture2', 'PH2', 'Moisture3', 'PH3', 'Moisture4', 'PH4', 'Moisture5', 'PH5', 'Moisture6', 'PH6', 'Volt1', 'Volt2', 'Current1', 'Current2', 'Power1', 'Power2', 'Consumption', 'Spore', 'Ovum']
+models = ['AtPressure', 'CO2', 'Temperature', 'Humidity', 'Luminance', 'WindSpeed', 'RainMeter', 'Bug1', 'Bug2', 'Bug3', 'Bug4', 'UV1', 'UV2', 'UV3', 'Moisture1', 'PH1', 'Moisture2', 'PH2', 'Moisture3', 'PH3', 'Moisture4', 'PH4', 'Moisture5', 'PH5', 'Moisture6', 'PH6', 'Moisture7', 'Moisture8', 'Moisture9', 'Moisture10', 'Volt1', 'Volt2', 'Current1', 'Current2', 'Power1', 'Power2', 'Consumption', 'Spore', 'Ovum', 'SoilTemp1', 'SoilTemp2', 'SoilTemp3', 'SoilTemp4', 'SoilTemp5', 'SoilTemp6', 'SoilTemp7', 'SoilTemp8', 'SoilTemp9', 'SoilTemp10', 'SoilEC1', 'SoilEC2', 'SoilEC3', 'SoilEC4', 'SoilEC5', 'SoilEC6', 'SoilEC7', 'SoilEC8', 'SoilEC9', 'SoilEC10',]
 
 class AtPressure(base):
     __tablename__ = 'atpressure'
@@ -42,6 +42,14 @@ class Humidity(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
+class Luminance(base):
+    __tablename__ = 'luminance'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
 
 class WindSpeed(base):
     __tablename__ = 'windspeed'
@@ -62,9 +70,8 @@ class RainMeter(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
-
-class Bugs(base):
-    __tablename__ = 'bugs'
+class Bug1(base):
+    __tablename__ = 'bug1'
     timestamp = Column(DateTime, primary_key=True, nullable=False)
     field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
     value = Column(Float)
@@ -72,6 +79,32 @@ class Bugs(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
+class Bug2(base):
+    __tablename__ = 'bug2'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Bug3(base):
+    __tablename__ = 'bug3'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Bug4(base):
+    __tablename__ = 'bug4'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
 
 class UV1(base):
     __tablename__ = 'uv1'
@@ -82,7 +115,6 @@ class UV1(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
-
 class UV2(base):
     __tablename__ = 'uv2'
     timestamp = Column(DateTime, primary_key=True, nullable=False)
@@ -91,7 +123,6 @@ class UV2(base):
     __table_args__ = (UniqueConstraint('field',
                                        'timestamp',
                                        name='UC_field_time'),)
-
 
 class UV3(base):
     __tablename__ = 'uv3'
@@ -102,7 +133,6 @@ class UV3(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
-
 class Moisture1(base):
     __tablename__ = 'moisture1'
     timestamp = Column(DateTime, primary_key=True, nullable=False)
@@ -111,7 +141,6 @@ class Moisture1(base):
     __table_args__ = (UniqueConstraint('field',
                                        'timestamp',
                                        name='UC_field_time'),)
-
 
 class PH1(base):
     __tablename__ = 'ph1'
@@ -122,7 +151,6 @@ class PH1(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
-
 class Moisture2(base):
     __tablename__ = 'moisture2'
     timestamp = Column(DateTime, primary_key=True, nullable=False)
@@ -131,7 +159,6 @@ class Moisture2(base):
     __table_args__ = (UniqueConstraint('field',
                                        'timestamp',
                                        name='UC_field_time'),)
-
 
 class PH2(base):
     __tablename__ = 'ph2'
@@ -142,7 +169,6 @@ class PH2(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
-
 class Moisture3(base):
     __tablename__ = 'moisture3'
     timestamp = Column(DateTime, primary_key=True, nullable=False)
@@ -151,7 +177,6 @@ class Moisture3(base):
     __table_args__ = (UniqueConstraint('field',
                                        'timestamp',
                                        name='UC_field_time'),)
-
 
 class PH3(base):
     __tablename__ = 'ph3'
@@ -162,7 +187,6 @@ class PH3(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
-
 class Moisture4(base):
     __tablename__ = 'moisture4'
     timestamp = Column(DateTime, primary_key=True, nullable=False)
@@ -171,7 +195,6 @@ class Moisture4(base):
     __table_args__ = (UniqueConstraint('field',
                                        'timestamp',
                                        name='UC_field_time'),)
-
 
 class PH4(base):
     __tablename__ = 'ph4'
@@ -211,6 +234,42 @@ class Moisture6(base):
 
 class PH6(base):
     __tablename__ = 'ph6'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Moisture7(base):
+    __tablename__ = 'moisture7'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Moisture8(base):
+    __tablename__ = 'moisture8'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Moisture9(base):
+    __tablename__ = 'moisture9'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Moisture10(base):
+    __tablename__ = 'moisture10'
     timestamp = Column(DateTime, primary_key=True, nullable=False)
     field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
     value = Column(Float)
@@ -272,7 +331,6 @@ class Power2(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
-
 class Consumption(base):
     __tablename__ = 'consumption'
     timestamp = Column(DateTime, primary_key=True, nullable=False)
@@ -281,7 +339,6 @@ class Consumption(base):
     __table_args__ = (UniqueConstraint('field',
                                        'timestamp',
                                        name='UC_field_time'),)
-
 
 class Spore(base):
     __tablename__ = 'spore'
@@ -292,7 +349,6 @@ class Spore(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
-
 class Ovum(base):
     __tablename__ = 'Ovum'
     timestamp = Column(DateTime, primary_key=True, nullable=False)
@@ -301,6 +357,190 @@ class Ovum(base):
     __table_args__ = (UniqueConstraint('field',
                                        'timestamp',
                                        name='UC_field_time'),)
+
+class SoilTemp1(base):
+    __tablename__ = 'soiltemp1'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilTemp2(base):
+    __tablename__ = 'soiltemp2'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilTemp3(base):
+    __tablename__ = 'soiltemp3'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilTemp4(base):
+    __tablename__ = 'soiltemp4'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilTemp5(base):
+    __tablename__ = 'soiltemp5'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilTemp6(base):
+    __tablename__ = 'soiltemp6'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilTemp7(base):
+    __tablename__ = 'soiltemp7'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilTemp8(base):
+    __tablename__ = 'soiltemp8'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilTemp9(base):
+    __tablename__ = 'soiltemp9'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+
+class SoilTemp10(base):
+    __tablename__ = 'soiltemp10'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+
+class SoilEC1(base):
+    __tablename__ = 'soilec1'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilEC2(base):
+    __tablename__ = 'soilec2'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilEC3(base):
+    __tablename__ = 'soilec3'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilEC4(base):
+    __tablename__ = 'soilec4'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilEC5(base):
+    __tablename__ = 'soilec5'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilEC6(base):
+    __tablename__ = 'soilec6'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilEC7(base):
+    __tablename__ = 'soilec7'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilEC8(base):
+    __tablename__ = 'soilec8'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilEC9(base):
+    __tablename__ = 'soilec9'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class SoilEC10(base):
+    __tablename__ = 'soilec10'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+
 
 
 
