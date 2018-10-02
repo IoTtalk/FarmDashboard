@@ -360,7 +360,7 @@
                     </div>
                     <div class="col-sm-12" id="field-sensor" style="overflow-x: auto;">
                       <table class="table table-bordered table-hover dataTable">
-                        <tbody>
+                        <thead>
                           <tr>
                             <th></th>
                             <th>name</th>
@@ -370,8 +370,9 @@
                             <th>icon</th>
                             <th>bg_color</th>
                           </tr>
-                          <template v-for="(sensor, index) in temp_field.sensors">
-                            <tr>
+                        </thead>
+                        <draggable element="tbody" v-model="temp_field.sensors" @start="drag=true" @end="drag=false">
+                          <tr v-for="(sensor, index) in temp_field.sensors">
                               <td><button @click="field_sensor_remove(index)">&times;</button></td>
                               <input type="hidden" v-model="temp_field.sensors[index].sensor">
                               <td>{{ '{{' }}sensor.name{{ '}}' }}</td>
@@ -392,9 +393,8 @@
                                   <span class="input-group-addon" :class="sensor.bg_color"><i class="fa"></i></span>
                                 </div>
                               </td>
-                            </tr>
-                          </template>
-                        </tbody>
+                          </tr>
+                        </draggable>
                       </table>
                       <!-- TODO -->
                     </div>
