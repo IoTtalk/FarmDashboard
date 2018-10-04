@@ -4,6 +4,44 @@
 
 
 {% block page_content %}
+<script type="text/x-template" id="field-sensor-table-template">
+<table class="table table-bordered table-hover dataTable">
+<thead>
+  <tr>
+    <th></th>
+    <th>name</th>
+    <th>df_name</th>
+    <th>alias</th>
+    <th>unit</th>
+    <th>icon</th>
+    <th>bg_color</th>
+  </tr>
+</thead>
+<draggable :element="'tbody'" :list="sensors">
+  <tr v-for="(sensor, index) in sensors">
+      <td><button @click="field_sensor_remove(index)">&times;</button></td>
+      <td>{{ '{{' }}sensor.name{{ '}}' }}</td>
+      <td><input type="text" v-model="sensor.df_name"></td>
+      <td><input type="text" v-model="sensor.alias"></td>
+      <td><input type="text" v-model="sensor.unit"></td>
+      <td>
+	<div class="input-group">
+	  <input type="text" v-model="sensor.icon">
+	  <span class="input-group-addon">
+	    <i class="fa" :class="sensor.icon"></i>
+	  </span>
+	</div>
+      </td>
+      <td>
+	<div class="input-group">
+	  <input type="text" v-model="sensor.bg_color">
+	  <span class="input-group-addon" :class="sensor.bg_color"><i class="fa"></i></span>
+	</div>
+      </td>
+  </tr>
+</draggable>
+</table>
+</script>
   <!-- TODO: combine MODAL -->
   <div class="nav-tabs-custom" id="app">
     <ul class="nav nav-tabs">
@@ -359,43 +397,7 @@
                       </div>
                     </div>
                     <div class="col-sm-12" id="field-sensor" style="overflow-x: auto;">
-                      <table class="table table-bordered table-hover dataTable">
-                        <thead>
-                          <tr>
-                            <th></th>
-                            <th>name</th>
-                            <th>df_name</th>
-                            <th>alias</th>
-                            <th>unit</th>
-                            <th>icon</th>
-                            <th>bg_color</th>
-                          </tr>
-                        </thead>
-                        <draggable element="tbody" v-model="temp_field.sensors" @start="drag=true" @end="drag=false">
-                          <tr v-for="(sensor, index) in temp_field.sensors">
-                              <td><button @click="field_sensor_remove(index)">&times;</button></td>
-                              <input type="hidden" v-model="temp_field.sensors[index].sensor">
-                              <td>{{ '{{' }}sensor.name{{ '}}' }}</td>
-                              <td><input type="text" v-model="temp_field.sensors[index].df_name"></td>
-                              <td><input type="text" v-model="temp_field.sensors[index].alias"></td>
-                              <td><input type="text" v-model="temp_field.sensors[index].unit"></td>
-                              <td>
-                                <div class="input-group">
-                                  <input type="text" v-model="temp_field.sensors[index].icon">
-                                  <span class="input-group-addon">
-                                    <i class="fa" :class="sensor.icon"></i>
-                                  </span>
-                                </div>
-                              </td>
-                              <td>
-                                <div class="input-group">
-                                  <input type="text" v-model="temp_field.sensors[index].bg_color">
-                                  <span class="input-group-addon" :class="sensor.bg_color"><i class="fa"></i></span>
-                                </div>
-                              </td>
-                          </tr>
-                        </draggable>
-                      </table>
+                      <field-sensor-table v-model="temp_field.sensors"></field-sensor-table>
                       <!-- TODO -->
                     </div>
                   </div>
@@ -431,8 +433,25 @@
   var app = null;
 
   $(() => {
+    var fieldSensorTable = {
+      template: '#field-sensor-table-template',
+      props: ['value'],
+      name: 'field-sensor-table',
+      computed: {
+        sensors: {
+          get() {
+            return this.value
+          },
+          set(value) {
+            this.$emit('input', value)
+          }
+        }
+      }
+    };
+
     // set Vue data
     app = new Vue({
+      components:{fieldSensorTable: fieldSensorTable},
       el: '#app',
       data: () => {
         
