@@ -31,7 +31,7 @@ def render_template(*args, **argv):
               .join(db.models.user_access)
               .join(db.models.user)
               .filter(db.models.user.username == session.get('username'))
-              .order_by(db.models.field.id)
+              .order_by(db.models.user_access.id)
               .all())
     for id, name, alias, is_active in query:
         field_data = {
@@ -365,7 +365,7 @@ def get_mysql_raw_sql(interval, table_name, field, start, end, limit):
 
 @app.route('/api/user', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @required_superuser
-def api_user():
+def api_query_user():
     if request.method == 'GET':
         # Read user
         # GET /api/user[?id=<id>&username=<username>]
@@ -380,13 +380,15 @@ def api_user():
 
         for user in query:
             query_access = (g.session
-                             .query(db.models.user_access)
+                             .query(db.models.field, db.models.user_access)
+                             .select_from(db.models.user_access)
+                             .join(db.models.field)
                              .filter(db.models.user_access.user == user.id)
                              .all())
             access = []
             active = None
-            for acc in query_access:
-                access.append(acc.field)
+            for field, acc in query_access:
+                access.append(utils.row2dict(field))
                 if acc.is_active:
                     active = acc.field
 
@@ -414,9 +416,9 @@ def api_user():
         g.session.add(new_user)
         g.session.commit()
 
-        for field_id in access:
-            new_access = db.models.user_access(user=new_user.id, field=field_id)
-            if field_id == active:
+        for field in access:
+            new_access = db.models.user_access(user=new_user.id, field=field.get('id'))
+            if field.get('id') == active:
                 new_access.is_active = True
             g.session.add(new_access)
         g.session.commit()
@@ -441,13 +443,11 @@ def api_user():
           .query(db.models.user_access)
           .filter(db.models.user_access.user == id_)
           .delete())
-        for field_id in access:
-            new_access = db.models.user_access(user=id_, field=field_id)
-            if field_id == active:
+        for field in access:
+            new_access = db.models.user_access(user=id_, field=field.get('id'))
+            if field.get('id') == active:
                 new_access.is_active = True
             g.session.add(new_access)
-        g.session.commit()
-
         g.session.commit()
 
         return 'ok'

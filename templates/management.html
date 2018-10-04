@@ -144,7 +144,7 @@
                       <template v-for="field in fields">
                         <div class="col-xs-4 col-md-3 col-xl-2">
                           <label :for="'user-access-'+field.name" style="font-weight: normal;">
-                            <input type="checkbox" v-model="temp_user.access" :value="field.id" :id="'user-access-'+field.name">  {{ '{{' }}field.name{{ '}}' }}
+                            <input type="checkbox" v-model="temp_user.access" :value="field" :id="'user-access-'+field.name">  {{ '{{' }}field.name{{ '}}' }}
                           </label>
                         </div>
                       </template>
@@ -153,15 +153,11 @@
                   <!-- user_access.is_active -->
                   <div class="form-group">
                     <label for="user-active" class="col-sm-2 control-label">active field</label>
-                    <div class="col-sm-10" id="user-active">
-                      <template v-for="field in fields" v-if="temp_user.access.indexOf(field.id) >= 0">
-                        <div class="col-xs-3">
-                          <label :for="'user-active-'+field.name" style="font-weight: normal;">
-                            <input type="radio" v-model="temp_user.active" :value="field.id" :id="'user-active-'+field.name">  {{ '{{' }}field.name{{ '}}' }}
-                          </label>
-                        </div>
-                      </template>
-                    </div>
+                    <draggable class="col-sm-10" id="user-active" :list="temp_user.access" :element="'ul'">
+                      <li :for="'user-active-'+field.name" style="list-style: none;" v-for="field in temp_user.access">
+		        <input type="radio" v-model="temp_user.active" :value="field.id" :id="'user-active-'+field.name">  {{ '{{' }}field.name{{ '}}' }}
+		      </li>
+                    </draggable>
                   </div>
                 </div>
 
