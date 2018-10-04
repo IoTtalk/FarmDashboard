@@ -1,8 +1,8 @@
 #!/bin/sh
 
-venvfile="/home/iottalk/FarmDashboard/venv/bin/activate"
-session_name="graphserver"
 path=$(pwd)
+venvfile="$path/venv/bin/activate"
+session_name="graphserver"
 
 tmux kill-session -t $session_name 2>/dev/null
 
