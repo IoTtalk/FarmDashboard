@@ -32,6 +32,12 @@ def _run(profile, reg_addr, field, field_id):
             dan.deregister()
         except Exception as e:
             print('[ERROR]:', e)
+            if str(e).find('mac_addr not found:') != -1:
+                print('Reg_addr is not found. Try to re-register...')
+                dan.device_registration_with_retry(profile, host, reg_addr)
+            else:
+                print('Connection failed due to unknow reasons.')
+                time.sleep(1)    
             continue
 
 def main():
