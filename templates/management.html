@@ -144,7 +144,7 @@
                       <template v-for="field in fields">
                         <div class="col-xs-4 col-md-3 col-xl-2">
                           <label :for="'user-access-'+field.name" style="font-weight: normal;">
-                            <input type="checkbox" v-model="temp_user.access" :value="field" :id="'user-access-'+field.name">  {{ '{{' }}field.name{{ '}}' }}
+                            <input type="checkbox" v-model="temp_user.access" :value="{'alias': field.alias, 'id': field.id, 'name': field.name}" :id="'user-access-'+field.name">  {{ '{{' }}field.name{{ '}}' }}
                           </label>
                         </div>
                       </template>
