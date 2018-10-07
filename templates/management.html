@@ -393,7 +393,7 @@
                       </div>
                     </div>
                     <div class="col-sm-12" id="field-sensor" style="overflow-x: auto;">
-                      <field-sensor-table v-model="temp_field.sensors"></field-sensor-table>
+                      <field-sensor-table v-model="temp_field.sensors" :remove="field_sensor_remove"></field-sensor-table>
                       <!-- TODO -->
                     </div>
                   </div>
@@ -431,7 +431,10 @@
   $(() => {
     var fieldSensorTable = {
       template: '#field-sensor-table-template',
-      props: ['value'],
+      props: {
+        value: Array,
+        remove: Function
+      },
       name: 'field-sensor-table',
       computed: {
         sensors: {
@@ -441,6 +444,11 @@
           set(value) {
             this.$emit('input', value)
           }
+        }
+      },
+      methods: {
+        field_sensor_remove(index) {
+          this.remove(index);
         }
       }
     };
