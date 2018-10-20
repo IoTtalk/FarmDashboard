@@ -4,7 +4,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 base = declarative_base()
-models = ['AtPressure', 'CO2', 'Temperature', 'Humidity', 'Luminance', 'WindSpeed', 'RainMeter', 'Bug1', 'Bug2', 'Bug3', 'Bug4', 'UV1', 'UV2', 'UV3', 'Moisture1', 'PH1', 'Moisture2', 'PH2', 'Moisture3', 'PH3', 'Moisture4', 'PH4', 'Moisture5', 'PH5', 'Moisture6', 'PH6', 'Moisture7', 'Moisture8', 'Moisture9', 'Moisture10', 'Volt1', 'Volt2', 'Current1', 'Current2', 'Power1', 'Power2', 'Consumption', 'Spore', 'Ovum', 'SoilTemp1', 'SoilTemp2', 'SoilTemp3', 'SoilTemp4', 'SoilTemp5', 'SoilTemp6', 'SoilTemp7', 'SoilTemp8', 'SoilTemp9', 'SoilTemp10', 'SoilEC1', 'SoilEC2', 'SoilEC3', 'SoilEC4', 'SoilEC5', 'SoilEC6', 'SoilEC7', 'SoilEC8', 'SoilEC9', 'SoilEC10',]
+models = ['AtPressure', 'CO2', 'Temperature', 'Humidity', 'Luminance', 'WindSpeed', 'RainMeter', 'Bug1', 'Bug2', 'Bug3', 'Bug4', 'UV1', 'UV2', 'UV3', 'Moisture1', 'PH1', 'Moisture2', 'PH2', 'Moisture3', 'PH3', 'Moisture4', 'PH4', 'Moisture5', 'PH5', 'Moisture6', 'PH6', 'Moisture7', 'Moisture8', 'Moisture9', 'Moisture10', 'Volt1', 'Volt2', 'Current1', 'Current2', 'Power1', 'Power2', 'Consumption', 'Spore', 'Ovum', 'SoilTemp1', 'SoilTemp2', 'SoilTemp3', 'SoilTemp4', 'SoilTemp5', 'SoilTemp6', 'SoilTemp7', 'SoilTemp8', 'SoilTemp9', 'SoilTemp10', 'SoilEC1', 'SoilEC2', 'SoilEC3', 'SoilEC4', 'SoilEC5', 'SoilEC6', 'SoilEC7', 'SoilEC8', 'SoilEC9', 'SoilEC10','N','P','K','Turmeric',]
+
 
 class AtPressure(base):
     __tablename__ = 'atpressure'
@@ -540,7 +541,40 @@ class SoilEC10(base):
                                        'timestamp',
                                        name='UC_field_time'),)
 
+class N(base):
+    __tablename__ = 'n'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
 
+class P(base):
+    __tablename__ = 'p'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+class K(base):
+    __tablename__ = 'k'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Turmeric(base):
+    __tablename__ = 'turmeric'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
 
 
 

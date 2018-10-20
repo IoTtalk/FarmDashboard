@@ -194,27 +194,61 @@
       if (data == undefined) {
           return;
       }
-
+ 
       let dataset = [];
       let yaxes = [];
-
       let sensors = Object.keys(data);
       if (!sensors.length) { return; }
-      let sensor1 = sensors[0];
 
-      let fields = Object.keys(data[sensor1]);
-      if (!fields.length) { return; }
-      let field1 = fields[0];
+////////////////////////////////////////////////////////////////////////////////////////////////////
+      let source_fields, target1, target2 = null;
+      let source1 = [null, null];
+      let source2 = [null, null];
+
+      source1[1] = sensors[0];
+      source_fields  = Object.keys(data[source1[1]]);
+      if (!source_fields.length)  return;
+      source1[0] =  source_fields[0];
+     
+      if (sensors.length >= 2){
+          source2[1] = sensors[1];
+          source_fields  = Object.keys(data[source2[1]]);
+          source2[0] =  source_fields[0];
+      }
+      else if(source_fields.length >= 2) { 
+          source2[1] = sensors[0];
+          source2[0] =  source_fields[1];
+      }
+
+      if ($('#field1').val() == source1[0]) {
+          target1 = source1;
+          target2 = source2;
+      }
+      else{
+          target1 = source2;
+          target2 = source1;
+      }
+///////////////////////////////////////////////////////////////////////////////////////////////////      
+//      let sensor1 = sensors[0];
+//      let fields = Object.keys(data[sensor1]);
+
+
+//      if (!fields.length) { return; }
+//      let field1 = fields[0];
 
       temp_data = {};
       let res1 = [];
       let max1 = -Infinity;
       let min1 = Infinity;
-      let label1 = field1 + ' - ' + sensor1;
+//      let label1 = field1 + ' - ' + sensor1;
+      let label1 = target1[0] + ' - ' + target1[1];
       let x_tick = [];
-      let tick_interval = Math.ceil(data[sensor1][field1].length / 7);
+//      let tick_interval = Math.ceil(data[sensor1][field1].length / 7);
+      let tick_interval = Math.ceil(data[target1[1]][target1[0]].length / 7);
       
-      data1 = data[sensor1][field1];
+//      data1 = data[sensor1][field1];
+      data1 = data[target1[1]][target1[0]];
+
       temp_data[label1] = data1;
       data1.reverse();
       data1.forEach((element, idx) => {
@@ -260,8 +294,9 @@
               label: label1,
               data: res1,
               yaxis: 1,
-              points: { show: true, radius: 1, symbol: 'triangle' },
+              points: { show: true, radius: 5, symbol: 'triangle' },
               lines : { show: true },
+              color: "#000000",
       });
 
       yaxes.push({
@@ -274,22 +309,25 @@
 
 
       let data2 = null;
-      if (fields.length >= 2) {
-          sensor2 = sensors[0];
-          field2 = fields[1];
-          data2 = data[sensor2][field2];
-      } else if (sensors.length >= 2) {
-          sensor2 = sensors[1];
-          field2 = Object.keys(data[sensor2])[0];
-          data2 = data[sensor2][field2];
-      }
+//      if (fields.length >= 2) {
+//          sensor2 = sensors[0];
+//          field2 = fields[1];
+//          data2 = data[sensor2][field2];
+//      } else if (sensors.length >= 2) {
+//          sensor2 = sensors[1];
+//          field2 = Object.keys(data[sensor2])[0];
+//          data2 = data[sensor2][field2];
+//      }
+
+      if(target2[0]) data2 = data[target2[1]][target2[0]];  
 
       if (data2) {
           let res2 = [];
           let max2 = -Infinity;
           let min2 = Infinity;
 
-          let label2 = field2 + ' - ' + sensor2;
+//          let label2 = field2 + ' - ' + sensor2;
+          let label2 = target2[0] + ' - ' + target2[1];
           temp_data[label2] = data2;
           data2.reverse();
           data2.forEach((element, idx) => {
@@ -324,9 +362,10 @@
               label: label2,
               data: res2,
               yaxis: 2,
-              points: { show: true, radius: 1 },
+              points: { show: true, radius: 5, symbol: 'square' },
               lines : { show: true },
               alignTicksWithAxis: 2,
+              color: "#008800", 
           });
 
           yaxes.push({
@@ -347,6 +386,7 @@
           hoverable: true,
           borderWidth: 2,
           backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
+
         },
         series: {
           shadowSize: 0, // Drawing is faster without shadows
