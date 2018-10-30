@@ -20,7 +20,13 @@ def _run(profile, reg_addr, field, field_id):
                 if data:
                     print(field, df, data)
                     timestamp = data[0]
-                    value = float(data[1][0])
+
+                    try:
+                        value = float(data[1][0])
+                    except Exception as e:
+                        print(e, ', ignore this data.')
+                        continue
+                    
                     new_model = getattr(db.models, df.replace('-O', ''))(timestamp=timestamp, field=field_id, value=value)
                     session.add(new_model)
                     session.commit()
