@@ -384,6 +384,7 @@ def api_query_user():
                              .select_from(db.models.user_access)
                              .join(db.models.field)
                              .filter(db.models.user_access.user == user.id)
+                             .order_by(db.models.user_access.id)
                              .all())
             access = []
             active = None
