@@ -1,6 +1,6 @@
 DEBUG = False
 
-FLASK_SECRET_KEY = '#$%^%$#^%GFDSDFGHGFDSWERE' # use random string, for example, "#$%^%$#^%$TRFGHJHGFDSDFGHGFDSWERE" 
+FLASK_SECRET_KEY = 'FDSDFGHGFDSWERE' # use random string, for example, "FGHJHGFDSDFGHGFDSWERE" 
 
 # DB_CONFIG = '<database>[+<orm_lib>]://[<user>[:<password>]]<host>[:<port>]/[db_name][?charset=utf8]'
 # ex: DB_CONFIG = 'mysql+pymysql://user:pass@localhost:3306/db_name?charset=utf8'
