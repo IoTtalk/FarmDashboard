@@ -1,11 +1,11 @@
 {
 	"user" : [
 		{
-		{
 			"username" : "admin",
 			"password" : "123456789",
 			"is_superuser" : true
 		},
+        {
 			"username" : "demo",
 			"password" : "demo"
 		}
@@ -82,7 +82,7 @@
 			"unit" : "%",
 			"icon" : "ion-waterdrop",
 			"bg_color" : "bg-orange"
-		},
+		}
 	],
 	"field" : [
 		{
@@ -109,23 +109,14 @@
 				{ "name" : "bugs" },
 				{ "name" : "uv" },
 				{
-                                        "name" : "moisture",
-                                        "alias" : "土壤濕度 - A"
-                                },
-                                {
-                                        "name" : "ph",
-                                        "alias" : "土壤酸鹼 - A"
-                                },
-                                {
-                                        "name" : "moisture",
-                                        "df_name" : "Moisture2-O",
-                                        "alias" : "土壤濕度 - B"
-                                },
-                                {
-                                        "name" : "ph",
-                                        "df_name" : "PH2-O",
-                                        "alias" : "土壤酸鹼 - B"
-                                }
+                        "name" : "moisture",
+                        "alias" : "土壤濕度 - A"
+                },
+                {
+                        "name" : "moisture",
+                        "df_name" : "Moisture2-O",
+                        "alias" : "土壤濕度 - B"
+                }
 			]
 		}
 	],
