@@ -3,6 +3,8 @@ DEBUG = False
 FLASK_SECRET_KEY = "" # use random string
 
 # DB_CONFIG = '<database>[+<orm_lib>]://[<user>[:<password>]]<host>[:<port>]/[db_name][?charset=utf8]'
+# ex: DB_CONFIG = 'mysql+pymysql://user:pass@localhost:3306/db_name?charset=utf8'
+# ex: DB_CONFIG = 'sqlite+pysqlite://db.sqlite3
 DB_CONFIG = ''
 DB_POOL_RECYCLE = 600
 QUERY_LIMIT = 100
