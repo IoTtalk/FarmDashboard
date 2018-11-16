@@ -55,19 +55,21 @@ class DAN():
                     continue
 
                 self.control_channel_timestamp = cc[0][0]
-                self.state = cc[0][1][0]
-                if self.state == 'SET_DF_STATUS':
+                cmd = cc[0][1][0]
+                if   cmd == 'RESUME':  self.state = 'RESUME'
+                elif cmd == 'SUSPEND': self.stste = 'SUSPEND'
+                elif cmd == 'SET_DF_STATUS':
                     self.csmapi.push(self.mac_addr,
                                      '__Ctl_I__',
                                      ['SET_DF_STATUS_RSP',
                                       {'cmd_params': cc[0][1][1]['cmd_params']}])
                     df_status = list(cc[0][1][1]['cmd_params'][0])
 
+                    self.profile['df_list'] = self.csmapi.pull(self.mac_addr, 'profile')['df_list'] 
                     self.selected_DF.clear
                     for index, status in enumerate(df_status):
                         if status == '1':
                             self.selected_DF.add(self.profile['df_list'][index])
-                #else: self.state = 'RESUME'                                            #new
 
             except Exception as e:
                 print ('Control error', e)
