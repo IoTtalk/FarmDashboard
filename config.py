@@ -10,4 +10,4 @@ DB_POOL_RECYCLE = 600
 QUERY_LIMIT = 100
 REQUEST_TIMEOUT = 10
 
-CSM_HOST = '140.113.199.13'  # IoTtalk server's 'IP' or 'DomainName', for example, '140.113.199.13'
+CSM_HOST = '8.8.8.8'  # IoTtalk server's 'IP' or 'DomainName', for example, '8.8.8.8'
