@@ -7,7 +7,7 @@
   <div class="col-sm-6 col-xs-12">
     <select class="form-control" id="place" v-model="active_field" @change="field_change">
       <template v-for="field in fields">
-        <option :value="field.name">{{ '{{' }}field.alias{{ '}}' }}</option>
+        <option :value="field.name" >{{ '{{' }}field.alias{{ '}}' }}</option>
       </template>
     </select>
   </div>
@@ -266,7 +266,7 @@
     apps = new Vue({
       el: '#app',
       data: function () {
-        fields = {{ fields|safe }};
+        fields = {{ fields|safe }}.filter((data)=>{return data.sensors.length});
         active_field = fields[0].name;
         active_sensors = fields[0]['sensors'];
         active_sensor = fields[0]['sensors'][0]['df_name'];

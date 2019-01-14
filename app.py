@@ -26,6 +26,7 @@ def render_template(*args, **argv):
               .query(db.models.field.id,
                      db.models.field.name,
                      db.models.field.alias,
+                     db.models.field.iframe,
                      db.models.user_access.is_active)
               .select_from(db.models.field)
               .join(db.models.user_access)
@@ -33,11 +34,12 @@ def render_template(*args, **argv):
               .filter(db.models.user.username == session.get('username'))
               .order_by(db.models.user_access.id)
               .all())
-    for id, name, alias, is_active in query:
+    for id, name, alias, iframe, is_active in query:
         field_data = {
             'id': id,
             'name': name,
             'alias': alias,
+            'iframe': iframe.format(username=session.get('username')),
             'is_active': 1 & is_active,
             'sensors': []
         }
@@ -568,7 +570,8 @@ def api_query_field():
         # POST /api/field
         # {name:<string>, alias:<string>, sensors: [<sensor>, ...]}
         new_field = db.models.field(name=request.json.get('name'),
-                                 alias=request.json.get('alias'))
+                                    alias=request.json.get('alias'),
+                                    iframe=request.json.get('iframe', ''))
         g.session.add(new_field)
         g.session.commit()
 
@@ -593,13 +596,15 @@ def api_query_field():
         id_ = request.json.get('id')
         name = request.json.get('name')
         alias = request.json.get('alias')
+        iframe = request.json.get('iframe', '')
         sensors = request.json.get('sensors', [])
 
         (g.session
           .query(db.models.field)
           .filter(db.models.field.id == id_)
           .update({'name': name,
-                   'alias': alias}))
+                   'alias': alias,
+                   'iframe': iframe}))
         (g.session
           .query(db.models.field_sensor)
           .filter(db.models.field_sensor.field == id_)
@@ -616,7 +621,7 @@ def api_query_field():
             new_sensor.field = id_
             new_sensor.id = None
             g.session.add(new_sensor)
-            g.session.commit()
+        g.session.commit()
 
         return 'ok'
     elif request.method == 'DELETE':

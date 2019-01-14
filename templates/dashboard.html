@@ -28,6 +28,11 @@
       {% for sensor in field.sensors %}
         {{ content_box(field.name, sensor)}}
       {% endfor %}
+      {% if field.iframe %}
+        <div class="col-xs-12">
+          <iframe src="{{field.iframe}}" width="100%" height="500px" frameBorder="0"></iframe>
+        </div>
+      {% endif %}
     </div>
   </div>
 {%- endmacro %}

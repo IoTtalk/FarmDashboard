@@ -144,7 +144,7 @@
                       <template v-for="field in fields">
                         <div class="col-xs-4 col-md-3 col-xl-2">
                           <label :for="'user-access-'+field.name" style="font-weight: normal;">
-                            <input type="checkbox" v-model="temp_user.access" :value="{'alias': field.alias, 'id': field.id, 'name': field.name}" :id="'user-access-'+field.name">  {{ '{{' }}field.name{{ '}}' }}
+                            <input type="checkbox" v-model="temp_user.access" :value="{'alias': field.alias, 'id': field.id, 'iframe': field.iframe, 'name': field.name}" :id="'user-access-'+field.name">  {{ '{{' }}field.name{{ '}}' }}
                           </label>
                         </div>
                       </template>
@@ -372,9 +372,16 @@
                   </div>
                   <!-- field.alias -->
                   <div class="form-group">
-                    <label for="field-name" class="col-sm-2 control-label">alias</label>
+                    <label for="field-alias" class="col-sm-2 control-label">alias</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="field-alias" placeholder="alias, ex: 寶山一場" v-model="temp_field.alias" required>
+                    </div>
+                  </div>
+                  <!-- field.iframe -->
+                  <div class="form-group">
+                    <label for="field-iframe" class="col-sm-2 control-label">iframe URL</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="field-iframe" placeholder="iframe URL, ex: http://tw.google.com" v-model="temp_field.iframe">
                     </div>
                   </div>
                   <!-- field.sensors -->
@@ -484,6 +491,7 @@
             id: '',
             name: '',
             alias: '',
+            iframe: '',
             sensors: [],
           }
         }
@@ -605,6 +613,7 @@
             id: '',
             name: '',
             alias: '',
+            iframe: '',
             sensors: [],
           }
           $('#field_modal').modal('toggle');

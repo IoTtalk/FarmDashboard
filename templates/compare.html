@@ -433,7 +433,7 @@
     apps = new Vue({
       el: '#app',
       data: function () {
-        fields = {{ fields|safe }};
+        fields = {{ fields|safe }}.filter((data)=>{return data.sensors.length});
         active_field1 = fields[0].name;
         active_sensor1 = fields[0]['sensors'];
         return {

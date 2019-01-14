@@ -597,6 +597,9 @@ class field(base):
                 nullable=False)
     name = Column(String(50))
     alias = Column(String(50))
+    iframe = Column(String(200),
+                    nullable=False,
+                    default='')
 
 
 class sensor(base):
