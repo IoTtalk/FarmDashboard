@@ -633,6 +633,10 @@ def api_query_field():
           .filter(db.models.field_sensor.field == id_)
           .delete())
         (g.session
+          .query(db.models.user_access)
+          .filter(db.models.user_access.field == id_)
+          .delete())
+        (g.session
           .query(db.models.field)
           .filter(db.models.field.id == id_)
           .delete())
