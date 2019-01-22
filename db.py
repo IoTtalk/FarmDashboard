@@ -89,7 +89,7 @@ def init(data):
     for access in data.get('user_access', []):
         user = users.get(access.get('user'))
         if not user:
-            print('[user_access] not find user {}'.format(access.get('user'))
+            print('[user_access] not find user {}'.format(access.get('user')))
             continue
         accesses = access.get('accesses')
         active = access.get('active')

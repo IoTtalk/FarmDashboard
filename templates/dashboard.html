@@ -77,9 +77,15 @@
           url: '/datas/' + field +'?limit=1',
           type:'GET'
         }).done((data) => {
+          let expire_date = new Date();
+          expire_date.setDate(expire_date.getDate() + 30);
           for(key in data) {
             if(data[key][0]) {
-              $('#' + field + '_' + key).text(data[key][0][1]);
+              if(data[key][0][0] < expire_date) {
+                $('#' + field + '_' + key).html('<S>' + data[key][0][1] + '</S>');
+              } else {
+                $('#' + field + '_' + key).html(data[key][0][1]);
+              }
             }
           }
         }).always(() => {
