@@ -65,6 +65,9 @@ def main():
         for df, in query_df:
             profile['df_list'].append(df)
 
+        if not profile['df_list']:
+            continue
+
         thread = Thread(target=_run,
                         args=(profile, profile['d_name'], field.name, field.id))
         thread.daemon = True
