@@ -1,5 +1,5 @@
 from sqlalchemy import (Boolean, Column, DateTime, Float, ForeignKey,
-                        Integer, String, UniqueConstraint)
+                        Integer, String, Text, UniqueConstraint)
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -588,6 +588,7 @@ class user(base):
     username = Column(String(255), nullable=False)
     password = Column(String(255), nullable=False)
     is_superuser = Column(Boolean, nullable=False, default=False)
+    memo = Column(Text, nullable=False, default='')
 
 
 class field(base):
