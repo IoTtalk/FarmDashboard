@@ -628,6 +628,13 @@ def api_query_field():
         # Delete field
         # DELETE /api/field?id=<id>
         id_ = request.args.get('id')
+
+        for table_name in db.models.models:
+            model = getattr(db.models, table_name)
+            (g.session
+              .query(model)
+              .filter(model.field == id_)
+              .delete())
         (g.session
           .query(db.models.field_sensor)
           .filter(db.models.field_sensor.field == id_)
