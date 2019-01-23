@@ -47,11 +47,21 @@
       {% for field in fields %}
         {{ tab_title(field)}}
       {% endfor %}
+      <li id="tab_memo">
+        <a href="#memo" data-toggle="tab">memo</a>
+      </li>
     </ul>
     <div class="tab-content">
       {% for field in fields %}
         {{ tab_content(field) }}
       {% endfor %}
+      <div class="tab-pane" id="memo">
+        <div class="row">
+          <div class="col-xs-12">
+            <textarea id="user_memo" rows="10" style="width: 100%;">{{memo}}</textarea>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}
@@ -93,6 +103,10 @@
         });
       }
       update(); 
+      $(document).on('keyup', '#user_memo', ()=>{
+        console.log($('#user_memo').val());
+        axios.post('/api/usermemo', {'memo': $('#user_memo').val()});
+      });
     })
   </script>
 {% endblock %}

@@ -51,10 +51,16 @@ def render_template(*args, **argv):
             field_data['sensors'].append(utils.row2dict(sensor))
         fields.append(field_data)
 
+    user = (g.session
+             .query(db.models.user)
+             .filter(db.models.user.username == session.get('username'))
+             .first())
+
     return flast_render_template(*args,
                                  fields=fields,
                                  username=session.get('username'),
                                  is_superuser=session.get('is_superuser'),
+                                 memo=user.memo,
                                  **argv)
 
 
@@ -364,6 +370,21 @@ def get_mysql_raw_sql(interval, table_name, field, start, end, limit):
 
     return raw_sql
 
+@app.route('/api/usermemo', methods=['POST'])
+@required_login
+def api_update_user_memo():
+    if request.method != 'POST':
+        abort(403)
+
+    user_id = session.get('id')
+    if not user_id:
+        abort(404)
+
+    memo = request.json.get('memo')
+    g.session.query(db.models.user).filter(db.models.user.id == user_id).update({'memo': memo})
+    g.session.commit()
+
+    return 'ok'
 
 @app.route('/api/user', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @required_superuser
