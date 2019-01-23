@@ -105,7 +105,7 @@
       update(); 
       $(document).on('keyup', '#user_memo', ()=>{
         console.log($('#user_memo').val());
-        axios.post('/api/usermemo', {'memo': $('#user_memo').val()});
+        axios.post('/api/user/memo', {'memo': $('#user_memo').val()});
       });
     })
   </script>

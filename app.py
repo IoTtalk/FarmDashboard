@@ -369,9 +369,10 @@ def get_mysql_raw_sql(interval, table_name, field, start, end, limit):
 
     return raw_sql
 
-@app.route('/api/usermemo', methods=['POST'])
+
+@app.route('/api/user/memo', methods=['POST'])
 @required_login
-def api_update_user_memo():
+def api_user_update_memo():
     if request.method != 'POST':
         abort(403)
 
