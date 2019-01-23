@@ -384,15 +384,15 @@ def api_user_change_pwd():
     new_password = request.json.get('new_password')
 
     if not new_password:
-        abort(404)
+        return 'new password should be given.', 404
 
-    user = (g.session.query(db.models.user).filter(db.models.user.id == user_id).first()
+    user = g.session.query(db.models.user).filter(db.models.user.id == user_id).first()
 
     if not user:
-        abort(404)
+        return 'Who are you?', 404
 
     if not check_password_hash(user.password, old_password):
-        abort(404)
+        return 'Old passwrod not match.', 404
 
     user.password = generate_password_hash(new_password)
     g.session.commit()
