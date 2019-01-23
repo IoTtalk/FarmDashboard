@@ -101,7 +101,6 @@ def server_error(error):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    msg = ""
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -118,12 +117,12 @@ def login():
 
             return redirect(request.args.get('next', '/'))
         else:
-            msg = 'username or password is wrong.'
+            return flast_render_template('login.html', msg='username or password is wrong.')
 
     if session.get('username'):
         return redirect(request.args.get('next', '/'))
 
-    return flast_render_template('login.html', msg=msg)
+    return flast_render_template('login.html')
 
 
 @app.route('/logout')
