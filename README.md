@@ -2,11 +2,12 @@
 
 使用說明：
 1. 安裝mysql
-2. 修改 config.py，根據內部註解依序填上資料
-3. 視情況修改 db_init.json (設定admin密碼與DB初始table欄位)
-4. 執行 python3 db.py init
-5. 安裝好 tmux
-6. 執行 bash startup.sh
+2. sudo pip3 install -r requirements.txt   #安裝相關需要套件
+3. 修改 config.py，根據內部註解依序填上資料
+4. 視情況修改 db_init.json (設定admin密碼與DB初始table欄位)
+5. 執行 python3 db.py init
+6. 安裝好 tmux
+7. 執行 bash startup.sh
 
 至此Dashboard已啟動完成。
 
