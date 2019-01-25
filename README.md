@@ -18,9 +18,13 @@
 2. 'mysql+pymysql://user:pass@localhost:3306/db_name?charset=utf8'   <--- 其中的 db_name，就是打算要建立的主表名稱，例如要給Dashboard用的，就取名為dashboard，該主表名稱不是隨便亂輸入的，通常是在db內建立user時，就順道建立一同名的table，這樣最簡單(例如，假設使用phpmyadmin建立使用者時，就勾選 "建立與使用者同名的資料庫並授予所有權限。")，權限部分，如果不確定怎麼使用，就全開吧。所以db_name必須是已存在的table，而不是隨便亂輸入的。
 然後，在建立使用者時，很高的機率會發生錯誤 "Your password does not satisfy the current policy requirements"，這時要去調降密碼強度限制，解決方法為連上mysql應用，使用如下指令後，就可以順利建立user/table了。
 
+
     執行 mysql -u root -p 打完密碼後進入mysql命令列，然後執行下方指令
+    
     mysql> set global validate_password_policy=0;
+    
     mysql> exit
+    
     
 3. 如果是遠程連線，要注意兩點 a.要設定該使用者允許連線的IP，沒去設定的話，絕對是連不上的  b.記得去掉設定檔內的 bind 127.0.0.1
 
