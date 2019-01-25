@@ -10,7 +10,7 @@
 7. 安裝好 tmux
 8. 執行 bash startup.sh
 
-至此Dashboard已啟動完成。
+至此Dashboard已啟動完成，可用指令 tmux a 查看運行狀況(按ctrl+b 1 / ctrl+b 2切換dashboard主程式與DA查看運行狀況)。
 
 *** 注意 ***
 1. 在Dashboard上，只要 "新增/修改過Field的項目" 後，就要再次執行 bash startup.sh 更新DA狀態，不然IoTtalk將無法送資料到Dashboard上
