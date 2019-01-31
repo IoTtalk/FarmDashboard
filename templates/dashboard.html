@@ -11,7 +11,7 @@
     <!-- small box -->
     <div class="small-box {{sensor.bg_color}}">
       <div class="inner">
-        <h3 id="{{fieldname}}_{{sensor.df_name}}">{{value}}</h3>
+        <h3 id="{{fieldname}}_{{sensor.df_name}}" data-toggle="tooltip" title="">{{value}}</h3>
         <p style="height: 2em">{{sensor.alias}} ({{sensor.unit}})</p>
       </div>
       <div class="icon">
@@ -88,13 +88,15 @@
           type:'GET'
         }).done((data) => {
           let expire_date = new Date();
-          expire_date.setDate(expire_date.getDate() + 30);
+          expire_date.setHours(expire_date.getHours() - 1);
           for(key in data) {
             if(data[key][0]) {
-              if(data[key][0][0] < expire_date) {
+              if(new Date(data[key][0][0]) < expire_date) {
                 $('#' + field + '_' + key).html('<S>' + data[key][0][1] + '</S>');
+                $('#' + field + '_' + key).attr('data-original-title', 'The last data was taken at ' + data[key][0][0] + '.');
               } else {
                 $('#' + field + '_' + key).html(data[key][0][1]);
+                $('#' + field + '_' + key).attr('data-original-title', '');
               }
             }
           }
