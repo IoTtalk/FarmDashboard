@@ -642,12 +642,14 @@
                .catch((error) => {alert(error);});
         },
         field_delete() {
-          axios.delete('/api/field?id=' + this.temp_field.id)
-               .then((data, status, request) => {
-                      this.field_reload();
-                      $('#field_modal').modal('toggle');
-               })
-               .catch((error) => {alert(error);});
+          if (confirm("DB內相關資料也將刪除，確定嗎?")) {
+            axios.delete('/api/field?id=' + this.temp_field.id)
+                 .then((data, status, request) => {
+                        this.field_reload();
+                        $('#field_modal').modal('toggle');
+                 })
+                 .catch((error) => {alert(error);});
+          }
         },
         field_sensor_add(index) {
           new_sensor = JSON.parse(JSON.stringify(this.sensors[index]));
