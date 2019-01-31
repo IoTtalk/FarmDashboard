@@ -589,6 +589,8 @@ class user(base):
     password = Column(String(255), nullable=False)
     is_superuser = Column(Boolean, nullable=False, default=False)
     memo = Column(Text, nullable=False, default='')
+    __table_args__ = (UniqueConstraint('username', name='uc_username'),)
+
 
 
 class field(base):
@@ -596,8 +598,8 @@ class field(base):
     id = Column(Integer,
                 primary_key=True,
                 nullable=False)
-    name = Column(String(50))
-    alias = Column(String(50))
+    name = Column(String(50), nullable=False)
+    alias = Column(String(50), nullable=False)
     iframe = Column(String(200),
                     nullable=False,
                     default='')
