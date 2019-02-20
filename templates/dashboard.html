@@ -91,7 +91,7 @@
           expire_date.setHours(expire_date.getHours() - 1);
           for(key in data) {
             if(data[key][0]) {
-              if(new Date(data[key][0][0]) < expire_date) {
+              if(new Date(data[key][0][0].replace(/-/g, '/')) < expire_date) {
                 $('#' + field + '_' + key).html('<S>' + data[key][0][1] + '</S>');
                 $('#' + field + '_' + key).attr('data-original-title', 'The last data was taken at ' + data[key][0][0] + '.');
               } else {
