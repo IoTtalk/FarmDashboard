@@ -39,7 +39,7 @@ def render_template(*args, **argv):
             'id': id,
             'name': name,
             'alias': alias,
-            'iframe': iframe.format(username=session.get('username')),
+            'iframe': iframe.replace('{username}', session.get('username')),
             'is_active': 1 & is_active,
             'sensors': []
         }
