@@ -61,7 +61,7 @@
 		},
 		{
 			"name" : "bugs",
-			"df_name" : "Bugs-O",
+			"df_name" : "Bug1-O",
 			"alias" : "蟲數",
 			"unit" : "隻",
 			"icon" : "ion-bug",
@@ -93,20 +93,6 @@
 				{ "name" : "temperature" },
 				{ "name" : "humidity" },
 				{ "name" : "bugs" },
-				{ "name" : "uv" }
-			]
-		},
-		{
-			"name" : "bao1",
-			"alias" : "寶山一場",
-			"sensors" : [
-				{ "name" : "atpressure" },
-				{ "name" : "co2" },
-				{ "name" : "temperature" },
-				{ "name" : "humidity" },
-				{ "name" : "windspeed" },
-				{ "name" : "rainmeter" },
-				{ "name" : "bugs" },
 				{ "name" : "uv" },
 				{
                         "name" : "moisture",
@@ -123,7 +109,7 @@
 	"user_access" : [
 		{
 			"user" : "admin",
-			"accesses" : ["demo", "bao1"],
+			"accesses" : ["demo"],
 			"active" : "demo"
 		},
 		{

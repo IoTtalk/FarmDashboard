@@ -3,4 +3,3 @@ requests
 flask
 python-dateutil
 pymysql
-alembic==1.0.5
