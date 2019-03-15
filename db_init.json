@@ -109,7 +109,7 @@
 	"user_access" : [
 		{
 			"user" : "admin",
-			"accesses" : ["demo", "bao1"],
+			"accesses" : ["demo"],
 			"active" : "demo"
 		},
 		{
