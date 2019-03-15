@@ -35,6 +35,19 @@ def clear():
     print('Not implement')
 
 
+def inject_new_model(df_name):
+    code = '''
+class {}(base):
+    __tablename__ = '{}'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    '''.format(df_name, df_name.lower())
+
+    with open('models.py', 'a') as f:
+        f.write(code)
+
+
 def init(data):
     # TODO: seprate each insert to different function, supply single insert
     session = get_session()

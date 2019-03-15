@@ -538,14 +538,21 @@ def api_query_sensor():
         # POST /api/sensor
         # {name:<string>, df_name:<string>, alias:<string>, unit:<string>,
         #  icon:<string>, bg_color:<string>}
-        new_sensor = db.models.sensor(name=request.json.get('name'),
-                                   df_name=request.json.get('df_name'),
-                                   alias=request.json.get('alias'),
-                                   unit=request.json.get('unit'),
-                                   icon=request.json.get('icon'),
-                                   bg_color=request.json.get('bg_color'))
+        df_name = request.json.get('df_name')
+        if not df_name:
+            return 'No df_name'
+
+        new_sensor = db.models.sensor(df_name=df_name,
+                                      name=request.json.get('name'),
+                                      alias=request.json.get('alias'),
+                                      unit=request.json.get('unit'),
+                                      icon=request.json.get('icon'),
+                                      bg_color=request.json.get('bg_color'))
         g.session.add(new_sensor)
         g.session.commit()
+
+        if not hasattr(db.models, str(df_name).replace('-O', '')):
+            db.inject_new_model(df_name.replace('-O', ''))
 
         return json.dumps(utils.row2dict(new_sensor))
     elif request.method == 'PUT':
