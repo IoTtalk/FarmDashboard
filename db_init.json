@@ -61,7 +61,7 @@
 		},
 		{
 			"name" : "bugs",
-			"df_name" : "Bugs-O",
+			"df_name" : "Bug1-O",
 			"alias" : "蟲數",
 			"unit" : "隻",
 			"icon" : "ion-bug",
