@@ -1,3 +1,4 @@
+import inspect
 import json
 import os
 
@@ -680,12 +681,12 @@ def api_query_field():
         # DELETE /api/field?id=<id>
         id_ = request.args.get('id')
 
-        for table_name in db.models.models:
-            model = getattr(db.models, table_name)
-            (g.session
-              .query(model)
-              .filter(model.field == id_)
-              .delete())
+        for attr in db.models.__dict__.values():
+            if inspect.isclass(attr) and hasattr(attr, 'timestamp'):
+                (g.session
+                  .query(attr)
+                  .filter(attr.field == id_)
+                  .delete())
         (g.session
           .query(db.models.field_sensor)
           .filter(db.models.field_sensor.field == id_)
