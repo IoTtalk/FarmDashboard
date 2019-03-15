@@ -2,8 +2,6 @@ import json
 import os
 import sys
 
-from subprocess import check_call
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
@@ -20,9 +18,9 @@ def connect():
     if engine:
         return
 
-    migrate()
     engine = create_engine(config.DB_CONFIG,
                            pool_recycle=config.DB_POOL_RECYCLE)
+    models.base.metadata.create_all(engine)
 
 
 def get_session():
@@ -30,11 +28,6 @@ def get_session():
         connect()
 
     return Session(engine)
-
-
-def migrate():
-    """Database migration."""
-    check_call(['alembic', 'upgrade', 'head'], cwd=os.path.realpath(os.path.dirname(__file__)))
 
 
 def clear():

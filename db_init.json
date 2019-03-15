@@ -93,20 +93,6 @@
 				{ "name" : "temperature" },
 				{ "name" : "humidity" },
 				{ "name" : "bugs" },
-				{ "name" : "uv" }
-			]
-		},
-		{
-			"name" : "bao1",
-			"alias" : "寶山一場",
-			"sensors" : [
-				{ "name" : "atpressure" },
-				{ "name" : "co2" },
-				{ "name" : "temperature" },
-				{ "name" : "humidity" },
-				{ "name" : "windspeed" },
-				{ "name" : "rainmeter" },
-				{ "name" : "bugs" },
 				{ "name" : "uv" },
 				{
                         "name" : "moisture",
