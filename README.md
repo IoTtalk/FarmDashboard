@@ -29,10 +29,11 @@
 
 
 
+*** 詳細安裝說明 ***
+https://hackmd.io/s/H1C6UylrV#
 
-
-
-
+*** Dashboard操作教學影片 ***
+https://drive.google.com/drive/u/1/folders/13AyBQ-3m_RuPOW1J2aR1yD0svUKuEFdg
 
 
 
