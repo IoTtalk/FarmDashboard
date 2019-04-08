@@ -1,6 +1,17 @@
 # FarmDashboard
 
-使用說明：
+
+    *** 詳細安裝說明 ***
+
+    https://hackmd.io/s/H1C6UylrV#
+
+    *** Dashboard操作教學影片 ***
+
+    https://drive.google.com/drive/u/1/folders/13AyBQ-3m_RuPOW1J2aR1yD0svUKuEFdg
+
+
+
+簡易安裝說明：
 1. 安裝mysql
 2. sudo pip3 install -r requirements.txt   #安裝相關需要套件
 3. 新增mysql內的user，允許連線IP，與主表(db_name)，以及權限(詳見下方注意2)
@@ -27,13 +38,6 @@
 
 4. 然後要注意一下，python3 db.py init 只能執行一次。 (只會新加入，並不會抹除舊的資料，所以執行一次以上會錯誤)
 
-
-
-*** 詳細安裝說明 ***
-https://hackmd.io/s/H1C6UylrV#
-
-*** Dashboard操作教學影片 ***
-https://drive.google.com/drive/u/1/folders/13AyBQ-3m_RuPOW1J2aR1yD0svUKuEFdg
 
 
 
