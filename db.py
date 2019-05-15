@@ -42,6 +42,9 @@ class {}(base):
     timestamp = Column(DateTime, primary_key=True, nullable=False)
     field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
     value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
     '''.format(df_name, df_name.lower())
 
     with open('models.py', 'a') as f:
