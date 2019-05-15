@@ -669,6 +669,10 @@ def api_query_field():
           .filter(db.models.field_sensor.field == id_)
           .delete())
         for sensor in sensors:
+            df_name = sensor.get('df_name')
+            if df_name and not hasattr(db.models, str(df_name).replace('-O', '')):
+                db.inject_new_model(df_name.replace('-O', ''))
+
             new_sensor = db.models.field_sensor(
                 field=id_,
                 sensor=sensor.get('sensor'),
