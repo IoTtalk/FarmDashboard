@@ -9,7 +9,7 @@
 
   https://drive.google.com/drive/u/1/folders/13AyBQ-3m_RuPOW1J2aR1yD0svUKuEFdg
 
-
+  注意*** Field的名稱不可以包含特如符號如 . $ # & @ 等等，請使用權英文 ***注意
 
 簡易安裝說明：
 1. 安裝mysql
