@@ -19,7 +19,9 @@ def connect():
         return
 
     engine = create_engine(config.DB_CONFIG,
-                           pool_recycle=config.DB_POOL_RECYCLE)
+                           pool_recycle=config.DB_POOL_RECYCLE,
+                           pool_size=20,
+                           max_overflow=0)
     models.base.metadata.create_all(engine)
 
 

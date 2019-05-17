@@ -30,12 +30,10 @@ def _run(profile, reg_addr, field, field_id):
                     new_model = getattr(db.models, df.replace('-O', ''))(timestamp=timestamp, field=field_id, value=value)
                     session.add(new_model)
                     session.commit()
-            session.close()
             time.sleep(20)
         except KeyboardInterrupt:
             print(field, ': exit')
             break
-            dan.deregister()
         except Exception as e:
             print('[ERROR]:', e)
             if str(e).find('mac_addr not found:') != -1:
@@ -43,8 +41,9 @@ def _run(profile, reg_addr, field, field_id):
                 dan.device_registration_with_retry(profile, host, reg_addr)
             else:
                 print('Connection failed due to unknow reasons.')
-                time.sleep(1)    
-            continue
+                time.sleep(1)
+        finally:
+            session.close()
 
 def main():
     db.connect()
