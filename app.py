@@ -6,7 +6,7 @@ from datetime import datetime
 from dateutil import parser
 from functools import wraps
 
-from flask import (Flask, abort, jsonify, redirect, g,
+from flask import (Flask, abort, jsonify, redirect, g, make_response,
                    render_template as flast_render_template,
                    request, send_from_directory, session)
 from sqlalchemy import text
@@ -63,6 +63,13 @@ def render_template(*args, **argv):
                                  is_superuser=session.get('is_superuser'),
                                  memo=user.memo,
                                  **argv)
+
+
+def response_file(filename, content):
+    response = make_response(content)
+    response.headers["Content-Disposition"] = ("attachment; "
+                                               "filename={}".format(filename))
+    return response
 
 
 def required_login(f):
@@ -264,7 +271,7 @@ def api_query_datas():
     :args l: limit, query limit, default config.QUERY_LIMIT
 
     example:
-        http://farm.iottalk.tw:5000/api/datas?f1=bao2&f2=bao3&s=Temperature&st=2018-06-26&et=2018-06-27&i=second
+        http://farm.iottalk.tw:5000/api/datas?f1=bao2&f2=bao3&s1=Temperature&s2=AtPressure&st=2018-06-26&et=2018-06-27&i=second
     '''
     stime = datetime.now()
 
@@ -287,8 +294,9 @@ def api_query_datas():
     end = parser.parse(end_time).strftime('%Y-%m-%d %H:%M:%S')
 
     result = {sensor1: {}}
-    raw_sql1 = get_mysql_raw_sql(interval, table1.__tablename__, field1, start, end, limit)
-    result[sensor1].update({field1: query_data(raw_sql1)})
+
+    data1 = _query_data(interval, table1.__tablename__, field1, start, end, limit)
+    result[sensor1].update({field1: data1})
 
     field2 = request.args.get('f2')
     if field2:
@@ -297,28 +305,86 @@ def api_query_datas():
         table2 = getattr(db.models, tablename2)
         if not result.get(sensor2):
             result[sensor2] = {}
-        raw_sql2 = get_mysql_raw_sql(interval, table2.__tablename__, field2, start, end, limit)
-        result[sensor2].update({field2: query_data(raw_sql2)})
+        data2 = _query_data(interval, table2.__tablename__, field2, start, end, limit)
+        result[sensor2].update({field2: data2})
 
     etime = datetime.now()
     print((etime - stime).total_seconds())
     return jsonify(result)
 
 
-def query_data(raw_sql):
+@app.route('/api/export_datas', methods=['GET'])
+@required_login
+def api_export_datas():
+    '''
+    :args f: field, like `bao2`, `bao3`, etc
+    :args s: sensor, like `AtPressure`, `UV1`, etc
+    :args st: start_time, any time format
+    :args et: end_time, any time format
+    :args i: interval, only allow `second`, `minute`, `hour`, `day`, default `hour`
+    :args l: limit, query limit, default config.QUERY_LIMIT
+
+    example:
+        http://farm.iottalk.tw:5000/api/export_datas?f=bao2&s=Temperature&st=2018-06-26&et=2018-06-27&i=second
+    '''
+    stime = datetime.now()
+
+    field = request.args.get('f')
+    sensor = request.args.get('s')
+    start_time = request.args.get('st')
+    end_time = request.args.get('et')
+    interval = request.args.get('i', 'hour')
+    limit = int(request.args.get('l')) if request.args.get('l') else None
+
+    if not field or not sensor or not start_time or not end_time:
+        abort(404)
+
+    tablename = sensor.replace('-O', '')
+    if not hasattr(db.models, tablename):
+        abort(404)
+
+    table = getattr(db.models, tablename)
+    start = parser.parse(start_time).strftime('%Y-%m-%d %H:%M:%S')
+    end = parser.parse(end_time).strftime('%Y-%m-%d %H:%M:%S')
+
+    raw_data = _query_data(interval, table.__tablename__, field, start, end, limit)
+
+    content = 'datetime,value\n'
+
+    for data in raw_data:
+        if interval == 'second':
+            content += '{},{}\n'.format(data['timestamp'],
+                                        data['value'])
+        elif interval == 'minute':
+            content += '{} {}:{}:00,{}\n'.format(data['date'],
+                                                 data['hour'],
+                                                 data['minute'],
+                                                 data['value'])
+        elif interval == 'hour':
+            content += '{} {}:00:00,{}\n'.format(data['date'],
+                                                 data['hour'],
+                                                 data['value'])
+        elif interval == 'day':
+            content += '{} 00:00:00,{}\n'.format(data['date'],
+                                                 data['value'])
+    etime = datetime.now()
+    print((etime - stime).total_seconds())
+    filename = '{}_{}_{}_{}.csv'.format(field, sensor, start, end)
+    return response_file(content, filename)
+
+
+def _query_data(interval, table_name, field, start, end, limit):
+    raw_sql = _get_mysql_raw_sql(interval, table_name, field, start, end, limit)
     query = g.session.execute(raw_sql).fetchall()
 
     datas = []
     for row in query:
-        data = {}
-        for key in row.keys():
-            data[key] = str(row[key])
-        datas.append(data)
+        datas.append(utils.row2dict(row))
 
     return datas
 
 
-def get_mysql_raw_sql(interval, table_name, field, start, end, limit):
+def _get_mysql_raw_sql(interval, table_name, field, start, end, limit):
     if interval == 'second':
         raw_sql = text('''
             SELECT sensor.timestamp, sensor.value
