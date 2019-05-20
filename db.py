@@ -18,10 +18,20 @@ def connect():
     if engine:
         return
 
-    engine = create_engine(config.DB_CONFIG,
-                           pool_recycle=config.DB_POOL_RECYCLE,
-                           pool_size=20,
-                           max_overflow=0)
+    if config.DB_CONFIG.startswith('mysql'):
+        args = {
+            'pool_recycle': config.DB_POOL_RECYCLE,
+            'pool_size': 20,
+            'max_overflow': 0
+        }
+    elif config.DB_CONFIG.startswith('sqlite'):
+        args = {
+            'pool_recycle': config.DB_POOL_RECYCLE,
+        }
+    else:
+        args = {}
+
+    engine = create_engine(config.DB_CONFIG, **args)
     models.base.metadata.create_all(engine)
 
 
