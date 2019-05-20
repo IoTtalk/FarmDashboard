@@ -80,6 +80,8 @@
   <div class="col-sm-12 col-xs-12">
     <br>
     <input type="button" onclick="update();" value="查詢" />
+    <input type="button" onclick="download_field1();" value="場域1下載" />
+    <input type="button" onclick="download_field2();" value="場域2下載" />
   </div>
   <div class="col-xs-12">
     <!-- interactive chart -->
@@ -402,6 +404,29 @@
       $('#interactive').UseTooltip();
 
     });
+  }
+
+  function download_field1() {
+    download_field($('#field1').val(),
+                   $('#sensor1').val(),
+                   $('#start-time')[0].value,
+                   $('#end-time')[0].value,
+                   $('#interval').val());
+  }
+
+  function download_field2() {
+    download_field($('#field2').val(),
+                   $('#sensor2').val(),
+                   $('#start-time')[0].value,
+                   $('#end-time')[0].value,
+                   $('#interval').val());
+  }
+
+  function download_field(field, sensor, starttime, endtime, interval, limit) {
+    let a = document.createElement('a');;
+    a.href = '/api/export_datas?f=' + field + '&s=' + sensor + '&st=' + starttime + '&et=' + endtime + '&i=' + interval;
+    a.download = field + '_' + sensor + '_' + starttime + '_' + endtime + '.csv';
+    a.click();
   }
 
   function getFormatDate(date) {
