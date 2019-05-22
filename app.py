@@ -65,13 +65,6 @@ def render_template(*args, **argv):
                                  **argv)
 
 
-def response_file(filename, content):
-    response = make_response(content)
-    response.headers["Content-Disposition"] = ("attachment; "
-                                               "filename={}".format(filename))
-    return response
-
-
 def required_login(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -351,7 +344,7 @@ def api_export_datas():
 
     content = 'datetime,value\n'
 
-    for data in raw_data:
+    for data in raw_data[::-1]:
         if interval == 'second':
             content += '{},{}\n'.format(data['timestamp'],
                                         data['value'])
@@ -370,7 +363,7 @@ def api_export_datas():
     etime = datetime.now()
     print((etime - stime).total_seconds())
     filename = '{}_{}_{}_{}.csv'.format(field, sensor, start, end)
-    return response_file(content, filename)
+    return content
 
 
 def _query_data(interval, table_name, field, start, end, limit):
