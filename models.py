@@ -633,6 +633,8 @@ class field_sensor(base):
     unit = Column(String(50), default='')
     icon = Column(String(50), default='')
     bg_color = Column(String(50), default='bg-aqua')
+    alert_min = Column(Float, nullable=False, default=0)
+    alert_max = Column(Float, nullable=False, default=0)
     __table_args__ = (UniqueConstraint('field',
                                        'df_name',
                                        name='UC_field_df_name'),)

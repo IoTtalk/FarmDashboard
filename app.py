@@ -665,7 +665,9 @@ def api_query_field():
                                           db.models.field_sensor.alias,
                                           db.models.field_sensor.unit,
                                           db.models.field_sensor.icon,
-                                          db.models.field_sensor.bg_color)
+                                          db.models.field_sensor.bg_color,
+                                          db.models.field_sensor.alert_min,
+                                          db.models.field_sensor.alert_max)
                                    .select_from(db.models.field_sensor)
                                    .join(db.models.sensor)
                                    .filter(db.models.field_sensor.field == field.id)
@@ -674,13 +676,15 @@ def api_query_field():
             temp_field['sensors'] = []
             for sensor in query_field_sensor:
                 temp_sensor = {
-                    'name': sensor[0],
-                    'sensor': sensor[1],
-                    'df_name': sensor[2],
-                    'alias': sensor[3],
-                    'unit': sensor[4],
-                    'icon': sensor[5],
-                    'bg_color': sensor[6],
+                    'name': sensor.name,
+                    'sensor': sensor.sensor,
+                    'df_name': sensor.df_name,
+                    'alias': sensor.alias,
+                    'unit': sensor.unit,
+                    'icon': sensor.icon,
+                    'bg_color': sensor.bg_color,
+                    'alert_min': sensor.alert_min,
+                    'alert_max': sensor.alert_max,
                 }
                 temp_field['sensors'].append(temp_sensor)
             fields.append(temp_field)
@@ -704,7 +708,9 @@ def api_query_field():
                 alias=sensor.get('alias'),
                 unit=sensor.get('unit'),
                 icon=sensor.get('icon'),
-                bg_color=sensor.get('bg_color'))
+                bg_color=sensor.get('bg_color'),
+                alert_min=sensor.get('alert_min'),
+                alert_max=sensor.get('alert_max'))
             g.session.add(new_sensor)
             g.session.commit()
 
@@ -742,7 +748,9 @@ def api_query_field():
                 alias=sensor.get('alias'),
                 unit=sensor.get('unit'),
                 icon=sensor.get('icon'),
-                bg_color=sensor.get('bg_color'))
+                bg_color=sensor.get('bg_color'),
+                alert_min=sensor.get('alert_min'),
+                alert_max=sensor.get('alert_max'))
             new_sensor.field = id_
             new_sensor.id = None
             g.session.add(new_sensor)
