@@ -21,7 +21,7 @@ def connect():
     if config.DB_CONFIG.startswith('mysql'):
         args = {
             'pool_recycle': config.DB_POOL_RECYCLE,
-            'pool_size': 20,
+            'pool_size': config.DB_POOL_SIZE,
             'max_overflow': 0
         }
     elif config.DB_CONFIG.startswith('sqlite'):

@@ -7,6 +7,7 @@ FLASK_SECRET_KEY = 'FDSDFGHGFDSWERE' # use random string, for example, "FGHJHGFD
 # ex: DB_CONFIG = 'sqlite+pysqlite:///db.sqlite3'
 DB_CONFIG = ''
 DB_POOL_RECYCLE = 600
+DB_POOL_SIZE = 20
 QUERY_LIMIT = 100
 REQUEST_TIMEOUT = 10
 
