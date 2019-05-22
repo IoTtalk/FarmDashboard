@@ -379,7 +379,10 @@ def _query_data(interval, table_name, field, start, end, limit):
 
     datas = []
     for row in query:
-        datas.append(utils.row2dict(row))
+        data = {}
+        for key in row.keys():
+            data[key] = str(row[key])
+        datas.append(data)
 
     return datas
 
