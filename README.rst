@@ -1,13 +1,9 @@
 FarmDashboard
 ================================================================================
 
-* 詳細安裝說明 
+* `詳細安裝說明 <https://hackmd.io/s/H1C6UylrV#>`_
 
-https://hackmd.io/s/H1C6UylrV#
-
-* Dashboard操作教學影片
-
-https://drive.google.com/drive/u/1/folders/13AyBQ-3m_RuPOW1J2aR1yD0svUKuEFdg
+* `Dashboard操作教學影片 <https://drive.google.com/drive/u/1/folders/13AyBQ-3m_RuPOW1J2aR1yD0svUKuEFdg>`_
 
 *Field的名稱不可以包含特如符號如 . $ # & @ 等等，請使用全英文字母*
 
