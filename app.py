@@ -64,6 +64,28 @@ def render_template(*args, **argv):
                                  memo=user.memo,
                                  **argv)
 
+def render_demo_template(*args, **argv):
+    target_field = argv.get('field')
+    if not target_field: target_field = config.demo_field
+
+    sensors= []
+    f_id = g.session.query(db.models.field).filter(db.models.field.name == target_field)
+
+    if not f_id.first(): abort(404)
+    f_id = f_id.first().id
+
+    for sensor in (g.session
+                    .query(db.models.field_sensor)
+                    .filter(db.models.field_sensor.field == f_id)
+                    .order_by(db.models.field_sensor.id)
+                    .all()):
+        sensors.append(utils.row2dict(sensor))
+
+    return flast_render_template(*args,
+                                 fieldname=config.demo_field,
+                                 sensors=sensors,
+                                 **argv)
+
 
 def required_login(f):
     @wraps(f)
@@ -92,7 +114,8 @@ def required_superuser(f):
 
 @app.errorhandler(404)
 def not_found(error):
-    return 'Not Find', 404
+    return 'Not Found.', 404
+
 
 
 @app.errorhandler(500)
@@ -152,6 +175,24 @@ def favicon():
 def index():
     return render_template('dashboard.html')
 
+@app.route('/demo', methods=['GET'])
+def demo():
+    field = request.args.get('field')
+    token = request.args.get('token')
+    if field:
+        if field not in config.demo_token: abort(403)
+        if token != config.demo_token[field]: abort(403)
+    return render_demo_template('demo.html',field=field, token=token)
+
+@app.route('/set_demo_field', methods=['GET'])
+def set_demo_page():
+    field = request.args.get('demo_field')
+    record = g.session.query(db.models.field).filter(db.models.field.name == field).first()
+    if record:
+        config.demo_field = field
+        return 'ok'
+    else:
+        abort(404)
 
 @app.route('/history', methods=['GET'])
 @required_login
@@ -175,6 +216,50 @@ def profile():
 @required_superuser
 def management():
     return render_template('management.html')
+
+
+@app.route('/demodatas', methods=['GET'])
+def api_query_demo_data():
+    field = request.args.get('field')
+    token = request.args.get('token')
+    if not field: field = config.demo_field
+    elif field not in config.demo_token: abort(403)
+    elif token != config.demo_token[field]: abort(403) 
+
+    stime = datetime.now()
+
+    res = {}
+
+    start = request.args.get('start')
+    end = request.args.get('end')
+    limit = int(request.args.get('limit', config.QUERY_LIMIT))
+
+    if start and end:
+        start = parser.parse(start)
+        end = parser.parse(end)
+
+    query_df = (g.session
+                 .query(db.models.field_sensor.df_name,
+                        db.models.field_sensor.field)
+                 .select_from(db.models.field_sensor)
+                 .join(db.models.sensor)
+                 .join(db.models.field)
+                 .filter(db.models.field.name == field)
+                 .all())
+
+    for df_name, field_id in query_df:
+        tablename = df_name.replace('-O', '')
+        table = getattr(db.models, tablename)
+        query = g.session.query(table).filter(table.field == field_id)
+        if start and end:
+            query = query.filter(table.timestamp >= start, table.timestamp <= end)
+        query = query.order_by(table.timestamp.desc()).limit(limit).all()
+
+        res.update({df_name: [(str(record.timestamp), record.value) for record in query]})
+
+    etime = datetime.now()
+    print((etime - stime).total_seconds())
+    return jsonify(res)
 
 
 @app.route('/datas/<string:field>', methods=['GET'])
