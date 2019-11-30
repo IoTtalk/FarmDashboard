@@ -68,7 +68,7 @@
 
       let request_url = '';
       if ('{{field}}'=='None') request_url = '/demodatas?limit=1'; 
-      else request_url = '/demodatas?limit=1&field={{field}}&token={{token}}';
+      else request_url = '/api/demo/datas/{{field}}?limit=1&token={{token}}';
 
       function update() {
         if (!$('.active').length) {

@@ -5,8 +5,9 @@ import os
 from datetime import datetime
 from dateutil import parser
 from functools import wraps
+from importlib import reload
 
-from flask import (Flask, abort, jsonify, redirect, g, make_response,
+from flask import (Flask, abort, jsonify, redirect, g,
                    render_template as flast_render_template,
                    request, send_from_directory, session)
 from sqlalchemy import text
@@ -64,25 +65,30 @@ def render_template(*args, **argv):
                                  memo=user.memo,
                                  **argv)
 
+
 def render_demo_template(*args, **argv):
     target_field = argv.get('field')
-    if not target_field: target_field = config.demo_field
+    if not target_field:
+        abort(404)
 
-    sensors= []
-    f_id = g.session.query(db.models.field).filter(db.models.field.name == target_field)
+    field_record = (g.session
+                     .query(db.models.field)
+                     .filter(db.models.field.name == target_field)
+                     .first())
+    if not field_record:
+        abort(404)
 
-    if not f_id.first(): abort(404)
-    f_id = f_id.first().id
-
-    for sensor in (g.session
-                    .query(db.models.field_sensor)
-                    .filter(db.models.field_sensor.field == f_id)
-                    .order_by(db.models.field_sensor.id)
-                    .all()):
+    sensors = []
+    sensor_records = (g.session
+                       .query(db.models.field_sensor)
+                       .filter(db.models.field_sensor.field == field_record.id)
+                       .order_by(db.models.field_sensor.id)
+                       .all())
+    for sensor in sensor_records:
         sensors.append(utils.row2dict(sensor))
 
     return flast_render_template(*args,
-                                 fieldname=config.demo_field,
+                                 fieldname=target_field,
                                  sensors=sensors,
                                  **argv)
 
@@ -117,7 +123,6 @@ def not_found(error):
     return 'Not Found.', 404
 
 
-
 @app.errorhandler(500)
 def server_error(error):
     return 'Server error', 500
@@ -141,7 +146,8 @@ def login():
 
             return redirect(request.args.get('next', '/'))
         else:
-            return flast_render_template('login.html', msg='username or password is wrong.')
+            return flast_render_template('login.html',
+                                         msg='username or password is wrong.')
 
     if session.get('username'):
         return redirect(request.args.get('next', '/'))
@@ -175,24 +181,14 @@ def favicon():
 def index():
     return render_template('dashboard.html')
 
-@app.route('/demo', methods=['GET'])
-def demo():
-    field = request.args.get('field')
-    token = request.args.get('token')
-    if field:
-        if field not in config.demo_token: abort(403)
-        if token != config.demo_token[field]: abort(403)
-    return render_demo_template('demo.html',field=field, token=token)
 
-@app.route('/set_demo_field', methods=['GET'])
-def set_demo_page():
-    field = request.args.get('demo_field')
-    record = g.session.query(db.models.field).filter(db.models.field.name == field).first()
-    if record:
-        config.demo_field = field
-        return 'ok'
-    else:
+@app.route('/demo/<string:field>', methods=['GET'])
+def demo(field):
+    token = request.args.get('token')
+    if token != config.demo_token.get(field):
         abort(404)
+    return render_demo_template('demo.html', field=field, token=token)
+
 
 @app.route('/history', methods=['GET'])
 @required_login
@@ -218,13 +214,11 @@ def management():
     return render_template('management.html')
 
 
-@app.route('/demodatas', methods=['GET'])
-def api_query_demo_data():
-    field = request.args.get('field')
+@app.route('/api/demo/datas/<string:field>', methods=['GET'])
+def api_query_demo_data(field):
     token = request.args.get('token')
-    if not field: field = config.demo_field
-    elif field not in config.demo_token: abort(403)
-    elif token != config.demo_token[field]: abort(403) 
+    if token != config.demo_token.get(field):
+        abort(404)
 
     stime = datetime.now()
 
@@ -337,10 +331,10 @@ def api_query_field_data(field, df_name):
 
 @app.route('/api/datas', methods=['GET'])
 @required_login
-def api_query_datas():
+def api_datas():
     '''
-    :args f1: field, like `bao2`, `bao3`, etc
-    :args f2: field, like `bao2`, `bao3`, etc
+    :args f1: field, like `flower`, `orange`, etc
+    :args f2: field, like `flower`, `orange`, etc
     :args s1: sensor, like `AtPressure`, `UV1`, etc
     :args s2: sensor, like `AtPressure`, `UV1`, etc
     :args st: start_time, any time format
@@ -349,7 +343,7 @@ def api_query_datas():
     :args l: limit, query limit, default config.QUERY_LIMIT
 
     example:
-        http://farm.iottalk.tw:5000/api/datas?f1=bao2&f2=bao3&s1=Temperature&s2=AtPressure&st=2018-06-26&et=2018-06-27&i=second
+        http://your.domain/api/datas?f1=flower&f2=orange&s1=Temperature&s2=AtPressure&st=2018-06-26&et=2018-06-27&i=second
     '''
     stime = datetime.now()
 
@@ -395,7 +389,7 @@ def api_query_datas():
 @required_login
 def api_export_datas():
     '''
-    :args f: field, like `bao2`, `bao3`, etc
+    :args f: field, like `flower`, `orange`, etc
     :args s: sensor, like `AtPressure`, `UV1`, etc
     :args st: start_time, any time format
     :args et: end_time, any time format
@@ -403,7 +397,7 @@ def api_export_datas():
     :args l: limit, query limit, default config.QUERY_LIMIT
 
     example:
-        http://farm.iottalk.tw:5000/api/export_datas?f=bao2&s=Temperature&st=2018-06-26&et=2018-06-27&i=second
+        http://your.domain/api/export_datas?f=flower&s=Temperature&st=2018-06-26&et=2018-06-27&i=second
     '''
     stime = datetime.now()
 
@@ -447,7 +441,6 @@ def api_export_datas():
                                                  data['value'])
     etime = datetime.now()
     print((etime - stime).total_seconds())
-    filename = '{}_{}_{}_{}.csv'.format(field, sensor, start, end)
     return content
 
 
@@ -552,7 +545,7 @@ def api_user_change_pwd():
 @required_login
 def api_user_update_memo():
     if request.method != 'POST':
-        abort(403)
+        abort(404)
 
     user_id = session.get('id')
     if not user_id:
@@ -566,7 +559,7 @@ def api_user_update_memo():
 
 @app.route('/api/user', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @required_superuser
-def api_query_user():
+def api_user():
     if request.method == 'GET':
         # Read user
         # GET /api/user[?id=<id>&username=<username>]
@@ -613,8 +606,8 @@ def api_query_user():
         active = request.json.get('active')
 
         new_user = db.models.user(username=username,
-                               password=password,
-                               is_superuser=is_superuser)
+                                  password=password,
+                                  is_superuser=is_superuser)
         g.session.add(new_user)
         g.session.commit()
 
@@ -674,7 +667,7 @@ def api_query_user():
 
 @app.route('/api/sensor', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @required_superuser
-def api_query_sensor():
+def api_sensor():
     if request.method == 'GET':
         # Read sensor
         # GET /api/sensor
@@ -698,6 +691,7 @@ def api_query_sensor():
         g.session.add(new_sensor)
         g.session.commit()
 
+        reload(db.models)
         if not hasattr(db.models, str(df_name).replace('-O', '')):
             db.inject_new_model(df_name.replace('-O', ''))
 
@@ -732,7 +726,7 @@ def api_query_sensor():
 
 @app.route('/api/field', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @required_superuser
-def api_query_field():
+def api_field():
     if request.method == 'GET':
 
         fields = []
@@ -823,6 +817,7 @@ def api_query_field():
           .delete())
         for sensor in sensors:
             df_name = sensor.get('df_name')
+            reload(db.models)
             if df_name and not hasattr(db.models, str(df_name).replace('-O', '')):
                 db.inject_new_model(df_name.replace('-O', ''))
 
@@ -890,14 +885,17 @@ def teardown_request(exception):
 @app.after_request
 def add_header(r):
     """
+    Add no cache header.
+
     Add headers to both force latest IE rendering engine or Chrome Frame,
-    and also to cache the rendered page for 10 minutes.
+    and not cache anything.
     """
     r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     r.headers["Pragma"] = "no-cache"
     r.headers["Expires"] = "0"
     r.headers['Cache-Control'] = 'public, max-age=0'
     return r
+
 
 def main():
     app.run('0', debug=config.DEBUG, threaded=True)
