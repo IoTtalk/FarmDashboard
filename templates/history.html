@@ -4,23 +4,35 @@
 
 {% block page_content %}
 <div class="row" id="app">
-  <div class="col-sm-6 col-xs-12">
-    <select class="form-control" id="place" v-model="active_field" @change="field_change">
+  <div class="col-sm-4 col-xs-12">
+    <label for="filed">場域</label>
+    <select class="form-control" id="field" v-model="active_field" @change="field_change">
       <template v-for="field in fields">
         <option :value="field.name" >{{ '{{' }}field.alias{{ '}}' }}</option>
       </template>
     </select>
   </div>
 
-  <div class="col-sm-6 col-xs-12">
+  <div class="col-sm-4 col-xs-12">
+    <label for="sensor">感測器</label>
     <select class="form-control" id="sensor" v-model="active_sensor">
       <template v-for="sensor in active_sensors">
         <option :value="sensor.df_name">{{ '{{' }}sensor.alias{{ '}}' }}</option>
       </template>
     </select>
   </div>
-  <hr>
+
+  <div class="col-sm-4 col-xs-12">
+    <label for="range">區間</label>
+    <select class="form-control" id="interval">
+      <option value="1440">24小時</option>
+      <option value="60">1小時</option>
+      <option value="10">10分鐘</option>
+    </select>
+  </div>
+
   <div class="col-xs-12">
+    <br>
     <!-- interactive chart -->
     <div class="box box-primary">
       <div class="box-header with-border">
@@ -117,13 +129,13 @@
     return [year, month, day].join('-') + ' ' + [hour, minute, second].join(':');
   }
 
-  function getData(place, sensor, callback) {
+  function getData(field, sensor, interval, callback) {
     let d = new Date();
     et = getDate(d);
-    d.setDate(d.getDate() - 1);
+    d.setMinutes(d.getMinutes() - Number(interval));
     st = getDate(d);
     $.ajax({
-      'url': '/datas/' + place + '/' + sensor + '?limit=9999999&start=' + st + '&end=' + et,
+      'url': '/datas/' + field + '/' + sensor + '?limit=9999999&start=' + st + '&end=' + et + '&i=' + interval,
     }).done((data) => {
       if(callback && data && data[sensor]) {
         callback(data[sensor].reverse());
@@ -164,7 +176,7 @@
 
 
   function update() {
-    getData($('#place').val(), $('#sensor').val(), (data) => {
+    getData($('#field').val(), $('#sensor').val(), $('#interval').val(), (data) => {
       let res = [];
       let max = -Infinity;
       let min = Infinity;
