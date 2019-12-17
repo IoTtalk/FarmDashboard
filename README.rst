@@ -10,7 +10,7 @@ FarmDashboard
 簡易安裝說明
 ----------------------------------------------------------------------
 
-#. 安裝 MySQL >= 5.7
+#. 安裝 MySQL >= 5.7 
 #. ``sudo pip3 install -r requirements.txt`` 安裝相關需要套件
 #. 新增 MySQL 內的 user，允許連線 IP，與資料庫( `db_name` )，以及權限(詳見下方注意2)
 #. 修改 `config.py`，根據內部註解依序填上資料
@@ -51,3 +51,12 @@ FarmDashboard
     #. 記得去掉設定檔內的 ``bind 127.0.0.1``
 
 - 然後要注意一下， ``python3 db.py init`` 只能執行一次。 (只會新加入，並不會抹除舊的資料，所以執行一次以上會錯誤)
+
+
+
+*** 註 ***
+安裝mysql時，常會遇到安裝過程中，完全沒問密碼，這表示以前曾經裝過mysql，或是裝過相關套件，這時就比需要重設密碼，執行下列指令進行重設，
+
+    sudo mysqladmin -u root password
+
+Reference: https://blog.keniver.com/2016/11/reset_mysql_root_password_mysql_5-7-5_5-7-6/
