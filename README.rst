@@ -17,7 +17,7 @@ FarmDashboard
 #. 視情況修改 `db_init.json` (記得要設定 `admin` 密碼與 DB 初始 table 欄位)
 #. 執行 ``python3 db.py init``  (注意3)
 #. 安裝好 ``tmux``
-#. 執行 ``bash startup.sh``
+#. 執行 ``bash startup.sh``  (注意4)
 
 至此 Dashboard 已啟動完成，可用指令 ``tmux a`` 查看運行狀況
 (按ctrl+b 1 / ctrl+b 2切換 dashboard 主程式與 DA 查看運行狀況)。
