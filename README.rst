@@ -59,4 +59,4 @@ FarmDashboard
 
     sudo mysqladmin -u root password
 
-Reference: https://blog.keniver.com/2016/11/reset_mysql_root_password_mysql_5-7-5_5-7-6/
+Reference: https://emn178.pixnet.net/blog/post/87659567
