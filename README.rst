@@ -10,12 +10,12 @@ FarmDashboard
 簡易安裝說明
 ----------------------------------------------------------------------
 
-#. 安裝 MySQL >= 5.7 
+#. 安裝 MySQL >= 5.7 (注意0)
 #. ``sudo pip3 install -r requirements.txt`` 安裝相關需要套件
 #. 新增 MySQL 內的 user，允許連線 IP，與資料庫( `db_name` )，以及權限(詳見下方注意2)
 #. 修改 `config.py`，根據內部註解依序填上資料
 #. 視情況修改 `db_init.json` (記得要設定 `admin` 密碼與 DB 初始 table 欄位)
-#. 執行 ``python3 db.py init``
+#. 執行 ``python3 db.py init``  (注意3)
 #. 安裝好 ``tmux``
 #. 執行 ``bash startup.sh``
 
@@ -24,6 +24,16 @@ FarmDashboard
 
 注意
 ----------------------------------------------------------------------
+
+
+
+- 安裝mysql時，常會遇到安裝過程中，完全沒問密碼，這表示以前曾經裝過mysql，或是裝過相關套件，這時就比需要重設密碼，執行下列指令進行重設，
+
+    sudo mysqladmin -u root password
+
+  Reference: https://emn178.pixnet.net/blog/post/87659567
+
+
 
 - 在 Dashboard 上，只要 "新增/修改過 Field 的項目" 後，
   就要再次執行 ``bash startup.sh`` 更新 ``DA`` 狀態，
@@ -51,12 +61,8 @@ FarmDashboard
     #. 記得去掉設定檔內的 ``bind 127.0.0.1``
 
 - 然後要注意一下， ``python3 db.py init`` 只能執行一次。 (只會新加入，並不會抹除舊的資料，所以執行一次以上會錯誤)
+  在MAC上面直接使用，在運行 ``python3 db.py init`` 時可能會遇到加密錯誤的錯誤訊息，這時需要安裝套件 cryptography
 
 
 
-*** 註 ***
-安裝mysql時，常會遇到安裝過程中，完全沒問密碼，這表示以前曾經裝過mysql，或是裝過相關套件，這時就比需要重設密碼，執行下列指令進行重設，
 
-    sudo mysqladmin -u root password
-
-Reference: https://emn178.pixnet.net/blog/post/87659567
