@@ -624,12 +624,16 @@
         },
         field_create() {
           // TODO: validate data.
-          axios.post('/api/field', this.temp_field)
-               .then((data, status, request) => {
-                      this.field_reload();
-                      $('#field_modal').modal('toggle');
-               })
-               .catch((error) => {alert(error);});
+          if (!this.temp_field.name) {
+            alert('Feild name cannot empty');
+          } else {
+            axios.post('/api/field', this.temp_field)
+                 .then((data, status, request) => {
+                        this.field_reload();
+                        $('#field_modal').modal('toggle');
+                 })
+                 .catch((error) => {alert(error);});
+          }
         },
         field_modify(index) {
           // clone modify data, not alias

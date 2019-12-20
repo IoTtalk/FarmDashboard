@@ -2,6 +2,8 @@ import json
 import os
 import sys
 
+from importlib import reload
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
@@ -48,6 +50,10 @@ def clear():
 
 
 def inject_new_model(df_name):
+    reload(models)
+    if not df_name or hasattr(models, df_name):
+        return
+
     code = '''
 class {}(base):
     __tablename__ = '{}'
@@ -57,7 +63,7 @@ class {}(base):
     __table_args__ = (UniqueConstraint('field',
                                        'timestamp',
                                        name='UC_field_time'),)
-    '''.format(df_name, df_name.lower())
+'''.format(df_name, df_name.lower())
 
     with open('models.py', 'a') as f:
         f.write(code)

@@ -5,7 +5,6 @@ import os
 from datetime import datetime
 from dateutil import parser
 from functools import wraps
-from importlib import reload
 
 from flask import (Flask, abort, jsonify, redirect, g,
                    render_template as flast_render_template,
@@ -681,6 +680,8 @@ def api_sensor():
         df_name = request.json.get('df_name')
         if not df_name:
             return 'No df_name'
+        if not request.json.get('name'):
+            return 'No name'
 
         new_sensor = db.models.sensor(df_name=df_name,
                                       name=request.json.get('name'),
@@ -691,9 +692,7 @@ def api_sensor():
         g.session.add(new_sensor)
         g.session.commit()
 
-        reload(db.models)
-        if not hasattr(db.models, str(df_name).replace('-O', '')):
-            db.inject_new_model(df_name.replace('-O', ''))
+        db.inject_new_model(df_name.replace('-O', ''))
 
         return json.dumps(utils.row2dict(new_sensor))
     elif request.method == 'PUT':
@@ -773,6 +772,9 @@ def api_field():
         # Create field
         # POST /api/field
         # {name:<string>, alias:<string>, sensors: [<sensor>, ...]}
+        if not request.json.get('name'):
+            return 'No field name'
+
         new_field = db.models.field(name=request.json.get('name'),
                                     alias=request.json.get('alias'),
                                     iframe=request.json.get('iframe', ''))
@@ -817,9 +819,7 @@ def api_field():
           .delete())
         for sensor in sensors:
             df_name = sensor.get('df_name')
-            reload(db.models)
-            if df_name and not hasattr(db.models, str(df_name).replace('-O', '')):
-                db.inject_new_model(df_name.replace('-O', ''))
+            db.inject_new_model(df_name.replace('-O', ''))
 
             new_sensor = db.models.field_sensor(
                 field=id_,
