@@ -5,19 +5,19 @@ FarmDashboard
 
 * `Dashboard操作教學影片 <https://drive.google.com/drive/u/1/folders/13AyBQ-3m_RuPOW1J2aR1yD0svUKuEFdg>`_
 
-*Field的名稱不可以包含特如符號如 . $ # & @ 等等，請使用全英文字母*
+***Field的名稱不可以包含特如符號如 . $ # & @ 等等，請使用全英文字母***
 
 簡易安裝說明
 ----------------------------------------------------------------------
 
-#. 安裝 MySQL >= 5.7
+#. 安裝 MySQL >= 5.7 (注意1)
 #. ``sudo pip3 install -r requirements.txt`` 安裝相關需要套件
-#. 新增 MySQL 內的 user，允許連線 IP，與資料庫( `db_name` )，以及權限(詳見下方注意2)
+#. 新增 MySQL 內的 user，允許連線 IP，與資料庫( `db_name` )，以及權限 (詳見下方注意2)
 #. 修改 `config.py`，根據內部註解依序填上資料
 #. 視情況修改 `db_init.json` (記得要設定 `admin` 密碼與 DB 初始 table 欄位)
-#. 執行 ``python3 db.py init``
+#. 執行 ``python3 db.py init``  (注意3)
 #. 安裝好 ``tmux``
-#. 執行 ``bash startup.sh``
+#. 執行 ``bash startup.sh``  (注意4)
 
 至此 Dashboard 已啟動完成，可用指令 ``tmux a`` 查看運行狀況
 (按ctrl+b 1 / ctrl+b 2切換 dashboard 主程式與 DA 查看運行狀況)。
@@ -25,11 +25,16 @@ FarmDashboard
 注意
 ----------------------------------------------------------------------
 
-- 在 Dashboard 上，只要 "新增/修改過 Field 的項目" 後，
-  就要再次執行 ``bash startup.sh`` 更新 ``DA`` 狀態，
-  不然 IoTtalk 將無法送資料到 Dashboard 上
 
-- ``mysql+pymysql://<user>:<pass>@localhost:3306/<db_name>?charset=utf8``
+
+- ***注意1***: 安裝mysql時，常會遇到安裝過程中，完全沒問密碼，這表示以前曾經裝過mysql，或是裝過相關套件，這時就比需要重設密碼，執行下列指令進行重設，
+
+    sudo mysqladmin -u root password
+
+  Reference: https://emn178.pixnet.net/blog/post/87659567
+
+
+- ***注意2***: ``mysql+pymysql://<user>:<pass>@localhost:3306/<db_name>?charset=utf8``
   其中的 ``db_name``，就是打算要建立的資料庫名稱，
   例如要給 Dashboard 用的，就取名為 ``dashboard``，該主表名稱不是隨便亂輸入的，
   通常是在db內建立 user 時，就順道建立一同名的 table，這樣最簡單
@@ -50,4 +55,11 @@ FarmDashboard
     #. 要設定該使用者允許連線的 IP，沒去設定的話，絕對是連不上的
     #. 記得去掉設定檔內的 ``bind 127.0.0.1``
 
-- 然後要注意一下， ``python3 db.py init`` 只能執行一次。 (只會新加入，並不會抹除舊的資料，所以執行一次以上會錯誤)
+- ***注意3***: 然後要注意一下， ``python3 db.py init`` 只能執行一次。 (只會新加入，並不會抹除舊的資料，所以執行一次以上會錯誤)
+  在MAC上面直接使用，在運行 ``python3 db.py init`` 時可能會遇到加密錯誤的錯誤訊息，這時需要安裝套件 cryptography
+
+
+- ***注意4***: 在 Dashboard 上，只要 "新增/修改過 Field 的項目" 後，
+  就要再次執行 ``bash startup.sh`` 更新 ``DA`` 狀態，
+  不然 IoTtalk 將無法送資料到 Dashboard 上
+
