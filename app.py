@@ -834,6 +834,7 @@ def api_field():
             new_sensor.field = id_
             new_sensor.id = None
             g.session.add(new_sensor)
+            g.session.commit()
         g.session.commit()
 
         return 'ok'
