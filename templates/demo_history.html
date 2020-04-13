@@ -169,7 +169,7 @@
         d.setMinutes(d.getMinutes() - Number(interval));
         st = getDate(d);
         $.ajax({
-          'url': '/api/demo/datas/' + field + '/' + sensor + '?token=' + {{token}} + '&limit=9999999&start=' + st + '&end=' + et + '&i=' + interval,
+          'url': '/api/demo/datas/' + field + '/' + sensor + '?token={{token}}&limit=9999999&start=' + st + '&end=' + et + '&i=' + interval,
         }).done((data) => {
           if(callback && data && data[sensor]) {
             callback(data[sensor].reverse());
