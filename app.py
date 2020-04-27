@@ -195,6 +195,14 @@ def history():
     return render_template('history.html')
 
 
+@app.route('/demo/h/<string:field>', methods=['GET'])
+def demo_history(field):
+    token = request.args.get('token')
+    if token != config.demo_token.get(field):
+        abort(404)
+    return render_demo_template('demo_history.html', field=field, token=token)
+
+
 @app.route('/compare', methods=['GET'])
 @required_login
 def compare_():
@@ -288,6 +296,43 @@ def api_query_all_data(field):
         query = query.order_by(table.timestamp.desc()).limit(limit).all()
 
         res.update({df_name: [(str(record.timestamp), record.value) for record in query]})
+
+    etime = datetime.now()
+    print((etime - stime).total_seconds())
+    return jsonify(res)
+
+
+@app.route('/api/demo/datas/<string:field>/<string:df_name>', methods=['GET'])
+def api_query_demo_history_data(field, df_name):
+    token = request.args.get('token')
+    if token != config.demo_token.get(field):
+        abort(404)
+
+    stime = datetime.now()
+
+    tablename = df_name.replace('-O', '')
+    if not hasattr(db.models, tablename):
+        abort(404)
+    table = getattr(db.models, tablename)
+
+    start = request.args.get('start')
+    end = request.args.get('end')
+    limit = int(request.args.get('limit', config.QUERY_LIMIT))
+
+    if start and end:
+        start = parser.parse(start)
+        end = parser.parse(end)
+
+    query = (g.session
+              .query(table)
+              .select_from(table)
+              .join(db.models.field)
+              .filter(db.models.field.name == field))
+    if start and end:
+        query = query.filter(table.timestamp >= start, table.timestamp <= end)
+    query = query.order_by(table.timestamp.desc()).limit(limit).all()
+
+    res = {df_name: [(str(record.timestamp), record.value) for record in query]}
 
     etime = datetime.now()
     print((etime - stime).total_seconds())
