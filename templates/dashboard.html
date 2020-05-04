@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %} 
 
 {% macro tab_title(field) -%}
-  <li {% if field.is_active %}class="active"{% endif %} id="tab_{{field.name}}">
+  <li {% if field.is_active %}class="active"{% endif %} id="tab_{{field.name}}" onclick="load_iframe({{field.name}})">
     <a href="#{{field.name}}" data-toggle="tab">{{field.alias}}</a>
   </li>
 {%- endmacro %}
@@ -30,7 +30,7 @@
       {% endfor %}
       {% if field.iframe %}
         <div class="col-xs-12">
-          <iframe src="{{field.iframe}}" width="100%" height="1500px" frameBorder="0" loading="lazy"></iframe>
+          <iframe src="" width="100%" height="1500px" frameBorder="0" loading="lazy" data-src="{{field.iframe}}"></iframe>
         </div>
       {% endif %}
     </div>
@@ -69,6 +69,13 @@
 {% block page_script %}
   <!-- Page script -->
   <script>
+    function load_iframe(tab_content){
+      let iframe = $(tab_content).find('iframe');
+      if(!iframe.attr('src')){
+        iframe.attr('src', iframe.attr('data-src'));
+      }
+    }
+
     $(() => {
       // auto change to tab if given from url hash
       let hash = window.location.hash.replace('#', '');
