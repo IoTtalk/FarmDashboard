@@ -22,3 +22,5 @@ CSM_HOST = '8.8.8.8'
 demo_token = {
     'Field1': '65761609-0f1e-4b72-adcf-1ed092454d53',
 }
+
+TIMEOUT_STRIKETHROUGH = False

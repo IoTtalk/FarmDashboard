@@ -62,6 +62,7 @@ def render_template(*args, **argv):
                                  username=session.get('username'),
                                  is_superuser=session.get('is_superuser'),
                                  memo=user.memo,
+                                 timeout_strikethrough=config.TIMEOUT_STRIKETHROUGH,
                                  **argv)
 
 
@@ -89,6 +90,7 @@ def render_demo_template(*args, **argv):
     return flast_render_template(*args,
                                  fieldname=target_field,
                                  sensors=sensors,
+                                 timeout_strikethrough=config.TIMEOUT_STRIKETHROUGH,
                                  **argv)
 
 
