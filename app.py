@@ -9,7 +9,7 @@ from functools import wraps
 from flask import (Flask, abort, jsonify, redirect, g,
                    render_template as flast_render_template,
                    request, send_from_directory, session)
-from sqlalchemy import text
+from sqlalchemy import text, or_
 from werkzeug.security import check_password_hash, generate_password_hash
 
 import config
@@ -649,6 +649,14 @@ def api_user():
         access = request.json.get('access', [])
         active = request.json.get('active')
 
+        if not username:
+            return 'No username', 404
+
+        # duplicate check
+        user_record = g.session.query(db.models.user).filter(db.models.user.username == username).count()
+        if user_record > 0:
+            return 'The username "{}" already exists'.format(username), 404
+
         new_user = db.models.user(username=username,
                                   password=password,
                                   is_superuser=is_superuser)
@@ -672,6 +680,11 @@ def api_user():
         is_superuser = request.json.get('is_superuser')
         access = request.json.get('access', [])
         active = request.json.get('active')
+
+        # duplicate check
+        user_record = g.session.query(db.models.user).filter(db.models.user.username == username).count()
+        if user_record > 0:
+            return 'The username "{}" already exists'.format(username), 404
 
         (g.session
           .query(db.models.user)
@@ -723,10 +736,20 @@ def api_sensor():
         # {name:<string>, df_name:<string>, alias:<string>, unit:<string>,
         #  icon:<string>, bg_color:<string>}
         df_name = request.json.get('df_name')
+        name = request.json.get('name')
         if not df_name:
-            return 'No df_name'
-        if not request.json.get('name'):
-            return 'No name'
+            return 'No df_name', 404
+        if not name:
+            return 'No name', 404
+
+        # duplicate check
+        sensor_record = (g.session
+                          .query(db.models.sensor)
+                          .filter(or_(db.models.sensor.name == name,
+                                      db.models.sensor.df_name == df_name))
+                          .count())
+        if sensor_record > 0:
+            return 'The sensor name "{}" or df_name "{}" already exists'.format(name, df_name), 404
 
         new_sensor = db.models.sensor(df_name=df_name,
                                       name=request.json.get('name'),
@@ -746,6 +769,24 @@ def api_sensor():
         # {id:<int>, name:<string>, df_name:<string>, alias:<string>,
         #  unit:<string>, icon:<string>, bg_color:<string>}
         id_ = request.json.get('id')
+        df_name = request.json.get('df_name')
+        name = request.json.get('name')
+
+        if not df_name:
+            return 'No df_name', 404
+        if not name:
+            return 'No name', 404
+
+        # duplicate check
+        sensor_record = (g.session
+                          .query(db.models.sensor)
+                          .filter(or_(db.models.sensor.name == name,
+                                      db.models.sensor.df_name == df_name),
+                                  db.models.sensor.id != id_)
+                          .count())
+        if sensor_record > 0:
+            return 'The sensor name "{}" or df_name "{}" already exists'.format(name, df_name), 404
+
         (g.session
           .query(db.models.sensor)
           .filter(db.models.sensor.id == id_)
@@ -817,8 +858,14 @@ def api_field():
         # Create field
         # POST /api/field
         # {name:<string>, alias:<string>, sensors: [<sensor>, ...]}
-        if not request.json.get('name'):
-            return 'No field name'
+        name = request.json.get('name')
+        if not name:
+            return 'No field name', 404
+
+        # duplicate check
+        field_record = g.session.query(db.models.field).filter(db.models.field.name == name).count()
+        if field_record > 0:
+            return 'The field name "{}" already exists'.format(name), 404
 
         new_field = db.models.field(name=request.json.get('name'),
                                     alias=request.json.get('alias'),
@@ -851,6 +898,14 @@ def api_field():
         alias = request.json.get('alias')
         iframe = request.json.get('iframe', '')
         sensors = request.json.get('sensors', [])
+
+        if not name:
+            return 'No field name', 404
+
+        # duplicate check
+        field_record = g.session.query(db.models.field).filter(db.models.field.name == name).count()
+        if field_record > 0:
+            return 'The field name "{}" already exists'.format(name), 404
 
         (g.session
           .query(db.models.field)
