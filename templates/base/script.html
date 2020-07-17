@@ -22,3 +22,20 @@
 <!-- Vue - for data binding -->
 <script src="/static/vue/vue.js"></script>
 <script src="/static/axios/axios.min.js"></script>
+
+<script>
+  var server_timezone = {% if server_timezone %}"{{server_timezone}}"{% else %}null{% endif %};
+
+  function get_time(datetime) {
+    if (!datetime) {
+      datetime = new Date();
+    } else {
+      datetime = new Date(datetime);
+    }
+    if (server_timezone) {
+      datetime = new Date(datetime.toLocaleString("en-US", {timeZone: server_timezone}));
+    }
+
+    return datetime;
+  }
+</script>
