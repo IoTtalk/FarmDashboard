@@ -85,7 +85,12 @@
           for(key in data) {
             if(data[key][0]) {
               if(new Date(data[key][0][0].replace(/-/g, '/')) < expire_date) {
-                $('#' + field + '_' + key).html('<S>' + data[key][0][1] + '</S>');
+                {% if timeout_strikethrough %}
+                  $('#' + field + '_' + key).html('<S>' + data[key][0][1] + '</S>');
+                {% else %}
+                  $('#' + field + '_' + key).html('<Span>' + data[key][0][1] + '</Span>');
+                {% endif %}
+
                 $('#' + field + '_' + key).attr('data-original-title', 'The last data was taken at ' + data[key][0][0] + '.');
               } else {
                 $('#' + field + '_' + key).html(data[key][0][1]);
