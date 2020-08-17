@@ -684,7 +684,11 @@ def api_user():
         active = request.json.get('active')
 
         # duplicate check
-        user_record = g.session.query(db.models.user).filter(db.models.user.username == username).count()
+        user_record = (g.session
+                        .query(db.models.user)
+                        .filter(db.models.user.username == username,
+                                db.models.user.id != id_)
+                        .count())
         if user_record > 0:
             return 'The username "{}" already exists'.format(username), 404
 
@@ -905,7 +909,11 @@ def api_field():
             return 'No field name', 404
 
         # duplicate check
-        field_record = g.session.query(db.models.field).filter(db.models.field.name == name).count()
+        field_record = (g.session
+                         .query(db.models.field)
+                         .filter(db.models.field.name == name,
+                                 db.models.field.id != id_)
+                         .count())
         if field_record > 0:
             return 'The field name "{}" already exists'.format(name), 404
 
