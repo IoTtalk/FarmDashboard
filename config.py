@@ -1,3 +1,6 @@
+host = '0'
+port = None
+
 DEBUG = False
 
 # use random string for your secret key,

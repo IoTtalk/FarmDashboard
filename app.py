@@ -1009,7 +1009,7 @@ def add_header(r):
 
 
 def main():
-    app.run('0', debug=config.DEBUG, threaded=True)
+    app.run(config.host, port=config.port, debug=config.DEBUG, threaded=True)
 
 if __name__ == '__main__':
     main()
