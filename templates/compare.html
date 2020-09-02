@@ -1,12 +1,12 @@
 {% extends 'base/base.html' %} 
 
-{% block page_title %} 歷史資料查詢 {% endblock %}
+{% block page_title %} Data Compare {% endblock %}
 
 {% block page_content %}
 <div class="row" id="app">
   <!-- field 1 -->
   <div class="col-sm-6 col-xs-12">
-    <label for="field1">場域1:</label>
+    <label for="field1">Field1:</label>
     <select class="form-control" id="field1" v-model="active_field1" @change="field1_change">
       <template v-for="field in fields">
         <option :value="field.name">{{ '{{' }}field.alias{{ '}}' }}</option>
@@ -16,7 +16,7 @@
 
   <!-- sensor1 -->
   <div class="col-sm-6 col-xs-12">
-    <label for="sensor1">感測器1: </label>
+    <label for="sensor1">Sensor1: </label>
     <select class="form-control" id="sensor1">
       <template v-for="sensor in active_sensor1">
         <option :value="sensor.df_name">{{ '{{' }}sensor.alias{{ '}}' }}</option>
@@ -26,7 +26,7 @@
 
   <!-- field 2 -->
   <div class="col-sm-6 col-xs-12">
-    <label for="field2">場域2: </label>
+    <label for="field2">Field2: </label>
     <select class="form-control" id="field2" v-model="active_field2" @change="field2_change">
       <option value="">無</option>
       <template v-for="field in fields">
@@ -37,7 +37,7 @@
 
   <!-- sensor2 -->
   <div class="col-sm-6 col-xs-12">
-    <label for="sensor2">感測器2: </label>
+    <label for="sensor2">Sensor2: </label>
     <select class="form-control" id="sensor2">
       <template v-for="sensor in active_sensor2">
         <option :value="sensor.df_name">{{ '{{' }}sensor.alias{{ '}}' }}</option>
@@ -47,7 +47,7 @@
 
   <!-- start time -->
   <div class="col-sm-4 col-xs-12">
-    <label for="start-time">開始時間: </label>
+    <label for="start-time">StartTime: </label>
     <div class="input-group date">
       <div class="input-group-addon">
         <i class="fa fa-calendar"></i>
@@ -58,7 +58,7 @@
 
   <!-- end time -->
   <div class="col-sm-4 col-xs-12">
-    <label for="end-time">結束時間: </label>
+    <label for="end-time">EndTime: </label>
     <div class="input-group date">
       <div class="input-group-addon">
         <i class="fa fa-calendar"></i>
@@ -71,17 +71,17 @@
   <div class="col-sm-4 col-xs-12">
     <label for="interval">Interval:</label>
     <select class="form-control" id="interval">
-      <option value="second">秒</option>
-      <option value="minute">分</option>
-      <option value="hour" selected>小時</option>
-      <option value="day">天</option>
+      <option value="second">Second</option>
+      <option value="minute">Minute</option>
+      <option value="hour" selected>Hour</option>
+      <option value="day">Day</option>
     </select>
   </div>
   <div class="col-sm-12 col-xs-12">
     <br>
-    <input type="button" onclick="update();" value="查詢" />
-    <input type="button" onclick="download_field1();" value="場域1下載" />
-    <input type="button" onclick="download_field2();" value="場域2下載" />
+    <input type="button" onclick="update();" value="Query" />
+    <input type="button" onclick="download_field1();" value="Field1 Download" />
+    <input type="button" onclick="download_field2();" value="Field2 Download" />
   </div>
   <div class="col-xs-12">
     <!-- interactive chart -->
@@ -90,7 +90,7 @@
       <div class="box-header with-border">
         <i class="fa fa-bar-chart-o"></i>
 
-        <h3 class="box-title">歷史圖表</h3>
+        <h3 class="box-title">History Histogram</h3>
 
         <div class="box-tools pull-right">
           <!--
