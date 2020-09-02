@@ -65,6 +65,9 @@ class CSMAPI():
         )
 
         response.close()
+        if response.status_code == 502:
+            print('Error 502: Cannot connect to CSM, will register again later.')
+            return []
         if response.status_code != 200:
             raise CSMError(response.text)
 
@@ -116,6 +119,9 @@ class CSMAPI():
         )
 
         response.close()
+        if response.status_code == 502:
+            print('Error 502: Cannot connect to CSM. pull() pass.')
+            return []
         if response.status_code != 200:
             raise CSMError(response.text)
 
