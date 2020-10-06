@@ -9,6 +9,7 @@ from functools import wraps
 from flask import (Flask, abort, jsonify, redirect, g,
                    render_template as flast_render_template,
                    request, send_from_directory, session)
+from flask_wtf.csrf import CSRFProtect
 from sqlalchemy import text, or_
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -18,6 +19,9 @@ import utils
 
 app = Flask(__name__)
 app.secret_key = config.FLASK_SECRET_KEY
+
+csrf = CSRFProtect(app)
+
 db.connect()
 
 

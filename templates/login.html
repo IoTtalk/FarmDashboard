@@ -9,6 +9,7 @@
     <p class="login-box-msg">Sign in to start your session</p>
 
     <form method="post">
+      <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
       <div class="form-group has-feedback">
         <input name="username" type="username" class="form-control" placeholder="Username" style="border-radius: 17px;">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
