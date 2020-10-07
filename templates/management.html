@@ -432,10 +432,8 @@
 
 
 {% block page_script %}
-<!-- CDNJS :: Sortable (https://cdnjs.com/) -->
-<script src="/static/vue/Sortable.min.js"></script>
-<!-- CDNJS :: Vue.Draggable (https://cdnjs.com/) -->
-<script src="/static/vue/vuedraggable.min.js"></script>
+<script src="{{url_for('static', filename='js/vue/Sortable.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/vue/vuedraggable.min.js')}}"></script>
 <script>
   var app = null;
 
