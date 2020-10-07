@@ -19,6 +19,7 @@ import utils
 
 app = Flask(__name__)
 app.secret_key = config.FLASK_SECRET_KEY
+app.config['SESSION_COOKIE_SECURE'] = True
 
 csrf = CSRFProtect(app)
 
@@ -1005,10 +1006,9 @@ def add_header(r):
     Add headers to both force latest IE rendering engine or Chrome Frame,
     and not cache anything.
     """
-    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0, private"
     r.headers["Pragma"] = "no-cache"
     r.headers["Expires"] = "0"
-    r.headers['Cache-Control'] = 'public, max-age=0'
     return r
 
 
