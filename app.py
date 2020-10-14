@@ -1,6 +1,7 @@
 import inspect
 import json
 import os
+import re
 
 from datetime import datetime
 from dateutil import parser
@@ -123,6 +124,13 @@ def required_superuser(f):
             return redirect('/login?next=' + next_url)
     return decorated_function
 
+def security_redirect():
+    next_url = request.args.get('next', '/')
+    if re.search(config.REDIRECT_REGEX, next_url, re.IGNORECASE):
+        return redirect(next_url)
+    else:
+        return redirect('/')
+
 
 @app.errorhandler(404)
 def not_found(error):
@@ -150,13 +158,13 @@ def login():
             session['id'] = user.id
             session['is_superuser'] = user.is_superuser
 
-            return redirect(request.args.get('next', '/'))
+            return security_redirect()
         else:
             return flast_render_template('login.html',
                                          msg='username or password is wrong.')
 
     if session.get('username'):
-        return redirect(request.args.get('next', '/'))
+        return security_redirect()
 
     return flast_render_template('login.html')
 
