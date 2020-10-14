@@ -30,4 +30,4 @@ TIMEOUT_STRIKETHROUGH = False
 
 # For login redirect url path check, avoid Open Redirect (ref: CWE-601)
 # Allow pattern: http[s]://*.iottalk.tw/* or /*
-REDIRECT_REGEX = r"^http[s]?:\/\/[\w.-]*iottalk[2]?\.tw\/|^\/"i
+REDIRECT_REGEX = r"^http[s]?:\/\/[\w.-]*iottalk[2]?\.tw\/|^\/"
