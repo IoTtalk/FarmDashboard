@@ -120,14 +120,16 @@
                   <div class="form-group">
                     <label for="user-username" class="col-sm-2 control-label">username</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="user-username" placeholder="username" v-model="temp_user.username" required>
+                      <input type="text" class="form-control" id="user-username" placeholder="username" v-model="temp_user.username" @blur="handle_blur_event" required>
+                      <span class="text-danger" v-if="invalid_username">{{ '{{' }}username_error_msg{{ '}}' }}</span>
                     </div>
                   </div>
                   <!-- user.password -->
                   <div class="form-group" v-if="temp_user.id === ''">
                     <label for="user-password" class="col-sm-2 control-label">password</label>
                     <div class="col-sm-10">
-                      <input type="password" class="form-control" id="user-password" placeholder="password" v-model="temp_user.password" required>
+                      <input type="password" class="form-control" id="user-password" placeholder="password" @input="validate_password" @blur="handle_blur_event" v-model="temp_user.password" required>
+                      <span class="text-danger" v-if="invalid_password">{{ '{{' }}password_error_msg{{ '}}' }}</span>
                     </div>
                   </div>
                   <!-- user.is_superuser -->
@@ -170,7 +172,7 @@
                   <button type="button" class="btn btn-danger" @click="user_delete" v-if="temp_user.id !== ''">DELETE</button>
                   <button type="button" class="btn btn-primary" @click="user_update" v-if="temp_user.id !== ''">Update</button>
                   <button type="button" class="btn btn-success" @click="user_create" v-if="temp_user.id === ''">Create</button>
-                  <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#user_modal">Close</button>
+                  <button type="button" class="btn btn-default" @click="close_modal" data-dismiss="modal" data-target="#user_modal">Close</button>
                 </div>
               </form>
               <!-- /form -->
@@ -467,8 +469,12 @@
       components:{fieldSensorTable: fieldSensorTable},
       el: '#app',
       data: () => {
-        
         return {
+          invalid_password: false,
+          invalid_username: false,
+          csrf_token: "{{ csrf_token() }}",
+          password_error_msg: '',
+          username_error_msg: '',
           users: [],
           sensors: [],
           fields: [],
@@ -523,8 +529,11 @@
           $('#user_modal').modal('toggle');
         },
         user_create() {
-          // TODO: validate data.
-          axios.post('/api/user', this.temp_user)
+          if ( !this.validate_username() || !this.validate_password() ) {
+            return;
+          }
+          axios.post('/api/user', this.temp_user,
+                     {'headers': {'X-CSRFToken': this.csrf_token, }, })
                .then((data, status, request) => {
                       this.user_reload();
                       $('#user_modal').modal('toggle');
@@ -552,6 +561,47 @@
                       $('#user_modal').modal('toggle');
                })
                .catch((error) => {alert(error);});
+        },
+        validate_username() {
+          if ( !this.temp_user.username.length ) {
+            this.invalid_username = true;
+            this.username_error_msg = 'Username can not be empty';
+            return false;
+          }
+
+          this.invalid_username = false;
+          this.username_error_msg = '';
+
+          return true;
+        },
+        validate_password() {
+          if ( !this.validate_password_length(this.temp_user.password) ) {
+            this.invalid_password = true;
+            this.password_error_msg = 'Password length must be greater than or equal to 6';
+
+            return false;
+          } else if ( !this.validate_password_combination(this.temp_user.password) ) {
+            this.invalid_password = true;
+            this.password_error_msg = 'Password must contain at least three of them: Uppercase letters, \
+                                       Lowercase letters, numbers and special symbols';
+
+            return false;
+          }
+
+          this.invalid_password = false;
+          this.password_error_msg = '';
+
+          return true;
+        },
+        handle_blur_event() {
+          if ( !this.temp_user.username ) {
+            this.invalid_username = true;
+            this.username_error_msg = 'Please enter your username';
+          }
+          if ( !this.temp_user.password ) {
+            this.invalid_password = true;
+            this.password_error_msg = 'Please enter your new password';
+          }
         },
 
         // -- SENSOR --
@@ -666,7 +716,38 @@
         },
         field_sensor_remove(index) {
           this.temp_field.sensors.splice(index, 1);
-        }
+        },
+        validate_password_length(password) {
+          return (password.length >= 6);
+        },
+        validate_password_combination(password) {
+          const regex_array = [
+            /[^!"#\$%&'\(\)\*\+,-\.\/:;<=>\?@\[\\\]\^_`{\|}~]*[!"#\$%&'\(\)\*\+,-\.\/:;<=>\?@\[\\\]\^_`{\|}~]/,
+            /(?=[^A-Z]*[A-Z])/,
+            /(?=[^a-z]*[a-z])/,
+            /(?=[^\d]*[\d])/,
+          ];
+          let counter = 0;
+
+          for ( const re of regex_array ) {
+            if ( !re.test(password) ) {
+              continue;
+            }
+            ++counter;
+          }
+
+          if ( counter < 3 ) {
+            return false;
+          }
+
+          return true;
+        },
+        close_modal() {
+          this.username_error_msg = '';
+          this.password_error_msg = '';
+          this.invalid_password = false;
+          this.invalid_username = false;
+        },
       }
     });
 

@@ -585,6 +585,13 @@ def api_user_change_pwd():
 
     if not new_password:
         return 'new password should be given.', 404
+    elif old_password == new_password:
+        return 'New password can not be identical to the original one', 404
+    elif len(new_password) < 6:
+        return 'Password length must be greater than or equal to 6', 404
+    elif not utils.validate_password_combination(new_password):
+        return 'Password must contain at least three of them: Uppercase letters, ' \
+               'Lowercase letters, numbers and special symbols', 404
 
     user = g.session.query(db.models.user).filter(db.models.user.id == user_id).first()
 
@@ -659,18 +666,25 @@ def api_user():
         # POST /api/user
         # {username:<username>, password:<password>, is_superuser:<is_superuser>}
         username = request.json.get('username')
-        password = generate_password_hash(request.json.get('password'))
+        password = request.json.get('password', '')
         is_superuser = request.json.get('is_superuser')
         access = request.json.get('access', [])
         active = request.json.get('active')
 
         if not username:
             return 'No username', 404
+        elif len(password) < 6:
+            return 'Password length must be greater or equal to 6', 404
+        elif not utils.validate_password_combination(password):
+            return 'Password must contain at least three of them: Uppercase letters, ' \
+                   'Lowercase letters, numbers and special symbols', 404
 
         # duplicate check
         user_record = g.session.query(db.models.user).filter(db.models.user.username == username).count()
         if user_record > 0:
             return 'The username "{}" already exists'.format(username), 404
+
+        password = generate_password_hash(password)
 
         new_user = db.models.user(username=username,
                                   password=password,
