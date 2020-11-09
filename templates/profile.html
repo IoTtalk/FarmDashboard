@@ -11,25 +11,31 @@
       </div>
       <!-- form start -->
       <form role="form">
-        <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+        <input id="csrf-token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
         <div class="box-body">
           <div class="form-group">
             <label for="oldpwd">Old Password</label>
             <input type="password" class="form-control" id="oldpwd" placeholder="Old Password" required>
-	      </div>
+            <span id="oldpwd-warning" class="text-danger"></span>
+          </div>
           <div class="form-group">
-	        <label for="newpwd">New Password</label>
-	        <input type="password" class="form-control" id="newpwd" placeholder="New Password" required>
-	      </div>
+            <label for="newpwd">
+              New Password (Must contain at least three of them: Uppercase letters,
+               Lowercase letters, numbers and special symbols)
+            </label>
+            <input type="password" class="form-control" id="newpwd" placeholder="New Password" required>
+            <span id="newpwd-warning" class="text-danger"></span>
+          </div>
           <div class="form-group">
-	        <label for="repnewpwd">Repeat New Password</label>
-	        <input type="password" class="form-control" id="repnewpwd" placeholder="Repeat New Password" required>
-	      </div>
+            <label for="repnewpwd">Repeat New Password</label>
+            <input type="password" class="form-control" id="repnewpwd" placeholder="Repeat New Password" required>
+            <span id="repnewpwd-warning" class="text-danger"></span>
+          </div>
         </div>
         <!-- /.box-body -->
 
         <div class="box-footer">
-          <button class="btn btn-primary" onclick="mysubmit()">Submit</button>
+          <button type="button" class="btn btn-primary" onclick="mysubmit()">Submit</button>
         </div>
       </form>
     </div>
@@ -41,35 +47,6 @@
 
 {% block page_script %}
 <!-- Page script -->
-<script>
-  function validate() {
-    if ($('#newpwd').val() != $('#repnewpwd').val()) {
-      $('#repnewpwd')[0].setCustomValidity("Passwords Don't Match");
-      return false;
-    } else {
-      $('#repnewpwd')[0].setCustomValidity("");
-      return true;
-    }
-  }
-
-  function mysubmit() {
-    if (!validate()) {
-      return;
-    }
-
-    axios.post('/api/user/pwd',
-               {'old_password': $('#oldpwd').val(),
-                'new_password': $('#newpwd').val()})
-         .then((data, status, request) => {
-           alert('Password changed');
-           location.reload();
-         })
-         .catch((error) => {alert(error.response.data);});
-  }
-
-  $(()=>{
-    $('#newpwd').keyup(validate);
-    $('#repnewpwd').keyup(validate);
-  })
-</script>
+<script src="{{url_for('static', filename='js/password/password.js')}}"></script>
+<script src="{{url_for('static', filename='js/profile/profile.js')}}"></script>
 {% endblock %}

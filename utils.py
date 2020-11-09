@@ -1,4 +1,14 @@
 import datetime
+import re
+
+
+password_patterns = [re.compile(pattern)
+                     for pattern in [
+                         r'^(?=[^!\"#\$%&\'\(\)\*\+,-\.\/:;<=>\?@\[\\\]\^_`\{\|\}~]*'
+                         r'[!\"#\$%&\'\(\)\*\+,-\.\/:;<=>\?@\[\\\]\^_`\{\|\}~])',
+                         r'^(?=[^A-Z]*[A-Z])',
+                         r'^(?=[^a-z]*[a-z])',
+                         r'^(?=[^\d]*[\d])', ]]
 
 
 def row2dict(row, str_datetime=True):
@@ -18,3 +28,15 @@ def row2dict(row, str_datetime=True):
             if str_datetime and isinstance(d[column_name], datetime.datetime):
                 d[column_name] = str(d[column_name])
     return d
+
+
+def validate_password_combination(password: str) -> bool:
+    counter = 0
+
+    for password_pattern in password_patterns:
+        if not password_pattern.match(password):
+            continue
+
+        counter = counter + 1
+
+    return counter >= 3
