@@ -607,6 +607,35 @@ def api_user_change_pwd():
     return 'ok'
 
 
+@app.route('/api/user/delete', methods=['POST'])
+@required_login
+def api_user_delete_account():
+    user_id = session.get('id')
+    username = request.json.get('username')
+    password = request.json.get('password')
+
+    if not password:
+        return 'Password should be given.', 404
+
+    user = g.session.query(db.models.user).filter(db.models.user.id == user_id).first()
+
+    if not user:
+        return 'Who are you?', 404
+
+    if user.username != username:
+        return 'username not match', 404
+
+    if not check_password_hash(user.password, password):
+        return 'Passwrod not match.', 404
+
+    g.session.query(db.models.user_access).filter(db.models.user_access.user == user_id).delete()
+    g.session.query(db.models.user).filter(db.models.user.id == user_id).delete()
+    g.session.commit()
+
+    logout()
+    return 'ok'
+
+
 @app.route('/api/user/memo', methods=['POST'])
 @required_login
 def api_user_update_memo():

@@ -9,10 +9,10 @@
       <div class="box-header with-border">
         <h3 class="box-title">修改密碼</h3>
       </div>
-      <!-- form start -->
-      <form role="form">
-        <input id="csrf-token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
-        <div class="box-body">
+
+      <div class="box-body">
+        <form role="form">
+          <input id="csrf-token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
           <div class="form-group">
             <label for="oldpwd">Old Password</label>
             <input type="password" class="form-control" id="oldpwd" placeholder="Old Password" required>
@@ -31,16 +31,75 @@
             <input type="password" class="form-control" id="repnewpwd" placeholder="Repeat New Password" required>
             <span id="repnewpwd-warning" class="text-danger"></span>
           </div>
-        </div>
-        <!-- /.box-body -->
+        </form>
+      </div><!-- /.box-body -->
 
-        <div class="box-footer">
-          <button type="button" class="btn btn-primary" onclick="mysubmit()">Submit</button>
-        </div>
-      </form>
+      <div class="box-footer">
+        <button type="button" class="btn btn-primary" onclick="mysubmit()">Submit</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 col-xs-0"></div>
+
+  <div class="col-sm-6 col-xs-12 col-sm-offset-3">
+    <div class="box box-danger">
+      <div class="box-header with-border">
+        <h3 class="box-title">刪除帳號</h3>
+      </div>
+      <div class="box-body">
+        <b>Once you delete an account, there is no going back. Please be certain.</b>
+      </div>
+
+      <div class="box-footer">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-account">Delete</button>
+      </div>
     </div>
   </div>
   <!-- /.col -->
+
+  <!-- modal -->
+  <div class="modal fade" id="modal-delete-account">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span></button>
+          <h4 class="modal-title">Are you absolutely sure?</h4>
+        </div>
+        <div class="modal-body">
+          <p>This action <b>cannot</b> be undone. This will permanently delete the <b>{{username}}</b> account and remove all related information.</p>
+
+          <p>After deleting this account, you will not be able to log in and use our services again.
+          <br>
+          If you have any questions, please contact our staff.</p>
+
+          <p>Please type username and password to confirm.</p>
+
+          <form role="form">
+            <input type="hidden" id="username" value="{{username}}"/>
+            <div class="form-group">
+              <label for="delacc">Username</label>
+              <input type="text" class="form-control" id="delacc" placeholder="Username" required>
+              <span id="delacc-warning" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="delpwd">Password</label>
+              <input type="password" class="form-control" id="delpwd" placeholder="Password" required>
+              <span id="delpwd-warning" class="text-danger"></span>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button id="delbtn" type="button" class="btn btn-danger disabled" onclick="mydelete()">I under stand the consequences, delete this account.</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
 </div>
 
 {% endblock %}

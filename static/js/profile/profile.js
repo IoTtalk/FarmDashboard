@@ -1,3 +1,4 @@
+// -------------- Change Password --------------
 function validateNewPassword() {
   validationResult = validatePassword($('#newpwd').val(), $('#oldpwd').val());
 
@@ -73,6 +74,7 @@ function mysubmit() {
        });
 }
 
+
 $(()=>{
   $('#oldpwd').bind('input', validateOriginalPassword);
   $('#oldpwd').bind('blur', validateOriginalPassword);
@@ -80,4 +82,51 @@ $(()=>{
   $('#newpwd').bind('blur', handleNewPasswordBlurEvent);
   $('#repnewpwd').bind('input', validateRepeatedNewPassword);
   $('#repnewpwd').bind('blur', handleRepeatedNewPasswordBlurEvent);
+});
+
+// -------------- Delete Account --------------
+function validateDeleteAccount() {
+  if ( $('#username').val() != $('#delacc').val()) {
+    $('#delacc-warning').text('The account name does not match.');
+    $('#delbtn').addClass('disabled');
+    return false;
+  } else {
+    $('#delacc-warning').text('');
+  }
+
+  if (!$('#delpwd').val() ) {
+    $('#delpwd-warning').text('Please enter your password.');
+    $('#delbtn').addClass('disabled');
+    return false;
+  } else {
+    $('#delpwd-warning').text('');
+  }
+
+  $('#delbtn').removeClass('disabled');
+  return true;
+}
+
+function mydelete() {
+  if($('#delbtn').hasClass('disabled')) {
+    return;
+  }
+
+  axios.post('/api/user/delete',
+             {'username': $('#delacc').val(),
+              'password': $('#delpwd').val()},
+             {'headers': {'X-CSRFToken': $('#csrf-token').val(), }, })
+       .then(() => {
+         alert('The account has been deleted.');
+         location.reload();
+       })
+       .catch((error) => {
+         alert(error.response.data);
+       });
+}
+
+$(()=>{
+  $('#delacc').bind('input', validateDeleteAccount);
+  $('#delacc').bind('blur', validateDeleteAccount);
+  $('#delpwd').bind('input', validateDeleteAccount);
+  $('#delpwd').bind('blur', validateDeleteAccount);
 });
