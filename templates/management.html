@@ -547,7 +547,8 @@
         },
         user_update() {
           // TODO: validate data.
-          axios.put('/api/user', this.temp_user)
+          axios.put('/api/user', this.temp_user,
+                    {'headers': {'X-CSRFToken': this.csrf_token, }, })
                .then((data, status, request) => {
                       this.user_reload();
                       $('#user_modal').modal('toggle');
@@ -555,7 +556,8 @@
                .catch((error) => {alert(error);});
         },
         user_delete() {
-          axios.delete('/api/user?id=' + this.temp_user.id)
+          axios.delete('/api/user?id=' + this.temp_user.id,
+                       {'headers': {'X-CSRFToken': this.csrf_token, }, })
                .then((data, status, request) => {
                       this.user_reload();
                       $('#user_modal').modal('toggle');
@@ -624,7 +626,8 @@
         },
         sensor_create() {
           // TODO: validate data.
-          axios.post('/api/sensor', this.temp_sensor)
+          axios.post('/api/sensor', this.temp_sensor,
+                     {'headers': {'X-CSRFToken': this.csrf_token, }, })
                .then((data, status, request) => {
                       this.sensor_reload();
                       $('#sensor_modal').modal('toggle');
@@ -638,7 +641,8 @@
         },
         sensor_update() {
           // TODO: validate data.
-          axios.put('/api/sensor', this.temp_sensor)
+          axios.put('/api/sensor', this.temp_sensor,
+                    {'headers': {'X-CSRFToken': this.csrf_token, }, })
                .then((data, status, request) => {
                       this.sensor_reload();
                       $('#sensor_modal').modal('toggle');
@@ -646,7 +650,8 @@
                .catch((error) => {alert(error);});
         },
         sensor_delete() {
-          axios.delete('/api/sensor?id=' + this.temp_sensor.id)
+          axios.delete('/api/sensor?id=' + this.temp_sensor.id,
+                       {'headers': {'X-CSRFToken': this.csrf_token, }, })
                .then((data, status, request) => {
                       this.sensor_reload();
                       $('#sensor_modal').modal('toggle');
@@ -675,7 +680,8 @@
           if (!this.temp_field.name) {
             alert('Feild name cannot empty');
           } else {
-            axios.post('/api/field', this.temp_field)
+            axios.post('/api/field', this.temp_field,
+                       {'headers': {'X-CSRFToken': this.csrf_token, }, })
                  .then((data, status, request) => {
                         this.field_reload();
                         $('#field_modal').modal('toggle');
@@ -690,7 +696,8 @@
         },
         field_update() {
           // TODO: validate data.
-          axios.put('/api/field', this.temp_field)
+          axios.put('/api/field', this.temp_field,
+                    {'headers': {'X-CSRFToken': this.csrf_token, }, })
                .then((data, status, request) => {
                       this.field_reload();
                       $('#field_modal').modal('toggle');
@@ -699,7 +706,8 @@
         },
         field_delete() {
           if (confirm("DB內相關資料也將刪除，確定嗎?")) {
-            axios.delete('/api/field?id=' + this.temp_field.id)
+            axios.delete('/api/field?id=' + this.temp_field.id,
+                         {'headers': {'X-CSRFToken': this.csrf_token, }, })
                  .then((data, status, request) => {
                         this.field_reload();
                         $('#field_modal').modal('toggle');
