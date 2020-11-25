@@ -20,7 +20,7 @@ import utils
 
 app = Flask(__name__)
 app.secret_key = config.FLASK_SECRET_KEY
-app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_SECURE'] = config.SESSION_COOKIE_SECURE
 
 csrf = CSRFProtect(app)
 
