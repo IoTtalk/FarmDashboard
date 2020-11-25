@@ -1,5 +1,6 @@
 import inspect
 import json
+import logging
 import os
 import re
 
@@ -17,6 +18,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import config
 import db
 import utils
+
+log = logging.getLogger("\033[1;35m[WEB]: \033[0m")
 
 app = Flask(__name__)
 app.secret_key = config.FLASK_SECRET_KEY
@@ -274,7 +277,7 @@ def api_query_demo_data(field):
         res.update({df_name: [(str(record.timestamp), record.value) for record in query]})
 
     etime = datetime.now()
-    print((etime - stime).total_seconds())
+    log.debug((etime - stime).total_seconds())
     return jsonify(res)
 
 
@@ -313,7 +316,7 @@ def api_query_all_data(field):
         res.update({df_name: [(str(record.timestamp), record.value) for record in query]})
 
     etime = datetime.now()
-    print((etime - stime).total_seconds())
+    log.debug((etime - stime).total_seconds())
     return jsonify(res)
 
 
@@ -350,7 +353,7 @@ def api_query_demo_history_data(field, df_name):
     res = {df_name: [(str(record.timestamp), record.value) for record in query]}
 
     etime = datetime.now()
-    print((etime - stime).total_seconds())
+    log.debug((etime - stime).total_seconds())
     return jsonify(res)
 
 
@@ -384,7 +387,7 @@ def api_query_field_data(field, df_name):
     res = {df_name: [(str(record.timestamp), record.value) for record in query]}
 
     etime = datetime.now()
-    print((etime - stime).total_seconds())
+    log.debug((etime - stime).total_seconds())
     return jsonify(res)
 
 
@@ -440,7 +443,7 @@ def api_datas():
         result[sensor2].update({field2: data2})
 
     etime = datetime.now()
-    print((etime - stime).total_seconds())
+    log.debug((etime - stime).total_seconds())
     return jsonify(result)
 
 
@@ -499,7 +502,7 @@ def api_export_datas():
             content += '{} 00:00:00,{}\n'.format(data['date'],
                                                  data['value'])
     etime = datetime.now()
-    print((etime - stime).total_seconds())
+    log.debug((etime - stime).total_seconds())
     return content
 
 
@@ -954,7 +957,6 @@ def api_field():
         # Update field
         # PUT /api/field
         # {name:<string>, alias:<string>, sensors: [<sensor>, ...]}
-        print(request.json)
         id_ = request.json.get('id')
         name = request.json.get('name')
         alias = request.json.get('alias')
