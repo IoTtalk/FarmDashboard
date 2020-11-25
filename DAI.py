@@ -4,7 +4,7 @@ from threading import Thread
 
 import db
 
-from DAN import DAN
+from DAN import DAN, log
 from config import CSM_HOST as host
 
 
@@ -18,13 +18,13 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
             for df in dan.selected_DF:
                 data = dan.pull_with_timestamp(df)
                 if data:
-                    print(field, df, data)
+                    log.debug(field, df, data)
                     timestamp = data[0]
 
                     try:
                         value = float(data[1][0])
                     except Exception as e:
-                        print(e, ', ignore this data.')
+                        log.warning(e, ', ignore this data.')
                         continue
 
                     new_model = getattr(db.models, df.replace('-O', ''))(timestamp=timestamp, field=field_id, value=value)
@@ -39,15 +39,15 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
                             dan.push('Alert-I', '{} {}'.format(df, value))
             time.sleep(20)
         except KeyboardInterrupt:
-            print(field, ': exit')
+            log.info(field, ': exit')
             break
         except Exception as e:
-            print('[ERROR]:', e)
+            log.error('[ERROR]:', e)
             if str(e).find('mac_addr not found:') != -1:
-                print('Reg_addr is not found. Try to re-register...')
+                log.error('Reg_addr is not found. Try to re-register...')
                 dan.device_registration_with_retry(profile, host, reg_addr)
             else:
-                print('Connection failed due to unknow reasons.')
+                log.error('Connection failed due to unknow reasons.')
                 time.sleep(1)
         finally:
             session.close()

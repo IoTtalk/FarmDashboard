@@ -1,8 +1,12 @@
+import logging
 import random
 import threading
 import time
 
 from csmapi import CSMAPI
+
+log = logging.getLogger("\033[1;35m[DA]: \033[0m")
+
 # example
 """
 profile = {
@@ -13,6 +17,7 @@ profile = {
     'df_list': ['Acceleration', 'Temperature'],
 }
 """
+
 
 class DANError(Exception):
     pass
@@ -72,7 +77,7 @@ class DAN():
                             self.selected_DF.add(self.profile['df_list'][index])
 
             except Exception as e:
-                print ('Control error', e)
+                log.error(self.profile['d_name'] + ': Control error', e)
 
     def detect_local_server(self):
         import socket
@@ -84,7 +89,7 @@ class DAN():
         s.bind((udp_ip, udp_port))
 
         while True:
-            print ('Searching for the IoTtalk server...')
+            log.info(self.profile['d_name'] + ': Searching for the IoTtalk server...')
             data, addr = s.recvfrom(1024)
             if str(data.decode()) == 'easyconnect':
                 self.csmapi.host = 'http://{}:9999'.format(addr[0])
@@ -137,14 +142,13 @@ class DAN():
         if not self.profile.get('df_list'):
             raise DANError('df_list should be given in profile.')
 
-        print('IoTtalk Server = {}'.format(self.csmapi.host))
+        log.info(self.profile['d_name'] + ': IoTtalk Server = {}'.format(self.csmapi.host))
         if self.csmapi.register(self.mac_addr, self.profile):
-            print ('This device has successfully registered.')
-            print ('Device name = ' + self.profile['d_name'])
+            log.info(self.profile['d_name'] + ': Device has successfully registered.')
 
             '''
             if self.control_channel_thread is None:
-                print ('Create control threading')
+                log.info(self.profile['d_name'] + ': Create control threading')
                 # for control channel
                 self.control_channel_thread = threading.Thread(target=self.control_channel)
                 self.control_channel_thread.daemon = True
@@ -152,7 +156,7 @@ class DAN():
             '''
             return True
         else:
-            print ('Registration failed.')
+            log.warning(self.profile['d_name'] + ': Registration failed.')
             return False
 
     def device_registration_with_retry(self, profile=None, host=None, mac_addr=None):
@@ -163,8 +167,8 @@ class DAN():
                     break
             except Exception as e:
                 # TODO: check error
-                print ('Attach failed: '),
-                print (e)
+                log.error(self.profile['d_name'] + ': Attach failed: '),
+                log.error(e)
             time.sleep(1)
 
     def pull(self, df_name):
