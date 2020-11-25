@@ -33,3 +33,5 @@ TIMEOUT_STRIKETHROUGH = False
 REDIRECT_REGEX = r"^http[s]?:\/\/[\w.-]*iottalk[2]?\.tw\/|^\/"
 
 SESSION_COOKIE_SECURE = True
+
+RESTART_SERVER_PORT = 5001

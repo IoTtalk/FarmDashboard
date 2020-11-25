@@ -430,6 +430,11 @@
       <!-- /FIELD -->
     </div>
   </div>
+
+  <div>
+    <button id="restart_server" class="btn btn-danger">Restart Server</button>
+    <button id="restart_da" class="btn btn-danger">Restart DA</button>
+  </div>
 {% endblock %}
 
 
@@ -440,6 +445,21 @@
   var app = null;
 
   $(() => {
+    $('#restart_server').on('click', ()=>{
+      axios.get('/admin/restart_server/')
+           .then(response => {alert('The restart was successful.');})
+           .catch(error => {
+             alert("The server will restart... if it doesn't recover after a few minutes, please contact the administrator");
+             location.reload()
+           });
+    });
+
+    $('#restart_da').on('click', ()=>{
+      axios.get('/admin/restart_da/')
+           .then(response => {alert('The restart was successful.');})
+           .catch(error => {alert(error);});
+    });
+
     var fieldSensorTable = {
       template: '#field-sensor-table-template',
       props: {

@@ -8,6 +8,8 @@ from datetime import datetime
 from dateutil import parser
 from functools import wraps
 
+import requests
+
 from flask import (Flask, abort, jsonify, redirect, g,
                    render_template as flast_render_template,
                    request, send_from_directory, session)
@@ -1035,7 +1037,17 @@ def api_field():
 
     abort(404)
 
+@app.route('/admin/restart_server/', methods=['GET'])
+@required_superuser
+def restart_server():
+    requests.get('http://localhost:{}/restart_server/'.format(config.RESTART_SERVER_PORT))
+    return 'ok'
 
+@app.route('/admin/restart_da/', methods=['GET'])
+@required_superuser
+def restart_da():
+    requests.get('http://localhost:{}/restart_da/'.format(config.RESTART_SERVER_PORT))
+    return 'ok'
 ###############################################################################
 
 
