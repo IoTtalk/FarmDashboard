@@ -194,6 +194,8 @@
               <div class="box-header with-border">
                 <h3 class="box-title">Sensors</h3>
                 <div class="box-tools">
+
+                  <button id="restart_server" class="btn btn-danger" @click="restart_server" disabled>Restart Server</button>
                   <button class="btn btn-success" @click="sensor_new">add</button>
                 </div>
               </div>
@@ -326,6 +328,7 @@
               <div class="box-header with-border">
                 <h3 class="box-title">Fields</h3>
                 <div class="box-tools">
+                  <button id="restart_da" class="btn btn-danger" @click="restart_da" disabled>Restart DA</button>
                   <button class="btn btn-success" @click="field_new">add</button>
                 </div>
               </div>
@@ -430,11 +433,6 @@
       <!-- /FIELD -->
     </div>
   </div>
-
-  <div>
-    <button id="restart_server" class="btn btn-danger">Restart Server</button>
-    <button id="restart_da" class="btn btn-danger">Restart DA</button>
-  </div>
 {% endblock %}
 
 
@@ -445,21 +443,6 @@
   var app = null;
 
   $(() => {
-    $('#restart_server').on('click', ()=>{
-      axios.get('/admin/restart_server/')
-           .then(response => {alert('The restart was successful.');})
-           .catch(error => {
-             alert("The server will restart... if it doesn't recover after a few minutes, please contact the administrator");
-             location.reload()
-           });
-    });
-
-    $('#restart_da').on('click', ()=>{
-      axios.get('/admin/restart_da/')
-           .then(response => {alert('The restart was successful.');})
-           .catch(error => {alert(error);});
-    });
-
     var fieldSensorTable = {
       template: '#field-sensor-table-template',
       props: {
@@ -651,6 +634,8 @@
                .then((data, status, request) => {
                       this.sensor_reload();
                       $('#sensor_modal').modal('toggle');
+                      $('#restart_server').removeAttr('disabled');
+                      alert('You need Restart Server to use new sensor.');
                })
                .catch((error) => {alert(error);});
         },
@@ -705,6 +690,8 @@
                  .then((data, status, request) => {
                         this.field_reload();
                         $('#field_modal').modal('toggle');
+                        $('#restart_da').removeAttr('disabled');
+                        alert('You need Restart DA to active new field.');
                  })
                  .catch((error) => {alert(error);});
           }
@@ -776,6 +763,25 @@
           this.invalid_password = false;
           this.invalid_username = false;
         },
+        restart_server() {
+          $('#restart_server').attr('disabled', 1);
+
+          axios.get('/admin/restart_server/')
+               .then(response => {alert('The restart was successful.');})
+               .catch(error => {
+                 alert("The server will restart... if it doesn't recover after a few minutes, please contact the administrator");
+                 location.reload()
+               });
+        },
+        restart_da() {
+          $('#restart_da').attr('disabled', 1);
+          axios.get('/admin/restart_da/')
+               .then(response => {alert('The restart was successful.');})
+               .catch(error => {
+                 alert(error);
+                 $('#restart_da').removeAttr('disabled');
+               });
+        }
       }
     });
 
