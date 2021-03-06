@@ -11,7 +11,6 @@ log = logging.getLogger("Server")
 
 app = Flask(__name__)
 
-
 _proc_server = None
 _proc_da = None
 
@@ -43,12 +42,12 @@ def restart_da():
 
 
 def _start_server():
-    from app import main as server
+    from app.app import main as server
     server()
 
 
 def _start_da():
-    from DAI import main as da
+    from da.DAI import main as da
     da()
 
 
@@ -58,5 +57,5 @@ def main():
 
 if __name__ == '__main__':
     restart_server()
-    restart_da()
+    #restart_da()
     main()

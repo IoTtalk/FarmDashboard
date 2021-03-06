@@ -9,7 +9,7 @@
       <div class="icon">
         <i class="fa {{sensor.icon}}"></i>
       </div>
-      <a href="/demo/h/{{fieldname}}?token={{token}}#{{sensor.df_name}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="/demo/h/{{fieldname}}?token={{token}}#{{sensor.df_name}}" class="small-box-footer">{{ _('More info') }} <i class="fa fa-arrow-circle-right"></i></a>
     </div>
   </div>
 {%- endmacro %}
@@ -37,7 +37,7 @@
 
         let request_url = '';
         if ('{{field}}'=='None') request_url = '/demodatas?limit=1'; 
-        else request_url = '/api/demo/datas/{{field}}?limit=1&token={{token}}';
+        else request_url = '/demo/datas/{{field}}?limit=1&token={{token}}';
 
         function update() {
           if (!$('.active').length) {

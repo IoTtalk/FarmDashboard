@@ -1,11 +1,11 @@
 {% extends 'base/base.html' %} 
 
-{% block page_title %} 24小時連續資料查詢 {% endblock %}
+{% block page_title %} {{ _('Latest 24 hours data history') }} {% endblock %}
 
 {% block page_content %}
 <div class="row" id="app">
   <div class="col-sm-4 col-xs-12">
-    <label for="filed">場域</label>
+    <label for="filed">{{ _('Field') }}</label>
     <select class="form-control" id="field" v-model="active_field" @change="field_change">
       <template v-for="field in fields">
         <option :value="field.name" >{{ '{{' }}field.alias{{ '}}' }}</option>
@@ -14,7 +14,7 @@
   </div>
 
   <div class="col-sm-4 col-xs-12">
-    <label for="sensor">感測器</label>
+    <label for="sensor">{{ _('Sensor') }}</label>
     <select class="form-control" id="sensor" v-model="active_sensor">
       <template v-for="sensor in active_sensors">
         <option :value="sensor.df_name">{{ '{{' }}sensor.alias{{ '}}' }}</option>
@@ -23,11 +23,11 @@
   </div>
 
   <div class="col-sm-4 col-xs-12">
-    <label for="range">區間</label>
+    <label for="range">{{ _('Time Slot') }}</label>
     <select class="form-control" id="interval">
-      <option value="1440">24小時</option>
-      <option value="60">1小時</option>
-      <option value="10">10分鐘</option>
+      <option value="1440">24{{ _('Hours') }}</option>
+      <option value="60">1{{ _('Hour') }}</option>
+      <option value="10">10{{ _('Minutes') }}</option>
     </select>
   </div>
 
@@ -37,7 +37,7 @@
     <div class="box box-primary">
       <div class="box-header with-border">
         <i class="fa fa-bar-chart-o"></i>
-        <h3 class="box-title">連續資料圖表</h3>
+        <h3 class="box-title">{{ _('Data Chart') }}</h3>
 
         <!--<div class="box-tools pull-right">
           Real time
@@ -135,7 +135,7 @@
     d.setMinutes(d.getMinutes() - Number(interval));
     st = getDate(d);
     $.ajax({
-      'url': '/datas/' + field + '/' + sensor + '?limit=9999999&start=' + st + '&end=' + et + '&i=' + interval,
+      'url': '/api/datas/' + field + '/' + sensor + '?limit=9999999&start=' + st + '&end=' + et + '&i=' + interval,
     }).done((data) => {
       if(callback && data && data[sensor]) {
         callback(data[sensor].reverse());

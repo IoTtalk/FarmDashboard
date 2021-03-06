@@ -1,6 +1,15 @@
 import datetime
+import logging
+import os
 import re
 
+from functools import wraps
+
+from flask import abort, redirect, request, session
+
+import config
+
+log = logging.getLogger("\033[1;34mutils\033[0m")
 
 password_patterns = [re.compile(pattern)
                      for pattern in [
@@ -40,3 +49,36 @@ def validate_password_combination(password: str) -> bool:
         counter = counter + 1
 
     return counter >= 3
+
+
+def required_login(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get('username'):
+            return f(*args, **kwargs)
+        else:
+            next_url = request.path
+            return redirect('/login?next=' + next_url)
+    return decorated_function
+
+
+def required_superuser(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get('username'):
+            if session.get('is_superuser'):
+                return f(*args, **kwargs)
+            else:
+                abort(403)
+        else:
+            next_url = request.path
+            return redirect('/login?next=' + next_url)
+    return decorated_function
+
+
+def security_redirect():
+    next_url = request.args.get('next', '/')
+    if re.search(config.REDIRECT_REGEX, next_url, re.IGNORECASE):
+        return redirect(next_url)
+    else:
+        return redirect('/')

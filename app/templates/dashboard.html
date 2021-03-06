@@ -17,7 +17,7 @@
       <div class="icon">
         <i class="fa {{sensor.icon}}"></i>
       </div>
-      <a href="/history#{{fieldname}},{{sensor.df_name}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="/history#{{fieldname}},{{sensor.df_name}}" class="small-box-footer">{{ _('More info') }} <i class="fa fa-arrow-circle-right"></i></a>
     </div>
   </div>
 {%- endmacro %}
@@ -39,7 +39,7 @@
 
 {# ------------------------------------------------------------------------- #}
                                                                                                                                                           
-{% block page_title %} Sensor Dashboard {% endblock %}
+{% block page_title %} {{ _('Sensor Dashboard') }} {% endblock %}
 
 {% block page_content %}
   <div class="nav-tabs-custom">
@@ -48,7 +48,7 @@
         {{ tab_title(field)}}
       {% endfor %}
       <li id="tab_memo">
-        <a href="#memo" data-toggle="tab">memo</a>
+        <a href="#memo" data-toggle="tab">{{ _('memo') }}</a>
       </li>
     </ul>
     <div class="tab-content">
@@ -91,7 +91,7 @@
         }
         let field = $('.active').attr('id').replace('tab_', '');
         let ajax_obj = $.ajax({
-          url: '/datas/' + field +'?limit=1',
+          url: '/api/datas/' + field +'?limit=1',
           type:'GET'
         }).done((data) => {
           let expire_date = new Date();

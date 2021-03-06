@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %} 
 
-{% block page_title %} 系統管理 {% endblock %}
+{% block page_title %} {{ _('System Management') }} {% endblock %}
 
 
 {% block page_content %}
@@ -50,13 +50,13 @@
   <div class="nav-tabs-custom" id="app">
     <ul class="nav nav-tabs">
       <li class="active" id="tab_user">
-        <a href="#user_management" data-toggle="tab">User</a>
+        <a href="#user_management" data-toggle="tab">{{ _('User') }}</a>
       </li>
       <li class="" id="tab_sensor">
-        <a href="#sensor_management" data-toggle="tab">Sensor</a>
+        <a href="#sensor_management" data-toggle="tab">{{ _('Sensor') }}</a>
       </li>
       <li class="" id="tab_field">
-        <a href="#field_management" data-toggle="tab">Field</a>
+        <a href="#field_management" data-toggle="tab">{{ _('Field') }}</a>
       </li>
     </ul>
 
@@ -70,9 +70,9 @@
             <div class="box">
               <!-- box-header -->
               <div class="box-header with-border">
-                <h3 class="box-title">Users</h3>
+                <h3 class="box-title">{{ _('Users') }}</h3>
                 <div class="box-tools">
-                  <button class="btn btn-success" @click="user_new">add</button>
+                  <button class="btn btn-success" @click="user_new">{{ _('add') }}</button>
                 </div>
               </div>
               <!-- /box-header -->
@@ -83,8 +83,8 @@
                 <table class="table table-bordered table-hover dataTable">
                   <tbody>
                     <tr>
-                      <th>username</th>
-                      <th>superuser</th>
+                      <th>{{ _('username') }}</th>
+                      <th>{{ _('superuser') }}</th>
                     </tr>
                     <template v-for="(user, index) in users">
                       <tr>
@@ -109,7 +109,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" data-target="#user_modal">&times;</button>
-                <h4 class="modal-title">User Management</h4>
+                <h4 class="modal-title">{{ _('User Management') }}</h4>
               </div>
               <!-- form -->
               <form class="form-horizontal">
@@ -118,7 +118,7 @@
                   <input type="hidden" class="form-control" id="user-id" v-model="temp_user.id" disabled>
                   <!-- user.username -->
                   <div class="form-group">
-                    <label for="user-username" class="col-sm-2 control-label">username</label>
+                    <label for="user-username" class="col-sm-2 control-label">{{ _('username') }}</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="user-username" placeholder="username" v-model="temp_user.username" @blur="handle_blur_event" required>
                       <span class="text-danger" v-if="invalid_username">{{ '{{' }}username_error_msg{{ '}}' }}</span>
@@ -126,7 +126,7 @@
                   </div>
                   <!-- user.password -->
                   <div class="form-group" v-if="temp_user.id === ''">
-                    <label for="user-password" class="col-sm-2 control-label">password</label>
+                    <label for="user-password" class="col-sm-2 control-label">{{ _('password') }}</label>
                     <div class="col-sm-10">
                       <input type="password" class="form-control" id="user-password" placeholder="password" @input="validate_password" @blur="handle_blur_event" v-model="temp_user.password" required>
                       <span class="text-danger" v-if="invalid_password">{{ '{{' }}password_error_msg{{ '}}' }}</span>
@@ -135,7 +135,7 @@
                   <!-- user.is_superuser -->
                   <div class="form-group">
                     <label for="user-is_superuser" class="col-sm-2 control-label">
-                      superuser
+                      {{ _('superuser') }}
                     </label>
                     <div class="col-sm-10">
                       <div class="col-sm-12">
@@ -145,7 +145,7 @@
                   </div>
                   <!-- user_access.fields -->
                   <div class="form-group">
-                    <label for="user-access" class="col-sm-2 control-label">access fields</label>
+                    <label for="user-access" class="col-sm-2 control-label">{{ _('access fields') }}</label>
                     <div class="col-sm-10" id="user-access">
                       <template v-for="field in fields">
                         <div class="col-xs-4 col-md-3 col-xl-2">
@@ -158,7 +158,7 @@
                   </div>
                   <!-- user_access.is_active -->
                   <div class="form-group">
-                    <label for="user-active" class="col-sm-2 control-label">active field</label>
+                    <label for="user-active" class="col-sm-2 control-label">{{ _('active field') }}</label>
                     <draggable class="col-sm-10" id="user-active" :list="temp_user.access" :element="'ul'">
                       <li :for="'user-active-'+field.name" style="list-style: none;" v-for="field in temp_user.access">
                         <input type="radio" v-model="temp_user.active" :value="field.id" :id="'user-active-'+field.name">  {{ '{{' }}field.name{{ '}}' }}
@@ -169,10 +169,10 @@
 
                 <!-- buttons -->
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" @click="user_delete" v-if="temp_user.id !== ''">DELETE</button>
-                  <button type="button" class="btn btn-primary" @click="user_update" v-if="temp_user.id !== ''">Update</button>
-                  <button type="button" class="btn btn-success" @click="user_create" v-if="temp_user.id === ''">Create</button>
-                  <button type="button" class="btn btn-default" @click="close_modal" data-dismiss="modal" data-target="#user_modal">Close</button>
+                  <button type="button" class="btn btn-danger" @click="user_delete" v-if="temp_user.id !== ''">{{ _('DELETE') }}</button>
+                  <button type="button" class="btn btn-primary" @click="user_update" v-if="temp_user.id !== ''">{{ _('Update') }}</button>
+                  <button type="button" class="btn btn-success" @click="user_create" v-if="temp_user.id === ''">{{ _('Create') }}</button>
+                  <button type="button" class="btn btn-default" @click="close_modal" data-dismiss="modal" data-target="#user_modal">{{ _('Close') }}</button>
                 </div>
               </form>
               <!-- /form -->
@@ -192,11 +192,11 @@
             <div class="box">
               <!-- box-header -->
               <div class="box-header with-border">
-                <h3 class="box-title">Sensors</h3>
+                <h3 class="box-title">{{ _('Sensors') }}</h3>
                 <div class="box-tools">
 
-                  <button id="restart_server" class="btn btn-danger" @click="restart_server" disabled>Restart Server</button>
-                  <button class="btn btn-success" @click="sensor_new">add</button>
+                  <button id="restart_server" class="btn btn-danger" @click="restart_server" disabled>{{ _('Restart Server') }}</button>
+                  <button class="btn btn-success" @click="sensor_new">{{ _('add') }}</button>
                 </div>
               </div>
               <!-- /box-header -->
@@ -206,12 +206,12 @@
                 <table class="table table-bordered table-hover dataTable">
                   <tbody>
                     <tr>
-                      <th>name</th>
-                      <th>df_name</th>
-                      <th>alias</th>
-                      <th>unit</th>
-                      <th>icon</th>
-                      <th>color</th>
+                      <th>{{ _('name') }}</th>
+                      <th>{{ _('df_name') }}</th>
+                      <th>{{ _('alias') }}</th>
+                      <th>{{ _('unit') }}</th>
+                      <th>{{ _('icon') }}</th>
+                      <th>{{ _('color') }}</th>
 
                     </tr>
                     <template v-for="(sensor, index) in sensors">
@@ -241,7 +241,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" data-target="#sensor_modal">&times;</button>
-                <h4 class="modal-title">Sensor Management</h4>
+                <h4 class="modal-title">{{ _('Sensor Management') }}</h4>
               </div>
               <!-- form -->
               <form class="form-horizontal">
@@ -250,62 +250,62 @@
                   <input type="hidden" class="form-control" id="sensor-id" v-model="temp_sensor.id" disabled>
                   <!-- sensor.name -->
                   <div class="form-group">
-                    <label for="sensor-name" class="col-sm-2 control-label">name</label>
+                    <label for="sensor-name" class="col-sm-2 control-label">{{ _('name') }}</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="sensor-name" placeholder="name, ex: uv" v-model="temp_sensor.name" required>
                     </div>
                   </div>
                   <!-- sensor.df_name -->
                   <div class="form-group">
-                    <label for="sensor-name" class="col-sm-2 control-label">df_name</label>
+                    <label for="sensor-name" class="col-sm-2 control-label">{{ _('df_name') }}</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="sensor-df_name" placeholder="df name, ex: UV1" v-model="temp_sensor.df_name" required>
                     </div>
                   </div>
                   <!-- sensor.alias -->
                   <div class="form-group">
-                    <label for="sensor-name" class="col-sm-2 control-label">alias</label>
+                    <label for="sensor-name" class="col-sm-2 control-label">{{ _('alias') }}</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="sensor-alias" placeholder="alias, ex: 紫外線" v-model="temp_sensor.alias" required>
+                      <input type="text" class="form-control" id="sensor-alias" placeholder="alias, ex: {{ _('Ultraviolet') }}" v-model="temp_sensor.alias" required>
                     </div>
                   </div>
                   <!-- sensor.unit -->
                   <div class="form-group">
-                    <label for="sensor-unit" class="col-sm-2 control-label">unit</label>
+                    <label for="sensor-unit" class="col-sm-2 control-label">{{ _('unit') }}</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="sensor-unit" placeholder="unit, ex: mw/cm²" v-model="temp_sensor.unit">
                     </div>
                   </div>
                   <!-- sensor.icon -->
                   <div class="form-group">
-                    <label for="sensor-icon" class="col-sm-2 control-label">icon</label>
+                    <label for="sensor-icon" class="col-sm-2 control-label">{{ _('icon') }}</label>
                     <div class="col-sm-10">
                       <div class="input-group">
                         <input type="text" class="form-control" id="sensor-icon" placeholder="icon, ex: ion-android-sunny" v-model="temp_sensor.icon">
                         <span class="input-group-addon"><i class="fa" :class="temp_sensor.icon"></i></span>
                       </div>
-                      <span>You can use icon <a href="https://adminlte.io/themes/AdminLTE/pages/UI/icons.html" target="_blank">here</a>.</span>
+                      <span>{{ _('You can use icon') }} <a href="https://adminlte.io/themes/AdminLTE/pages/UI/icons.html" target="_blank">{{ _('here') }}</a>.</span>
                     </div>                    
                   </div>
                   <!-- sensor.bg_color -->
                   <div class="form-group">
-                    <label for="sensor-bg_color" class="col-sm-2 control-label">color</label>
+                    <label for="sensor-bg_color" class="col-sm-2 control-label">{{ _('color') }}</label>
                     <div class="col-sm-10">
                       <div class="input-group">
                         <input type="text" class="form-control" id="sensor-bg_color" placeholder="background color, ex: bg-aqua" v-model="temp_sensor.bg_color">
                         <span class="input-group-addon" :class="temp_sensor.bg_color"><i class="fa"></i></span>
                       </div>
-                      <span>You can use <a href="http://basscss.com/v7/docs/background-colors/" target="_blank">bootstrap bg-color</a>.</span>
+                      <span>{{ _('You can use') }} <a href="http://basscss.com/v7/docs/background-colors/" target="_blank">{{ _('bootstrap bg-color') }}</a>.</span>
                     </div>
                   </div>
                 </div>
 
                 <!-- buttons -->
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" @click="sensor_delete" v-if="temp_sensor.id !== ''">DELETE</button>
-                  <button type="button" class="btn btn-info" @click="sensor_update" v-if="temp_sensor.id !== ''">Update</button>
-                  <button type="button" class="btn btn-success" @click="sensor_create" v-if="temp_sensor.id === ''">Create</button>
-                  <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#sensor_modal">Close</button>
+                  <button type="button" class="btn btn-danger" @click="sensor_delete" v-if="temp_sensor.id !== ''">{{ _('DELETE') }}</button>
+                  <button type="button" class="btn btn-info" @click="sensor_update" v-if="temp_sensor.id !== ''">{{ _('Update') }}</button>
+                  <button type="button" class="btn btn-success" @click="sensor_create" v-if="temp_sensor.id === ''">{{ _('Create') }}</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#sensor_modal">{{ _('Close') }}</button>
                 </div>
               </form>
               <!-- /form -->
@@ -326,10 +326,10 @@
             <div class="box">
               <!-- box-header -->
               <div class="box-header with-border">
-                <h3 class="box-title">Fields</h3>
+                <h3 class="box-title">{{ _('Fields') }}</h3>
                 <div class="box-tools">
-                  <button id="restart_da" class="btn btn-danger" @click="restart_da" disabled>Restart DA</button>
-                  <button class="btn btn-success" @click="field_new">add</button>
+                  <button id="restart_da" class="btn btn-danger" @click="restart_da" disabled>{{ _('Restart DA') }}</button>
+                  <button class="btn btn-success" @click="field_new">{{ _('add') }}</button>
                 </div>
               </div>
               <!-- /box-header -->
@@ -339,8 +339,8 @@
                 <table class="table table-bordered table-hover dataTable">
                   <tbody>
                     <tr>
-                      <th>name</th>
-                      <th>alias</th>
+                      <th>{{ _('name') }}</th>
+                      <th>{{ _('alias') }}</th>
                     </tr>
                     <template v-for="(field, index) in fields">
                       <tr>
@@ -365,7 +365,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" data-target="#field_modal">&times;</button>
-                <h4 class="modal-title">Field Management</h4>
+                <h4 class="modal-title">{{ _('Field Management') }}</h4>
               </div>
               <!-- form -->
               <form class="form-horizontal">
@@ -374,28 +374,28 @@
                   <input type="hidden" class="form-control" id="field-id" v-model="temp_field.id" disabled>
                   <!-- field.name -->
                   <div class="form-group">
-                    <label for="field-name" class="col-sm-2 control-label">name</label>
+                    <label for="field-name" class="col-sm-2 control-label">{{ _('name') }}</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="field-name" placeholder="name, ex: bao1" v-model="temp_field.name" required>
                     </div>
                   </div>
                   <!-- field.alias -->
                   <div class="form-group">
-                    <label for="field-alias" class="col-sm-2 control-label">alias</label>
+                    <label for="field-alias" class="col-sm-2 control-label">{{ _('alias') }}</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="field-alias" placeholder="alias, ex: 寶山一場" v-model="temp_field.alias" required>
                     </div>
                   </div>
                   <!-- field.iframe -->
                   <div class="form-group">
-                    <label for="field-iframe" class="col-sm-2 control-label">iframe URL</label>
+                    <label for="field-iframe" class="col-sm-2 control-label">{{ _('iframe URL') }}</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control" id="field-iframe" placeholder="iframe URL, ex: http://tw.google.com" v-model="temp_field.iframe">
                     </div>
                   </div>
                   <!-- field.sensors -->
                   <div class="form-group">
-                    <label for="field-sensor" class="col-sm-2 control-label">sensors</label>
+                    <label for="field-sensor" class="col-sm-2 control-label">{{ _('sensors') }}</label>
                     <div class="input-group">
                       <div class="input-group-btn">
                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -417,10 +417,10 @@
 
                 <!-- buttons -->
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" @click="field_delete" v-if="temp_field.id !== ''">DELETE</button>
-                  <button type="button" class="btn btn-info" @click="field_update" v-if="temp_field.id !== ''">Update</button>
-                  <button type="button" class="btn btn-success" @click="field_create" v-if="temp_field.id === ''">Create</button>
-                  <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#field_modal">Close</button>
+                  <button type="button" class="btn btn-danger" @click="field_delete" v-if="temp_field.id !== ''">{{ _('DELETE') }}</button>
+                  <button type="button" class="btn btn-info" @click="field_update" v-if="temp_field.id !== ''">{{ _('Update') }}</button>
+                  <button type="button" class="btn btn-success" @click="field_create" v-if="temp_field.id === ''">{{ _('Create') }}</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#field_modal">{{ _('Close') }}</button>
                 </div>
               </form>
               <!-- /form -->
@@ -570,7 +570,7 @@
         validate_username() {
           if ( !this.temp_user.username.length ) {
             this.invalid_username = true;
-            this.username_error_msg = 'Username can not be empty';
+            this.username_error_msg = '{{ _('Username can not be empty') }}';
             return false;
           }
 
@@ -582,13 +582,12 @@
         validate_password() {
           if ( !this.validate_password_length(this.temp_user.password) ) {
             this.invalid_password = true;
-            this.password_error_msg = 'Password length must be greater than or equal to 6';
+            this.password_error_msg = "{{ _('Password length must be greater than or equal to 6') }}";
 
             return false;
           } else if ( !this.validate_password_combination(this.temp_user.password) ) {
             this.invalid_password = true;
-            this.password_error_msg = 'Password must contain at least three of them: Uppercase letters, \
-                                       Lowercase letters, numbers and special symbols';
+            this.password_error_msg = "{{ _('Password must contain at least three of them: Uppercase letters, Lowercase letters, numbers and special symbols') }}";
 
             return false;
           }
@@ -601,11 +600,11 @@
         handle_blur_event() {
           if ( !this.temp_user.username ) {
             this.invalid_username = true;
-            this.username_error_msg = 'Please enter your username';
+            this.username_error_msg = "{{ _('Please enter your username') }}";
           }
           if ( !this.temp_user.password ) {
             this.invalid_password = true;
-            this.password_error_msg = 'Please enter your new password';
+            this.password_error_msg = "{{ _('Please enter your new password') }}";
           }
         },
 
@@ -635,7 +634,7 @@
                       this.sensor_reload();
                       $('#sensor_modal').modal('toggle');
                       $('#restart_server').removeAttr('disabled');
-                      alert('You need Restart Server to use new sensor.');
+                      alert("{{ _('You need Restart Server to use new sensor.') }}");
                })
                .catch((error) => {alert(error);});
         },
@@ -683,7 +682,7 @@
         field_create() {
           // TODO: validate data.
           if (!this.temp_field.name) {
-            alert('Feild name cannot empty');
+            alert("{{ _('Feild name cannot empty') }}");
           } else {
             axios.post('/api/field', this.temp_field,
                        {'headers': {'X-CSRFToken': this.csrf_token, }, })
@@ -691,7 +690,7 @@
                         this.field_reload();
                         $('#field_modal').modal('toggle');
                         $('#restart_da').removeAttr('disabled');
-                        alert('You need Restart DA to active new field.');
+                        alert("{{ _('You need Restart DA to active new field.') }}");
                  })
                  .catch((error) => {alert(error);});
           }
@@ -712,7 +711,7 @@
                .catch((error) => {alert(error);});
         },
         field_delete() {
-          if (confirm("DB內相關資料也將刪除，確定嗎?")) {
+          if (confirm("{{ _('Related information in DB will also be deleted, are you sure?') }}")) {
             axios.delete('/api/field?id=' + this.temp_field.id,
                          {'headers': {'X-CSRFToken': this.csrf_token, }, })
                  .then((data, status, request) => {
@@ -767,16 +766,16 @@
           $('#restart_server').attr('disabled', 1);
 
           axios.get('/admin/restart_server/')
-               .then(response => {alert('The restart was successful.');})
+               .then(response => {alert("{{ _('The restart was successful.') }}");})
                .catch(error => {
-                 alert("The server will restart... if it doesn't recover after a few minutes, please contact the administrator");
+                 alert("{{ _('The server will restart... if it doesn't recover after a few minutes, please contact the administrator) }}");
                  location.reload()
                });
         },
         restart_da() {
           $('#restart_da').attr('disabled', 1);
           axios.get('/admin/restart_da/')
-               .then(response => {alert('The restart was successful.');})
+               .then(response => {alert("{{ _('The restart was successful.') }}");})
                .catch(error => {
                  alert(error);
                  $('#restart_da').removeAttr('disabled');

@@ -1,0 +1,7 @@
+div.xAxis div.tickLabel 
+{    
+    white-space: nowrap;
+    transform: translate(25px, 10px) rotate(60deg);
+    text-indent: -100%;
+    text-align: left !important;
+}

@@ -5,7 +5,6 @@ from sqlalchemy.ext.declarative import declarative_base
 
 base = declarative_base()
 
-
 class AtPressure(base):
     __tablename__ = 'atpressure'
     timestamp = Column(DateTime, primary_key=True, nullable=False)
