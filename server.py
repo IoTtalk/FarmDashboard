@@ -57,5 +57,5 @@ def main():
 
 if __name__ == '__main__':
     restart_server()
-    #restart_da()
+    restart_da()
     main()
