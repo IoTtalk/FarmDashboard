@@ -634,7 +634,7 @@
                       this.sensor_reload();
                       $('#sensor_modal').modal('toggle');
                       $('#restart_server').removeAttr('disabled');
-                      alert("{{ _('You need Restart Server to use new sensor.') }}");
+                      alert("{{ _('You need to \"Restart Server\" to use the new sensor.') }}");
                })
                .catch((error) => {alert(error);});
         },
@@ -682,7 +682,7 @@
         field_create() {
           // TODO: validate data.
           if (!this.temp_field.name) {
-            alert("{{ _('Feild name cannot empty') }}");
+            alert("{{ _('Field name cannot be empty.') }}");
           } else {
             axios.post('/api/field', this.temp_field,
                        {'headers': {'X-CSRFToken': this.csrf_token, }, })
@@ -690,7 +690,7 @@
                         this.field_reload();
                         $('#field_modal').modal('toggle');
                         $('#restart_da').removeAttr('disabled');
-                        alert("{{ _('You need Restart DA to active new field.') }}");
+                        alert("{{ _('You need to \"Restart DA\" to activate the new field.') }}");
                  })
                  .catch((error) => {alert(error);});
           }
@@ -766,7 +766,7 @@
           $('#restart_server').attr('disabled', 1);
 
           axios.get('/admin/restart_server/')
-               .then(response => {alert("{{ _('The restart was successful.') }}");})
+               .then(response => {alert("{{ _('Restart successfully.') }}");})
                .catch(error => {
                  alert("{{ _('The server will restart... if it doesn\'t recover after a few minutes, please contact the administrator') }}");
                  location.reload()
@@ -775,7 +775,7 @@
         restart_da() {
           $('#restart_da').attr('disabled', 1);
           axios.get('/admin/restart_da/')
-               .then(response => {alert("{{ _('The restart was successful.') }}");})
+               .then(response => {alert("{{ _('Restart successfully.') }}");})
                .catch(error => {
                  alert(error);
                  $('#restart_da').removeAttr('disabled');
