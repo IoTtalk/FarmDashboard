@@ -768,7 +768,7 @@
           axios.get('/admin/restart_server/')
                .then(response => {alert("{{ _('The restart was successful.') }}");})
                .catch(error => {
-                 alert("{{ _('The server will restart... if it doesn't recover after a few minutes, please contact the administrator) }}");
+                 alert("{{ _('The server will restart... if it doesn\'t recover after a few minutes, please contact the administrator') }}");
                  location.reload()
                });
         },
