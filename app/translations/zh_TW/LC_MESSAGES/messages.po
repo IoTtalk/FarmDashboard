@@ -1,0 +1,336 @@
+# Chinese (Traditional, Taiwan) translations for PROJECT.
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2021-04-20 18:38+0800\n"
+"PO-Revision-Date: 2021-04-20 18:49+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_Hant_TW\n"
+"Language-Team: zh_Hant_TW <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.0\n"
+
+#: app/view.py:80
+msgid "username or password is wrong."
+msgstr ""
+
+#: app/templates/compare.html:3
+msgid "Data Compare"
+msgstr ""
+
+#: app/templates/compare.html:9 app/templates/compare.html:29
+#: app/templates/demo_history.html:8 app/templates/history.html:8
+#: app/templates/management.html:59
+msgid "Field"
+msgstr ""
+
+#: app/templates/compare.html:19 app/templates/compare.html:40
+#: app/templates/demo_history.html:15 app/templates/history.html:17
+#: app/templates/management.html:56
+msgid "Sensor"
+msgstr ""
+
+#: app/templates/compare.html:31
+msgid "None"
+msgstr ""
+
+#: app/templates/compare.html:50
+msgid "StartTime"
+msgstr ""
+
+#: app/templates/compare.html:61
+msgid "EndTime"
+msgstr ""
+
+#: app/templates/compare.html:72
+msgid "Interval"
+msgstr ""
+
+#: app/templates/compare.html:74
+msgid "Second"
+msgstr ""
+
+#: app/templates/compare.html:75
+msgid "Minute"
+msgstr ""
+
+#: app/templates/compare.html:76 app/templates/demo_history.html:27
+#: app/templates/history.html:29
+msgid "Hour"
+msgstr ""
+
+#: app/templates/compare.html:77
+msgid "Day"
+msgstr ""
+
+#: app/templates/compare.html:93
+msgid "History Histogram"
+msgstr ""
+
+#: app/templates/dashboard.html:20 app/templates/demo.html:12
+msgid "More info"
+msgstr ""
+
+#: app/templates/dashboard.html:42
+msgid "Sensor Dashboard"
+msgstr ""
+
+#: app/templates/dashboard.html:51
+msgid "memo"
+msgstr ""
+
+#: app/templates/demo_history.html:24 app/templates/history.html:26
+msgid "Time Slot"
+msgstr ""
+
+#: app/templates/demo_history.html:26 app/templates/history.html:28
+msgid "Hours"
+msgstr ""
+
+#: app/templates/demo_history.html:28 app/templates/history.html:30
+msgid "Minutes"
+msgstr ""
+
+#: app/templates/demo_history.html:38 app/templates/history.html:40
+msgid "Data Chart"
+msgstr ""
+
+#: app/templates/history.html:3
+msgid "Latest 24 hours data history"
+msgstr ""
+
+#: app/templates/login.html:6
+msgid "Environment Monitor System"
+msgstr ""
+
+#: app/templates/login.html:9
+msgid "Sign in to start your session"
+msgstr ""
+
+#: app/templates/management.html:3
+msgid "System Management"
+msgstr ""
+
+#: app/templates/management.html:53
+msgid "User"
+msgstr ""
+
+#: app/templates/management.html:73
+msgid "Users"
+msgstr ""
+
+#: app/templates/management.html:75 app/templates/management.html:199
+#: app/templates/management.html:332
+msgid "add"
+msgstr ""
+
+#: app/templates/management.html:86 app/templates/management.html:121
+msgid "username"
+msgstr ""
+
+#: app/templates/management.html:87 app/templates/management.html:138
+msgid "superuser"
+msgstr ""
+
+#: app/templates/management.html:112
+msgid "User Management"
+msgstr ""
+
+#: app/templates/management.html:129
+msgid "password"
+msgstr ""
+
+#: app/templates/management.html:148
+msgid "access fields"
+msgstr ""
+
+#: app/templates/management.html:161
+msgid "active field"
+msgstr ""
+
+#: app/templates/management.html:172 app/templates/management.html:305
+#: app/templates/management.html:420
+msgid "DELETE"
+msgstr ""
+
+#: app/templates/management.html:173 app/templates/management.html:306
+#: app/templates/management.html:421
+msgid "Update"
+msgstr ""
+
+#: app/templates/management.html:174 app/templates/management.html:307
+#: app/templates/management.html:422
+msgid "Create"
+msgstr ""
+
+#: app/templates/management.html:175 app/templates/management.html:308
+#: app/templates/management.html:423
+msgid "Close"
+msgstr ""
+
+#: app/templates/management.html:195
+msgid "Sensors"
+msgstr ""
+
+#: app/templates/management.html:198
+msgid "Restart Server"
+msgstr ""
+
+#: app/templates/management.html:209 app/templates/management.html:253
+#: app/templates/management.html:342 app/templates/management.html:377
+msgid "name"
+msgstr ""
+
+#: app/templates/management.html:210 app/templates/management.html:260
+msgid "df_name"
+msgstr ""
+
+#: app/templates/management.html:211 app/templates/management.html:267
+#: app/templates/management.html:343 app/templates/management.html:384
+msgid "alias"
+msgstr ""
+
+#: app/templates/management.html:212 app/templates/management.html:274
+msgid "unit"
+msgstr ""
+
+#: app/templates/management.html:213 app/templates/management.html:281
+msgid "icon"
+msgstr ""
+
+#: app/templates/management.html:214 app/templates/management.html:292
+msgid "color"
+msgstr ""
+
+#: app/templates/management.html:244
+msgid "Sensor Management"
+msgstr ""
+
+#: app/templates/management.html:269
+msgid "Ultraviolet"
+msgstr ""
+
+#: app/templates/management.html:287
+msgid "You can use icon"
+msgstr ""
+
+#: app/templates/management.html:287
+msgid "here"
+msgstr ""
+
+#: app/templates/management.html:298
+msgid "You can use"
+msgstr ""
+
+#: app/templates/management.html:298
+msgid "bootstrap bg-color"
+msgstr ""
+
+#: app/templates/management.html:329
+msgid "Fields"
+msgstr ""
+
+#: app/templates/management.html:331
+msgid "Restart DA"
+msgstr ""
+
+#: app/templates/management.html:368
+msgid "Field Management"
+msgstr ""
+
+#: app/templates/management.html:391
+msgid "iframe URL"
+msgstr ""
+
+#: app/templates/management.html:398
+msgid "sensors"
+msgstr ""
+
+#: app/templates/management.html:573
+msgid "Username can not be empty"
+msgstr ""
+
+#: app/templates/management.html:585
+msgid "Password length must be greater than or equal to 6"
+msgstr ""
+
+#: app/templates/management.html:590
+msgid ""
+"Password must contain at least three of them: Uppercase letters, "
+"Lowercase letters, numbers and special symbols"
+msgstr ""
+
+#: app/templates/management.html:603
+msgid "Please enter your username"
+msgstr ""
+
+#: app/templates/management.html:607
+msgid "Please enter your new password"
+msgstr ""
+
+#: app/templates/management.html:637
+msgid "You need to \"Restart Server\" to use the new sensor."
+msgstr ""
+
+#: app/templates/management.html:685
+msgid "Field name cannot be empty."
+msgstr ""
+
+#: app/templates/management.html:693
+msgid "You need to \"Restart DA\" to activate the new field."
+msgstr ""
+
+#: app/templates/management.html:714
+msgid "Related information in DB will also be deleted, are you sure?"
+msgstr ""
+
+#: app/templates/management.html:769 app/templates/management.html:778
+msgid "Restart successfully."
+msgstr ""
+
+#: app/templates/management.html:771
+msgid ""
+"The server will restart... if it doesn't recover after a few minutes, "
+"please contact the administrator"
+msgstr ""
+
+#: app/templates/base/head.html:4 app/templates/base/header.html:7
+msgid "IoT Environment Monitor System"
+msgstr ""
+
+#: app/templates/base/header.html:5
+msgid "IoT"
+msgstr ""
+
+#: app/templates/base/header.html:37
+msgid "Profile"
+msgstr ""
+
+#: app/templates/base/header.html:40
+msgid "Sign out"
+msgstr ""
+
+#: app/templates/base/sidebar.html:9
+msgid "Dashboard"
+msgstr ""
+
+#: app/templates/base/sidebar.html:10
+msgid "History"
+msgstr ""
+
+#: app/templates/base/sidebar.html:11
+msgid "Compare"
+msgstr ""
+
+#: app/templates/base/sidebar.html:13
+msgid "Management"
+msgstr ""
+
