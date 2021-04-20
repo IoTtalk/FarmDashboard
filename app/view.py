@@ -99,7 +99,7 @@ def logout():
     return redirect('/login')
 
 
-@view_api.route('/', methods=['GET'])
+@view_api.route('/dashboard', methods=['GET'])
 @utils.required_login
 def index():
     return render_template('dashboard.html')
