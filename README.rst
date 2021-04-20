@@ -55,11 +55,11 @@ FarmDashboard
 
   #. 翻譯文字，修改前一步產生的 po 檔，翻譯對應語系的文字，檔案路徑為
 
-      `app/translations/<lang_code>/LC_MESSAGES /messages.po`
+      `app/translations/<lang_code>/LC_MESSAGES/messages.po`
 
   #. 編譯字典 po 檔成 mo 檔，供 babel 使用
 
-      `pybabel compile -d app/translations`
+      `pybabel compile -f -d app/translations`
 
 注意
 ----------------------------------------------------------------------
