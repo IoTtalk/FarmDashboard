@@ -1,6 +1,6 @@
 import logging
 
-from flask import (Blueprint, g, render_template as flast_render_template,
+from flask import (Blueprint, g, render_template as flask_render_template,
                    redirect, request, session)
 from flask_babel import gettext
 from werkzeug.security import check_password_hash
@@ -49,8 +49,7 @@ def render_template(*args, **argv):
              .query(db.models.user)
              .filter(db.models.user.username == session.get('username'))
              .first())
-
-    return flast_render_template(*args,
+    return flask_render_template(*args,
                                  fields=fields,
                                  username=session.get('username'),
                                  is_superuser=session.get('is_superuser'),
@@ -77,13 +76,13 @@ def login():
 
             return utils.security_redirect()
         else:
-            return flast_render_template('login.html',
+            return flask_render_template('login.html',
                                          msg=gettext('username or password is wrong.'))
 
     if session.get('username'):
         return utils.security_redirect()
 
-    return flast_render_template('login.html')
+    return flask_render_template('login.html')
 
 
 @view_api.route('/logout')
