@@ -20,50 +20,49 @@ log = logging.getLogger("\033[1;35m[WEB]: \033[0m")
 app = Flask(__name__)
 app.secret_key = config.FLASK_SECRET_KEY
 app.config['SESSION_COOKIE_SECURE'] = config.SESSION_COOKIE_SECURE
-app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'tranlations'
 
 app.register_blueprint(view_api, url_prefix='/')
-app.register_blueprint(view_api, url_prefix='/<string:lang_code>')
+app.register_blueprint(view_api, url_prefix='/<lang_code>')
 app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(demo_api, url_prefix='/demo')
 
-babel = Babel(app)
-csrf = CSRFProtect(app)
-
 db.connect()
+
+csrf = CSRFProtect(app)
+babel = Babel(app)
 
 
 ### lang code #################################################################
+# 1. before blueprint - get lang_code from url
 @app.url_value_preprocessor
 def get_lang_code(endpoint, values):
-    print(values)
     if values is not None:
         g.lang_code = values.pop('lang_code', 'en')
-    print('1:', g.get('lang_code'))
 
 
+# 2. check lang_code type is available
 @app.before_request
 def ensure_lang_support():
-    lang_code = g.get('lang_code', 'en')
+    lang_code = g.get('lang_code')
     if lang_code and lang_code not in config.i18n:
-        g.lang_code = request.accept_languages.best_match(
-            config.i18n)
-    print('2:', lang_code)
+        g.lang_code = request.accept_languages.best_match(config.i18n)
 
 
+# 3. set Flask-babel
 @babel.localeselector
 def get_locale():
-    return g.get('lang_code', 'en')
+    print(g.get('lang_code'))
+    return g.get('lang_code')
 
 
+# 4. Set lang_code for redirection or other usage
 @app.url_defaults
 def set_language_code(endpoint, values):
     if 'lang_code' in values or not g.lang_code:
         return
     if app.url_map.is_endpoint_expecting(endpoint, 'lang_code'):
         values['lang_code'] = g.lang_code
-
-###############################################################################
+### lang_code end #############################################################
 
 
 @app.errorhandler(404)

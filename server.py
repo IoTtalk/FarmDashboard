@@ -42,7 +42,7 @@ def restart_da():
 
 
 def _start_server():
-    from app.app import main as server
+    from app import main as server
     server()
 
 
