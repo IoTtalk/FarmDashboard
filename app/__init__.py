@@ -51,7 +51,6 @@ def ensure_lang_support():
 # 3. set Flask-babel
 @babel.localeselector
 def get_locale():
-    print(g.get('lang_code'))
     return g.get('lang_code')
 
 
