@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 
 import requests
 
@@ -33,6 +34,13 @@ babel = Babel(app)
 
 
 ### lang code #################################################################
+@app.template_filter('extract_path')
+def extract_path(s):
+    langs = '|'.join(config.i18n)
+
+    return re.sub("^(/+{})?/".format(langs), "/", s)
+
+
 # 1. before blueprint - get lang_code from url
 @app.url_value_preprocessor
 def get_lang_code(endpoint, values):
