@@ -94,14 +94,14 @@ def favicon():
                                mimetype='image/vnd.microsoft.icon')
 
 
-@app.route('/admin/restart_server/', methods=['GET'])
+@app.route('/admin/restart_server/', methods=['GET'], strict_slashes=False)
 @utils.required_superuser
 def restart_server():
     requests.get('http://localhost:{}/restart_server/'.format(config.RESTART_SERVER_PORT))
     return 'ok'
 
 
-@app.route('/admin/restart_da/', methods=['GET'])
+@app.route('/admin/restart_da/', methods=['GET'], strict_slashes=False)
 @utils.required_superuser
 def restart_da():
     requests.get('http://localhost:{}/restart_da/'.format(config.RESTART_SERVER_PORT))

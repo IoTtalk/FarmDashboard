@@ -58,7 +58,7 @@ def render_template(*args, **argv):
                                  **argv)
 
 
-@view_api.route('/login', methods=['GET', 'POST'])
+@view_api.route('/login/', methods=['GET', 'POST'], strict_slashes=False)
 def login():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -85,7 +85,7 @@ def login():
     return flask_render_template('login.html')
 
 
-@view_api.route('/logout')
+@view_api.route('/logout/', strict_slashes=False)
 def logout():
     if session.get('username'):
         del session['username']
@@ -99,31 +99,31 @@ def logout():
     return redirect(utils.lang_url('/login'))
 
 
-@view_api.route('/dashboard', methods=['GET'])
+@view_api.route('/dashboard/', methods=['GET'], strict_slashes=False)
 @utils.required_login
 def index():
     return render_template('dashboard.html')
 
 
-@view_api.route('/history', methods=['GET'])
+@view_api.route('/history/', methods=['GET'], strict_slashes=False)
 @utils.required_login
 def history():
     return render_template('history.html')
 
 
-@view_api.route('/compare', methods=['GET'])
+@view_api.route('/compare/', methods=['GET'], strict_slashes=False)
 @utils.required_login
 def compare_():
     return render_template('compare.html')
 
 
-@view_api.route('/profile', methods=['GET'])
+@view_api.route('/profile/', methods=['GET'], strict_slashes=False)
 @utils.required_login
 def profile():
     return render_template('profile.html')
 
 
-@view_api.route('/management', methods=['GET'])
+@view_api.route('/management/', methods=['GET'], strict_slashes=False)
 @utils.required_superuser
 def management():
     return render_template('management.html')
