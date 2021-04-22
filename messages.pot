@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-04-20 18:38+0800\n"
+"POT-Creation-Date: 2021-04-22 15:21+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -299,6 +299,94 @@ msgstr ""
 msgid ""
 "The server will restart... if it doesn't recover after a few minutes, "
 "please contact the administrator"
+msgstr ""
+
+#: app/templates/profile.html:3
+msgid "Personal Profile"
+msgstr ""
+
+#: app/templates/profile.html:10
+msgid "Change Password"
+msgstr ""
+
+#: app/templates/profile.html:17
+msgid "Old Password"
+msgstr ""
+
+#: app/templates/profile.html:23
+msgid "New Password"
+msgstr ""
+
+#: app/templates/profile.html:23
+msgid ""
+"Must contain at least three of them: Uppercase letters,\n"
+"               Lowercase letters, numbers and special symbols"
+msgstr ""
+
+#: app/templates/profile.html:30
+msgid "Repeat New Password"
+msgstr ""
+
+#: app/templates/profile.html:38
+msgid "Submit"
+msgstr ""
+
+#: app/templates/profile.html:47
+msgid "Delete Account"
+msgstr ""
+
+#: app/templates/profile.html:50
+msgid "Once you delete an account, there is no going back. Please be certain."
+msgstr ""
+
+#: app/templates/profile.html:54
+msgid "Delete"
+msgstr ""
+
+#: app/templates/profile.html:67
+msgid "Are you absolutely sure?"
+msgstr ""
+
+#: app/templates/profile.html:70
+msgid "This action"
+msgstr ""
+
+#: app/templates/profile.html:70
+msgid "cannot"
+msgstr ""
+
+#: app/templates/profile.html:70
+msgid "be undone. This will permanently delete the"
+msgstr ""
+
+#: app/templates/profile.html:70
+msgid "account and remove all related information."
+msgstr ""
+
+#: app/templates/profile.html:72
+msgid ""
+"After deleting this account, you will not be able to log in and use our "
+"services again."
+msgstr ""
+
+#: app/templates/profile.html:74
+msgid "If you have any questions, please contact our staff."
+msgstr ""
+
+#: app/templates/profile.html:76
+msgid "Please type username and password to confirm."
+msgstr ""
+
+#: app/templates/profile.html:81
+msgid "Username"
+msgstr ""
+
+#: app/templates/profile.html:87
+msgid "Password"
+msgstr ""
+
+#: app/templates/profile.html:95
+msgid "I under stand the consequences, delete this account."
 msgstr ""
 
 #: app/templates/base/head.html:4 app/templates/base/header.html:7
