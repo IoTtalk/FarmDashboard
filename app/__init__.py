@@ -45,7 +45,7 @@ def extract_path(s):
 @app.url_value_preprocessor
 def get_lang_code(endpoint, values):
     if values is not None:
-        g.lang_code = values.pop('lang_code', 'en')
+        g.lang_code = values.pop('lang_code', request.accept_languages.best_match(config.i18n))
 
 
 # 2. check lang_code type is available
