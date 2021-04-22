@@ -4,7 +4,7 @@ import re
 
 from functools import wraps
 
-from flask import abort, redirect, request, session
+from flask import abort, g, redirect, request, session
 
 import config
 
@@ -56,8 +56,7 @@ def required_login(f):
         if session.get('username'):
             return f(*args, **kwargs)
         else:
-            next_url = request.path
-            return redirect('/login?next=' + next_url)
+            return redirect(lang_url('/login?next=' + request.path))
     return decorated_function
 
 
@@ -70,14 +69,21 @@ def required_superuser(f):
             else:
                 abort(403)
         else:
-            next_url = request.path
-            return redirect('/login?next=' + next_url)
+            return redirect(lang_url('/login?next=' + request.path))
     return decorated_function
 
 
 def security_redirect():
-    next_url = request.args.get('next', '/')
+    base_url = lang_url('/dashboard')
+    next_url = request.args.get('next', base_url)
     if re.search(config.REDIRECT_REGEX, next_url, re.IGNORECASE):
         return redirect(next_url)
     else:
-        return redirect('/')
+        return redirect(base_url)
+
+
+def lang_url(url):
+    if url.startswith('/'):
+        return '/{}{}'.format(g.get('lang_code'), url)
+    else:
+        return '/{}/{}'.format(g.get('lang_code'), url)

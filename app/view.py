@@ -96,7 +96,7 @@ def logout():
     if session.get('is_superuser'):
         del session['is_superuser']
 
-    return redirect('/login')
+    return redirect(utils.lang_url('/login'))
 
 
 @view_api.route('/dashboard', methods=['GET'])
