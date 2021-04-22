@@ -4,7 +4,7 @@ import re
 
 import requests
 
-from flask import Flask, request, g, send_from_directory
+from flask import Flask, redirect, request, g, send_from_directory
 from flask_babel import Babel
 from flask_wtf.csrf import CSRFProtect
 
@@ -80,6 +80,11 @@ def not_found(error):
 @app.errorhandler(500)
 def server_error(error):
     return 'Server error', 500
+
+
+@app.route('/')
+def root():
+    return redirect(utils.lang_url('/dashboard'))
 
 
 @app.route('/favicon.ico')
