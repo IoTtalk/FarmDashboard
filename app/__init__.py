@@ -36,7 +36,7 @@ babel = Babel(app)
 ### lang code #################################################################
 @app.template_filter('extract_path')
 def extract_path(s):
-    langs = '|'.join(config.i18n)
+    langs = '|'.join(config.i18n.values())
 
     return re.sub("^(/+{})?/".format(langs), "/", s)
 
@@ -45,15 +45,18 @@ def extract_path(s):
 @app.url_value_preprocessor
 def get_lang_code(endpoint, values):
     if values is not None:
-        g.lang_code = values.pop('lang_code', request.accept_languages.best_match(config.i18n))
+        g.lang_code = values.pop(
+            'lang_code',
+            request.accept_languages.best_match(config.i18n.values())
+        )
 
 
 # 2. check lang_code type is available
 @app.before_request
 def ensure_lang_support():
     lang_code = g.get('lang_code')
-    if lang_code and lang_code not in config.i18n:
-        g.lang_code = request.accept_languages.best_match(config.i18n)
+    if lang_code and lang_code not in config.i18n.values():
+        g.lang_code = request.accept_languages.best_match(config.i18n.values())
 
 
 # 3. set Flask-babel

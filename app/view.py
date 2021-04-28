@@ -55,6 +55,7 @@ def render_template(*args, **argv):
                                  is_superuser=session.get('is_superuser'),
                                  memo=user.memo,
                                  timeout_strikethrough=config.TIMEOUT_STRIKETHROUGH,
+                                 i18n=config.i18n,
                                  **argv)
 
 
