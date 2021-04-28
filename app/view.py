@@ -59,6 +59,11 @@ def render_template(*args, **argv):
                                  **argv)
 
 
+@view_api.route('/', methods=['GET'], strict_slashes=False)
+def root():
+    return redirect(utils.lang_url('/dashboard'))
+
+
 @view_api.route('/login/', methods=['GET', 'POST'], strict_slashes=False)
 def login():
     if request.method == 'POST':
