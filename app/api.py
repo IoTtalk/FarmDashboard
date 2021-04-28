@@ -1,290 +1,25 @@
 import inspect
 import json
 import logging
-import os
-import re
 
 from datetime import datetime
 from dateutil import parser
-from functools import wraps
 
-import requests
-
-from flask import (Flask, abort, jsonify, redirect, g,
-                   render_template as flast_render_template,
-                   request, send_from_directory, session)
-from flask_wtf.csrf import CSRFProtect
+from flask import Blueprint, abort, jsonify, g, redirect, request, session
 from sqlalchemy import text, or_
 from werkzeug.security import check_password_hash, generate_password_hash
 
 import config
-import db
-import utils
 
-log = logging.getLogger("\033[1;35m[WEB]: \033[0m")
+from . import utils
+from db import db
 
-app = Flask(__name__)
-app.secret_key = config.FLASK_SECRET_KEY
-app.config['SESSION_COOKIE_SECURE'] = config.SESSION_COOKIE_SECURE
-
-csrf = CSRFProtect(app)
-
-db.connect()
+log = logging.getLogger("\033[1;33m[API]: \033[0m")
+api = Blueprint('API', __name__)
 
 
-def render_template(*args, **argv):
-    fields = []
-    query = (g.session
-              .query(db.models.field.id,
-                     db.models.field.name,
-                     db.models.field.alias,
-                     db.models.field.iframe,
-                     db.models.user_access.is_active)
-              .select_from(db.models.field)
-              .join(db.models.user_access)
-              .join(db.models.user)
-              .filter(db.models.user.username == session.get('username'))
-              .order_by(db.models.user_access.id)
-              .all())
-    for id, name, alias, iframe, is_active in query:
-        field_data = {
-            'id': id,
-            'name': name,
-            'alias': alias,
-            'iframe': iframe.replace('{username}', session.get('username')),
-            'is_active': 1 & is_active,
-            'sensors': []
-        }
-        for sensor in (g.session
-                        .query(db.models.field_sensor)
-                        .filter(db.models.field_sensor.field == id)
-                        .order_by(db.models.field_sensor.id)
-                        .all()):
-            field_data['sensors'].append(utils.row2dict(sensor))
-        fields.append(field_data)
-
-    user = (g.session
-             .query(db.models.user)
-             .filter(db.models.user.username == session.get('username'))
-             .first())
-
-    return flast_render_template(*args,
-                                 fields=fields,
-                                 username=session.get('username'),
-                                 is_superuser=session.get('is_superuser'),
-                                 memo=user.memo,
-                                 timeout_strikethrough=config.TIMEOUT_STRIKETHROUGH,
-                                 **argv)
-
-
-def render_demo_template(*args, **argv):
-    target_field = argv.get('field')
-    if not target_field:
-        abort(404)
-
-    field_record = (g.session
-                     .query(db.models.field)
-                     .filter(db.models.field.name == target_field)
-                     .first())
-    if not field_record:
-        abort(404)
-
-    sensors = []
-    sensor_records = (g.session
-                       .query(db.models.field_sensor)
-                       .filter(db.models.field_sensor.field == field_record.id)
-                       .order_by(db.models.field_sensor.id)
-                       .all())
-    for sensor in sensor_records:
-        sensors.append(utils.row2dict(sensor))
-
-    return flast_render_template(*args,
-                                 fieldname=target_field,
-                                 sensors=sensors,
-                                 timeout_strikethrough=config.TIMEOUT_STRIKETHROUGH,
-                                 **argv)
-
-
-def required_login(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get('username'):
-            return f(*args, **kwargs)
-        else:
-            next_url = request.path
-            return redirect('/login?next=' + next_url)
-    return decorated_function
-
-
-def required_superuser(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get('username'):
-            if session.get('is_superuser'):
-                return f(*args, **kwargs)
-            else:
-                abort(403)
-        else:
-            next_url = request.path
-            return redirect('/login?next=' + next_url)
-    return decorated_function
-
-def security_redirect():
-    next_url = request.args.get('next', '/')
-    if re.search(config.REDIRECT_REGEX, next_url, re.IGNORECASE):
-        return redirect(next_url)
-    else:
-        return redirect('/')
-
-
-@app.errorhandler(404)
-def not_found(error):
-    return 'Not Found.', 404
-
-
-@app.errorhandler(500)
-def server_error(error):
-    return 'Server error', 500
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        user = (g.session
-                 .query(db.models.user)
-                 .filter(db.models.user.username == username)
-                 .first())
-
-        if user and check_password_hash(user.password, password):
-            session['username'] = user.username
-            session['id'] = user.id
-            session['is_superuser'] = user.is_superuser
-
-            return security_redirect()
-        else:
-            return flast_render_template('login.html',
-                                         msg='username or password is wrong.')
-
-    if session.get('username'):
-        return security_redirect()
-
-    return flast_render_template('login.html')
-
-
-@app.route('/logout')
-def logout():
-    if session.get('username'):
-        del session['username']
-
-    if session.get('id'):
-        del session['id']
-
-    if session.get('is_superuser'):
-        del session['is_superuser']
-
-    return redirect('/')
-
-
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico',
-                               mimetype='image/vnd.microsoft.icon')
-
-
-@app.route('/', methods=['GET'])
-@required_login
-def index():
-    return render_template('dashboard.html')
-
-
-@app.route('/demo/<string:field>', methods=['GET'])
-def demo(field):
-    token = request.args.get('token')
-    if token != config.demo_token.get(field):
-        abort(404)
-    return render_demo_template('demo.html', field=field, token=token)
-
-
-@app.route('/history', methods=['GET'])
-@required_login
-def history():
-    return render_template('history.html')
-
-
-@app.route('/demo/h/<string:field>', methods=['GET'])
-def demo_history(field):
-    token = request.args.get('token')
-    if token != config.demo_token.get(field):
-        abort(404)
-    return render_demo_template('demo_history.html', field=field, token=token)
-
-
-@app.route('/compare', methods=['GET'])
-@required_login
-def compare_():
-    return render_template('compare.html')
-
-
-@app.route('/profile', methods=['GET'])
-@required_login
-def profile():
-    return render_template('profile.html')
-
-
-@app.route('/management', methods=['GET'])
-@required_superuser
-def management():
-    return render_template('management.html')
-
-
-@app.route('/api/demo/datas/<string:field>', methods=['GET'])
-def api_query_demo_data(field):
-    token = request.args.get('token')
-    if token != config.demo_token.get(field):
-        abort(404)
-
-    stime = datetime.now()
-
-    res = {}
-
-    start = request.args.get('start')
-    end = request.args.get('end')
-    limit = int(request.args.get('limit', config.QUERY_LIMIT))
-
-    if start and end:
-        start = parser.parse(start)
-        end = parser.parse(end)
-
-    query_df = (g.session
-                 .query(db.models.field_sensor.df_name,
-                        db.models.field_sensor.field)
-                 .select_from(db.models.field_sensor)
-                 .join(db.models.sensor)
-                 .join(db.models.field)
-                 .filter(db.models.field.name == field)
-                 .all())
-
-    for df_name, field_id in query_df:
-        tablename = df_name.replace('-O', '')
-        table = getattr(db.models, tablename)
-        query = g.session.query(table).filter(table.field == field_id)
-        if start and end:
-            query = query.filter(table.timestamp >= start, table.timestamp <= end)
-        query = query.order_by(table.timestamp.desc()).limit(limit).all()
-
-        res.update({df_name: [(str(record.timestamp), record.value) for record in query]})
-
-    etime = datetime.now()
-    log.debug((etime - stime).total_seconds())
-    return jsonify(res)
-
-
-@app.route('/datas/<string:field>', methods=['GET'])
-@required_login
+@api.route('/datas/<string:field>', methods=['GET'])
+@utils.required_login
 def api_query_all_data(field):
     stime = datetime.now()
 
@@ -322,45 +57,8 @@ def api_query_all_data(field):
     return jsonify(res)
 
 
-@app.route('/api/demo/datas/<string:field>/<string:df_name>', methods=['GET'])
-def api_query_demo_history_data(field, df_name):
-    token = request.args.get('token')
-    if token != config.demo_token.get(field):
-        abort(404)
-
-    stime = datetime.now()
-
-    tablename = df_name.replace('-O', '')
-    if not hasattr(db.models, tablename):
-        abort(404)
-    table = getattr(db.models, tablename)
-
-    start = request.args.get('start')
-    end = request.args.get('end')
-    limit = int(request.args.get('limit', config.QUERY_LIMIT))
-
-    if start and end:
-        start = parser.parse(start)
-        end = parser.parse(end)
-
-    query = (g.session
-              .query(table)
-              .select_from(table)
-              .join(db.models.field)
-              .filter(db.models.field.name == field))
-    if start and end:
-        query = query.filter(table.timestamp >= start, table.timestamp <= end)
-    query = query.order_by(table.timestamp.desc()).limit(limit).all()
-
-    res = {df_name: [(str(record.timestamp), record.value) for record in query]}
-
-    etime = datetime.now()
-    log.debug((etime - stime).total_seconds())
-    return jsonify(res)
-
-
-@app.route('/datas/<string:field>/<string:df_name>', methods=['GET'])
-@required_login
+@api.route('/datas/<string:field>/<string:df_name>', methods=['GET'])
+@utils.required_login
 def api_query_field_data(field, df_name):
     stime = datetime.now()
 
@@ -393,8 +91,8 @@ def api_query_field_data(field, df_name):
     return jsonify(res)
 
 
-@app.route('/api/datas', methods=['GET'])
-@required_login
+@api.route('/datas', methods=['GET'])
+@utils.required_login
 def api_datas():
     '''
     :args f1: field, like `flower`, `orange`, etc
@@ -449,8 +147,8 @@ def api_datas():
     return jsonify(result)
 
 
-@app.route('/api/export_datas', methods=['GET'])
-@required_login
+@api.route('/export_datas', methods=['GET'])
+@utils.required_login
 def api_export_datas():
     '''
     :args f: field, like `flower`, `orange`, etc
@@ -532,7 +230,7 @@ def _get_mysql_raw_sql(interval, table_name, field, start, end, limit):
                   sensor.timestamp >= '{}' and
                   sensor.timestamp <= '{}'
             ORDER BY sensor.timestamp DESC
-        '''.format(table_name, field, start, end, limit))
+        '''.format(table_name, field, start, end))
     elif interval == 'minute':
         raw_sql = text('''
             SELECT MINUTE(sensor.timestamp) as minute,
@@ -546,7 +244,7 @@ def _get_mysql_raw_sql(interval, table_name, field, start, end, limit):
                   sensor.timestamp <= '{}'
             GROUP BY minute, hour, date
             ORDER BY date DESC, hour DESC, minute DESC
-        '''.format(table_name, field, start, end, limit))
+        '''.format(table_name, field, start, end))
     elif interval == 'hour':
         raw_sql = text('''
             SELECT HOUR(sensor.timestamp) AS hour,
@@ -559,7 +257,7 @@ def _get_mysql_raw_sql(interval, table_name, field, start, end, limit):
                   sensor.timestamp <= '{}'
             GROUP BY hour, date
             ORDER BY date DESC, hour DESC
-        '''.format(table_name, field, start, end, limit))
+        '''.format(table_name, field, start, end))
     elif interval == 'day':
         raw_sql = text('''
             SELECT DATE(sensor.timestamp) AS date,
@@ -571,7 +269,7 @@ def _get_mysql_raw_sql(interval, table_name, field, start, end, limit):
                   sensor.timestamp <= '{}'
             GROUP BY date
             ORDER BY date DESC
-        '''.format(table_name, field, start, end, limit))
+        '''.format(table_name, field, start, end))
     else:
         abort(404)
 
@@ -581,8 +279,8 @@ def _get_mysql_raw_sql(interval, table_name, field, start, end, limit):
     return raw_sql
 
 
-@app.route('/api/user/pwd', methods=['POST'])
-@required_login
+@api.route('/user/pwd', methods=['POST'])
+@utils.required_login
 def api_user_change_pwd():
     user_id = session.get('id')
     old_password = request.json.get('old_password')
@@ -612,8 +310,8 @@ def api_user_change_pwd():
     return 'ok'
 
 
-@app.route('/api/user/delete', methods=['POST'])
-@required_login
+@api.route('/user/delete', methods=['POST'])
+@utils.required_login
 def api_user_delete_account():
     user_id = session.get('id')
     username = request.json.get('username')
@@ -637,12 +335,21 @@ def api_user_delete_account():
     g.session.query(db.models.user).filter(db.models.user.id == user_id).delete()
     g.session.commit()
 
-    logout()
+    if session.get('username'):
+        del session['username']
+
+    if session.get('id'):
+        del session['id']
+
+    if session.get('is_superuser'):
+        del session['is_superuser']
+
+    return redirect('/')
     return 'ok'
 
 
-@app.route('/api/user/memo', methods=['POST'])
-@required_login
+@api.route('/user/memo', methods=['POST'])
+@utils.required_login
 def api_user_update_memo():
     if request.method != 'POST':
         abort(404)
@@ -657,8 +364,9 @@ def api_user_update_memo():
 
     return 'ok'
 
-@app.route('/api/user', methods=['GET', 'POST', 'PUT', 'DELETE'])
-@required_superuser
+
+@api.route('/user', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@utils.required_superuser
 def api_user():
     if request.method == 'GET':
         # Read user
@@ -789,8 +497,8 @@ def api_user():
     abort(404)
 
 
-@app.route('/api/sensor', methods=['GET', 'POST', 'PUT', 'DELETE'])
-@required_superuser
+@api.route('/sensor', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@utils.required_superuser
 def api_sensor():
     if request.method == 'GET':
         # Read sensor
@@ -876,8 +584,8 @@ def api_sensor():
     abort(404)
 
 
-@app.route('/api/field', methods=['GET', 'POST', 'PUT', 'DELETE'])
-@required_superuser
+@api.route('/field', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@utils.required_superuser
 def api_field():
     if request.method == 'GET':
 
@@ -1036,49 +744,3 @@ def api_field():
         return 'ok'
 
     abort(404)
-
-@app.route('/admin/restart_server/', methods=['GET'])
-@required_superuser
-def restart_server():
-    requests.get('http://localhost:{}/restart_server/'.format(config.RESTART_SERVER_PORT))
-    return 'ok'
-
-@app.route('/admin/restart_da/', methods=['GET'])
-@required_superuser
-def restart_da():
-    requests.get('http://localhost:{}/restart_da/'.format(config.RESTART_SERVER_PORT))
-    return 'ok'
-###############################################################################
-
-
-@app.before_request
-def before_request():
-    g.session = db.get_session()
-
-
-@app.teardown_request
-def teardown_request(exception):
-    session = getattr(g, 'session', None)
-    if session is not None:
-        session.close()
-
-
-@app.after_request
-def add_header(r):
-    """
-    Add no cache header.
-
-    Add headers to both force latest IE rendering engine or Chrome Frame,
-    and not cache anything.
-    """
-    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0, private"
-    r.headers["Pragma"] = "no-cache"
-    r.headers["Expires"] = "0"
-    return r
-
-
-def main():
-    app.run(config.host, port=config.port, debug=config.DEBUG, threaded=True)
-
-if __name__ == '__main__':
-    main()

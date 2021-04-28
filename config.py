@@ -35,3 +35,5 @@ REDIRECT_REGEX = r"^http[s]?:\/\/[\w.-]*iottalk[2]?\.tw\/|^\/"
 SESSION_COOKIE_SECURE = True
 
 RESTART_SERVER_PORT = 5001
+
+i18n = {'English': 'en', '中文': 'zh_TW'}

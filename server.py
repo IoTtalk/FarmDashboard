@@ -11,7 +11,6 @@ log = logging.getLogger("Server")
 
 app = Flask(__name__)
 
-
 _proc_server = None
 _proc_da = None
 
@@ -48,7 +47,7 @@ def _start_server():
 
 
 def _start_da():
-    from DAI import main as da
+    from da.DAI import main as da
     da()
 
 

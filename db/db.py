@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
 
 import config
-import models
+from db import models
 
 engine = None
 

@@ -3,10 +3,10 @@
 {% include 'base/head.html' %}
 <body class="hold-transition login-page">
 <div class="login-box">
-  <div class="login-logo"><b>IoT</b> 遠端監控環境系統</div>
+  <div class="login-logo"><b>IoT</b> {{ _('Environment Monitor System') }}</div>
 
   <div class="login-box-body" style="border-radius: 20px;">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">{{ _('Sign in to start your session') }}</p>
 
     <form method="post">
       <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>

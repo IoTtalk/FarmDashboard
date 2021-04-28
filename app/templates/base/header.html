@@ -1,10 +1,10 @@
 <header class="main-header">
   <!-- Logo -->
-  <a href="/" class="logo">
+  <a href="/{{ g.get('lang_code') }}/dashboard" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
-    <span class="logo-mini"><b>IoT</b></span>
+    <span class="logo-mini"><b>{{ _('IoT') }}</b></span>
     <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg"><b>IoT 遠端監控環境系統</b></span>
+    <span class="logo-lg"><b>{{ _('IoT Environment Monitor System') }}</b></span>
   </a>
   <!-- Header Navbar: style can be found in header.less -->
   <nav class="navbar navbar-static-top">
@@ -18,6 +18,16 @@
 
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            Language
+          </a>
+          <ul class="dropdown-menu">
+            {% for k, v in i18n.items() %}
+            <li><a href="/{{ v }}/dashboard">{{ k }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -34,10 +44,10 @@
             <!-- Menu Footer-->
             <li class="user-footer">
               <div class="pull-left">
-                <a href="/profile" class="btn btn-default btn-flat">Profile</a>
+                <a href="/{{ g.get('lang_code') }}/profile" class="btn btn-default btn-flat">{{ _('Profile') }}</a>
               </div>
               <div class="pull-right">
-                <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
+                <a href="/{{ g.get('lang_code') }}/logout" class="btn btn-default btn-flat">{{ _('Sign out') }}</a>
               </div>
             </li>
           </ul>

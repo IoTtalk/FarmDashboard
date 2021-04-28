@@ -5,14 +5,14 @@
   <body class="hold-transition login-page">
     <div class="row" style="margin:1em">
       <div class="col-sm-4 col-xs-12">
-        <label for="filed">場域</label>
+        <label for="filed">{{ _('Field') }}</label>
         <select class="form-control" id="field">
           <option>{{ fieldname }}</option>
         </select>
       </div>
 
       <div class="col-sm-4 col-xs-12">
-        <label for="sensor">感測器</label>
+        <label for="sensor">{{ _('Sensor') }}</label>
         <select class="form-control" id="sensor">
         {% for sensor in sensors %}
           <option value="{{ sensor.df_name }}">{{ sensor.alias }}</option>
@@ -21,11 +21,11 @@
       </div>
 
       <div class="col-sm-4 col-xs-12">
-        <label for="range">區間</label>
+        <label for="range">{{ _('Time Slot') }}</label>
         <select class="form-control" id="interval">
-          <option value="1440">24小時</option>
-          <option value="60">1小時</option>
-          <option value="10">10分鐘</option>
+          <option value="1440">24 {{ _('Hours') }}</option>
+          <option value="60">1 {{ _('Hour') }}</option>
+          <option value="10">10 {{ _('Minutes') }}</option>
         </select>
       </div>
 
@@ -35,7 +35,7 @@
         <div class="box box-primary">
           <div class="box-header with-border">
             <i class="fa fa-bar-chart-o"></i>
-            <h3 class="box-title">連續資料圖表</h3>
+            <h3 class="box-title">{{ _('Data Chart') }}</h3>
           </div>
           <div class="box-body">
             <div id="interactive" style="height: 300px;"></div>
@@ -122,7 +122,7 @@
         d.setMinutes(d.getMinutes() - Number(interval));
         st = getDate(d);
         $.ajax({
-          'url': '/api/demo/datas/' + field + '/' + sensor + '?token={{token}}&limit=9999999&start=' + st + '&end=' + et + '&i=' + interval,
+          'url': '/demo/datas/' + field + '/' + sensor + '?token={{token}}&limit=9999999&start=' + st + '&end=' + et + '&i=' + interval,
         }).done((data) => {
           if(callback && data && data[sensor]) {
             callback(data[sensor].reverse());

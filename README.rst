@@ -22,6 +22,45 @@ FarmDashboard
 至此 Dashboard 已啟動完成，可用指令 ``tmux a`` 查看運行狀況
 (按ctrl+b 1 / ctrl+b 2切換 dashboard 主程式與 DA 查看運行狀況)。
 
+多語系使用說明
+----------------------------------------------------------------------
+
+- 首次使用
+
+  #. 將所有 python 及 html 所用到的字串頡取出來
+
+      `pybabel extract -F app/babel.cfg -o messages.pot .`
+
+  #. 建立字典檔 (儲放於 `app/translations` 下)
+
+      `pybabel init -i messages.pot -d app/translations/ -l <lang_code>`
+
+  #. 翻譯文字，修改前一步產生的 po 檔，翻譯對應語系的文字，檔案路徑為
+
+      `app/translations/<lang_code>/LC_MESSAGES/messages.po`
+
+  #. 編譯字典 po 檔成 mo 檔，供 babel 使用
+
+      `pybabel compile -f -d app/translations`
+
+- 更新字典檔 (與首次使用相同，差別在於第二步的 update 用 `update` 取代 `init`)
+
+  #. 將所有 python 及 html 所用到的字串頡取出來
+
+      `pybabel extract -F app/babel.cfg -o messages.pot .`
+
+  #. 更新字典檔
+
+      `pybabel update -i messages.pot -d app/translations/ -l <lang_code>`
+
+  #. 翻譯文字，修改前一步產生的 po 檔，翻譯對應語系的文字，檔案路徑為
+
+      `app/translations/<lang_code>/LC_MESSAGES/messages.po`
+
+  #. 編譯字典 po 檔成 mo 檔，供 babel 使用
+
+      `pybabel compile -f -d app/translations`
+
 注意
 ----------------------------------------------------------------------
 
