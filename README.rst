@@ -31,14 +31,14 @@ FarmDashboard
 python
 ******
 
-.. code-block: python
+.. code-block:: python
 
     from flask_babel import gettext
     msg = gettext('Babel is good.')
 
 or if you want to use constant strings somewhere in your application and define them outside of a request, you can use a lazy strings.
 
-.. code-block: python
+.. code-block:: python
 
     from flask_babel import lazy_gettext
     msg = lazy_gettext('Babel is good.')
@@ -49,7 +49,7 @@ Javascript
 
 use `{{ _('') }}` to the needing change words.
 
-.. code-block: javascript
+.. code-block:: javascript
 
     <div class="title">{{ _('System Management') }}</div>
 
