@@ -49,7 +49,7 @@ Javascript
 
 use `{{ _('') }}` to the needing change words.
 
-.. code-block:: javascript
+.. code-block:: html
 
     <div class="title">{{ _('System Management') }}</div>
 
