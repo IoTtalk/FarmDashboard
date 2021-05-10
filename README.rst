@@ -25,6 +25,38 @@ FarmDashboard
 多語系使用說明
 ----------------------------------------------------------------------
 
+文字準備
+^^^^^^^
+
+python
+******
+
+.. code-block: python
+
+    from flask_babel import gettext
+    msg = gettext('Babel is good.')
+
+or if you want to use constant strings somewhere in your application and define them outside of a request, you can use a lazy strings.
+
+.. code-block: python
+
+    from flask_babel import lazy_gettext
+    msg = lazy_gettext('Babel is good.')
+
+
+Javascript
+**********
+
+use `{{ _('') }}` to the needing change words.
+
+.. code-block: javascript
+
+    <div class="title">{{ _('System Management') }}</div>
+
+
+使用語言包
+^^^^^^^^
+
 - 首次使用
 
   #. 將所有 python 及 html 所用到的字串頡取出來
