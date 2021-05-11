@@ -3,6 +3,8 @@ import logging
 from flask import (Blueprint, g, render_template as flask_render_template,
                    redirect, request, session)
 from flask_babel import gettext
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from werkzeug.security import check_password_hash
 
 import config
@@ -12,6 +14,8 @@ from db import db
 
 log = logging.getLogger("\033[1;35m[VIEW]\033[0m")
 view_api = Blueprint('VIEW', __name__)
+
+limiter = Limiter(view_api, key_func=get_remote_address)
 
 
 def render_template(*args, **argv):
@@ -65,6 +69,7 @@ def root():
 
 
 @view_api.route('/login/', methods=['GET', 'POST'], strict_slashes=False)
+@limiter.limit("10 per hour")
 def login():
     if request.method == 'POST':
         username = request.form.get('username')
