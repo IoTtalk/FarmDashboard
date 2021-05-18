@@ -176,7 +176,7 @@
     let sensor1 = $('#sensor1').val();
     let sensor2 = $('#sensor2').val() || "";
     let starttime = $('#start-time')[0].value;
-    let endtime = $('#end-time')[0].value;
+    let endtime = $('#end-time')[0].value + " 23:59:59";
     let interval = $('#interval').val();
     $.ajax({
       'url': '/api/datas?f1=' + field1 + '&f2=' + field2 + '&s1=' + sensor1 +'&s2=' + sensor2 + '&st=' + starttime + '&et=' + endtime + '&i=' + interval,
@@ -424,7 +424,7 @@
 
   function download_field(field, sensor, starttime, endtime, interval, limit) {
     let a = document.createElement('a');;
-    a.href = '/api/export_datas?f=' + field + '&s=' + sensor + '&st=' + starttime + '&et=' + endtime + '&i=' + interval;
+    a.href = '/api/export_datas?f=' + field + '&s=' + sensor + '&st=' + starttime + '&et=' + endtime + ' 23:59:59&i=' + interval;
     a.download = field + '_' + sensor + '_' + starttime + '_' + endtime + '.csv';
     a.click();
   }
