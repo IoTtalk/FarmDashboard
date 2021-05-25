@@ -2,9 +2,6 @@
 
 {% macro tab_title(field) -%}
   <li {% if field.is_active %}class="active"{% endif %} id="tab_{{field.name}}" onclick="load_iframe({{field.name}})">
-    {% if field.is_active %}
-    <script>window.onload = function(){load_iframe("{{field.name}}");}</script>
-    {% endif %}
     <a href="#{{field.name}}" data-toggle="tab">{{field.alias}}</a>
   </li>
 {%- endmacro %}
@@ -33,7 +30,11 @@
       {% endfor %}
       {% if field.iframe %}
         <div class="col-xs-12">
+          {% if field.is_active %}
+          <iframe src="{{field.iframe}}" width="100%" height="1500px" frameBorder="0"></iframe>
+          {% else %}
           <iframe src="" width="100%" height="1500px" frameBorder="0" loading="lazy" data-src="{{field.iframe}}"></iframe>
+          {% endif %}
         </div>
       {% endif %}
     </div>
