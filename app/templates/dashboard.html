@@ -2,6 +2,7 @@
 
 {% macro tab_title(field) -%}
   <li {% if field.is_active %}class="active"{% endif %} id="tab_{{field.name}}" onclick="load_iframe({{field.name}})">
+    {% if field.is_active %}<script>$(()=>{load_iframe({{field.name}});})</script>{% endif %}
     <a href="#{{field.name}}" data-toggle="tab">{{field.alias}}</a>
   </li>
 {%- endmacro %}
