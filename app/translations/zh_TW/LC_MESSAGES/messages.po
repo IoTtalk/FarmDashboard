@@ -1,12 +1,12 @@
 # Chinese (Traditional, Taiwan) translations for PROJECT.
 # Copyright (C) 2021 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+# Ksoy <ksoyam95@gmail.com>, 2021.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Project-Id-Version: 1.0.0\n"
+"Report-Msgid-Bugs-To: ksoyam95@gmail.com\n"
 "POT-Creation-Date: 2021-04-22 15:21+0800\n"
 "PO-Revision-Date: 2021-04-20 18:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
