@@ -1,6 +1,6 @@
-# Chinese (Traditional, Taiwan) translations for PROJECT.
+# Chinese (Traditional, Taiwan) translations for .
 # Copyright (C) 2021 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
+# This file is distributed under the same license as the  project.
 # Ksoy <ksoyam95@gmail.com>, 2021.
 #
 msgid ""
@@ -12,207 +12,209 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hant_TW\n"
 "Language-Team: zh_Hant_TW <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.0\n"
+"Generated-By: Babel 2.9.1\n"
+"X-Language: zh_TW\n"
+"X-Source-Language: C\n"
 
 #: app/view.py:80
 msgid "username or password is wrong."
-msgstr ""
+msgstr "使用者名稱或密碼錯誤。"
 
 #: app/templates/compare.html:3
 msgid "Data Compare"
-msgstr ""
+msgstr "資料比對"
 
 #: app/templates/compare.html:9 app/templates/compare.html:29
 #: app/templates/demo_history.html:8 app/templates/history.html:8
 #: app/templates/management.html:59
 msgid "Field"
-msgstr ""
+msgstr "場域"
 
 #: app/templates/compare.html:19 app/templates/compare.html:40
 #: app/templates/demo_history.html:15 app/templates/history.html:17
 #: app/templates/management.html:56
 msgid "Sensor"
-msgstr ""
+msgstr "感測器"
 
 #: app/templates/compare.html:31
 msgid "None"
-msgstr ""
+msgstr "無"
 
 #: app/templates/compare.html:50
 msgid "StartTime"
-msgstr ""
+msgstr "開始時間"
 
 #: app/templates/compare.html:61
 msgid "EndTime"
-msgstr ""
+msgstr "結束時間"
 
 #: app/templates/compare.html:72
 msgid "Interval"
-msgstr ""
+msgstr "時間間隔"
 
 #: app/templates/compare.html:74
 msgid "Second"
-msgstr ""
+msgstr "秒"
 
 #: app/templates/compare.html:75
 msgid "Minute"
-msgstr ""
+msgstr "分"
 
 #: app/templates/compare.html:76 app/templates/demo_history.html:27
 #: app/templates/history.html:29
 msgid "Hour"
-msgstr ""
+msgstr "小時"
 
 #: app/templates/compare.html:77
 msgid "Day"
-msgstr ""
+msgstr "日"
 
 #: app/templates/compare.html:93
 msgid "History Histogram"
-msgstr ""
+msgstr "歷史圖表"
 
 #: app/templates/dashboard.html:20 app/templates/demo.html:12
 msgid "More info"
-msgstr ""
+msgstr "更多資訊"
 
 #: app/templates/dashboard.html:42
 msgid "Sensor Dashboard"
-msgstr ""
+msgstr "感測器看板"
 
 #: app/templates/dashboard.html:51
 msgid "memo"
-msgstr ""
+msgstr "備註"
 
 #: app/templates/demo_history.html:24 app/templates/history.html:26
 msgid "Time Slot"
-msgstr ""
+msgstr "時間區間"
 
 #: app/templates/demo_history.html:26 app/templates/history.html:28
 msgid "Hours"
-msgstr ""
+msgstr "小時"
 
 #: app/templates/demo_history.html:28 app/templates/history.html:30
 msgid "Minutes"
-msgstr ""
+msgstr "分鐘"
 
 #: app/templates/demo_history.html:38 app/templates/history.html:40
 msgid "Data Chart"
-msgstr ""
+msgstr "資料圖表"
 
 #: app/templates/history.html:3
 msgid "Latest 24 hours data history"
-msgstr ""
+msgstr "最後 24 小時資料"
 
 #: app/templates/login.html:6
 msgid "Environment Monitor System"
-msgstr ""
+msgstr "環境監控系統"
 
 #: app/templates/login.html:9
 msgid "Sign in to start your session"
-msgstr ""
+msgstr "登入以開始使用"
 
 #: app/templates/management.html:3
 msgid "System Management"
-msgstr ""
+msgstr "系統管理"
 
 #: app/templates/management.html:53
 msgid "User"
-msgstr ""
+msgstr "使用者"
 
 #: app/templates/management.html:73
 msgid "Users"
-msgstr ""
+msgstr "使用者"
 
 #: app/templates/management.html:75 app/templates/management.html:199
 #: app/templates/management.html:332
 msgid "add"
-msgstr ""
+msgstr "新增"
 
 #: app/templates/management.html:86 app/templates/management.html:121
 msgid "username"
-msgstr ""
+msgstr "使用者名稱"
 
 #: app/templates/management.html:87 app/templates/management.html:138
 msgid "superuser"
-msgstr ""
+msgstr "超級使用者"
 
 #: app/templates/management.html:112
 msgid "User Management"
-msgstr ""
+msgstr "使用者管理"
 
 #: app/templates/management.html:129
 msgid "password"
-msgstr ""
+msgstr "密碼"
 
 #: app/templates/management.html:148
 msgid "access fields"
-msgstr ""
+msgstr "可見的場域"
 
 #: app/templates/management.html:161
 msgid "active field"
-msgstr ""
+msgstr "首見的場域"
 
 #: app/templates/management.html:172 app/templates/management.html:305
 #: app/templates/management.html:420
 msgid "DELETE"
-msgstr ""
+msgstr "刪除"
 
 #: app/templates/management.html:173 app/templates/management.html:306
 #: app/templates/management.html:421
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
 #: app/templates/management.html:174 app/templates/management.html:307
 #: app/templates/management.html:422
 msgid "Create"
-msgstr ""
+msgstr "新建"
 
 #: app/templates/management.html:175 app/templates/management.html:308
 #: app/templates/management.html:423
 msgid "Close"
-msgstr ""
+msgstr "關閉"
 
 #: app/templates/management.html:195
 msgid "Sensors"
-msgstr ""
+msgstr "感測器"
 
 #: app/templates/management.html:198
 msgid "Restart Server"
-msgstr ""
+msgstr "重啟伺服器"
 
 #: app/templates/management.html:209 app/templates/management.html:253
 #: app/templates/management.html:342 app/templates/management.html:377
 msgid "name"
-msgstr ""
+msgstr "名字"
 
 #: app/templates/management.html:210 app/templates/management.html:260
 msgid "df_name"
-msgstr ""
+msgstr "df_name"
 
 #: app/templates/management.html:211 app/templates/management.html:267
 #: app/templates/management.html:343 app/templates/management.html:384
 msgid "alias"
-msgstr ""
+msgstr "別名"
 
 #: app/templates/management.html:212 app/templates/management.html:274
 msgid "unit"
-msgstr ""
+msgstr "單位"
 
 #: app/templates/management.html:213 app/templates/management.html:281
 msgid "icon"
-msgstr ""
+msgstr "圖示"
 
 #: app/templates/management.html:214 app/templates/management.html:292
 msgid "color"
-msgstr ""
+msgstr "顏色"
 
 #: app/templates/management.html:244
 msgid "Sensor Management"
-msgstr ""
+msgstr "感測器管理"
 
 #: app/templates/management.html:269
 msgid "Ultraviolet"
@@ -220,15 +222,15 @@ msgstr ""
 
 #: app/templates/management.html:287
 msgid "You can use icon"
-msgstr ""
+msgstr "你可以使用圖示"
 
 #: app/templates/management.html:287
 msgid "here"
-msgstr ""
+msgstr "這裡"
 
 #: app/templates/management.html:298
 msgid "You can use"
-msgstr ""
+msgstr "你可以使用"
 
 #: app/templates/management.html:298
 msgid "bootstrap bg-color"
@@ -236,15 +238,15 @@ msgstr ""
 
 #: app/templates/management.html:329
 msgid "Fields"
-msgstr ""
+msgstr "場域"
 
 #: app/templates/management.html:331
 msgid "Restart DA"
-msgstr ""
+msgstr "重啟 DA"
 
 #: app/templates/management.html:368
 msgid "Field Management"
-msgstr ""
+msgstr "場域管理"
 
 #: app/templates/management.html:391
 msgid "iframe URL"
@@ -252,173 +254,172 @@ msgstr ""
 
 #: app/templates/management.html:398
 msgid "sensors"
-msgstr ""
+msgstr "感測器"
 
 #: app/templates/management.html:573
 msgid "Username can not be empty"
-msgstr ""
+msgstr "使用者名稱不可空白"
 
 #: app/templates/management.html:585
 msgid "Password length must be greater than or equal to 6"
-msgstr ""
+msgstr "密碼長度需大於等於 6"
 
 #: app/templates/management.html:590
 msgid ""
-"Password must contain at least three of them: Uppercase letters, "
-"Lowercase letters, numbers and special symbols"
-msgstr ""
+"Password must contain at least three of them: Uppercase letters, Lowercase "
+"letters, numbers and special symbols"
+msgstr "密碼需至少包含以下其中三種：大寫英文字母、小寫英文字母、數字、特殊符號"
 
 #: app/templates/management.html:603
 msgid "Please enter your username"
-msgstr ""
+msgstr "請輸入使用者名稱"
 
 #: app/templates/management.html:607
 msgid "Please enter your new password"
-msgstr ""
+msgstr "請輸入新的密碼"
 
 #: app/templates/management.html:637
 msgid "You need to \"Restart Server\" to use the new sensor."
-msgstr ""
+msgstr "您需要\"重啟伺服器\"以使用新的感測器。"
 
 #: app/templates/management.html:685
 msgid "Field name cannot be empty."
-msgstr ""
+msgstr "場域名稱不可空白。"
 
 #: app/templates/management.html:693
 msgid "You need to \"Restart DA\" to activate the new field."
-msgstr ""
+msgstr "您需要\"重啟伺服器\"以使用新的場域。"
 
 #: app/templates/management.html:714
 msgid "Related information in DB will also be deleted, are you sure?"
-msgstr ""
+msgstr "在資料庫裡的相關資料將一併刪除，確定嗎？"
 
 #: app/templates/management.html:769 app/templates/management.html:778
 msgid "Restart successfully."
-msgstr ""
+msgstr "重啟成功。"
 
 #: app/templates/management.html:771
 msgid ""
-"The server will restart... if it doesn't recover after a few minutes, "
-"please contact the administrator"
-msgstr ""
+"The server will restart... if it doesn't recover after a few minutes, please "
+"contact the administrator"
+msgstr "伺服器重啟中...如果在幾分鐘內未恢復，聯絡管理員以請求協助"
 
 #: app/templates/profile.html:3
 msgid "Personal Profile"
-msgstr ""
+msgstr "個人檔案"
 
 #: app/templates/profile.html:10
 msgid "Change Password"
-msgstr ""
+msgstr "修改密碼"
 
 #: app/templates/profile.html:17
 msgid "Old Password"
-msgstr ""
+msgstr "現在使用的密碼"
 
 #: app/templates/profile.html:23
 msgid "New Password"
-msgstr ""
+msgstr "新的密碼"
 
 #: app/templates/profile.html:23
 msgid ""
 "Must contain at least three of them: Uppercase letters,\n"
 "               Lowercase letters, numbers and special symbols"
-msgstr ""
+msgstr "密碼需至少包含以下其中三種：大寫英文字母、小寫英文字母、數字、特殊符號"
 
 #: app/templates/profile.html:30
 msgid "Repeat New Password"
-msgstr ""
+msgstr "重覆新的密碼"
 
 #: app/templates/profile.html:38
 msgid "Submit"
-msgstr ""
+msgstr "送出"
 
 #: app/templates/profile.html:47
 msgid "Delete Account"
-msgstr ""
+msgstr "刪除帳號"
 
 #: app/templates/profile.html:50
 msgid "Once you delete an account, there is no going back. Please be certain."
-msgstr ""
+msgstr "一但您刪除帳號，此行為將無法回復，請慎重考慮。"
 
 #: app/templates/profile.html:54
 msgid "Delete"
-msgstr ""
+msgstr "刪除"
 
 #: app/templates/profile.html:67
 msgid "Are you absolutely sure?"
-msgstr ""
+msgstr "您確定要刪除？"
 
 #: app/templates/profile.html:70
 msgid "This action"
-msgstr ""
+msgstr "這個動作"
 
 #: app/templates/profile.html:70
 msgid "cannot"
-msgstr ""
+msgstr "無法"
 
 #: app/templates/profile.html:70
 msgid "be undone. This will permanently delete the"
-msgstr ""
+msgstr "被復原。 這個動作將會永久性的刪除帳號"
 
 #: app/templates/profile.html:70
 msgid "account and remove all related information."
-msgstr ""
+msgstr "及其相關資料。"
 
 #: app/templates/profile.html:72
 msgid ""
 "After deleting this account, you will not be able to log in and use our "
 "services again."
-msgstr ""
+msgstr "在刪除此帳號後，您將無法再次登入以及使用任何相關服務。"
 
 #: app/templates/profile.html:74
 msgid "If you have any questions, please contact our staff."
-msgstr ""
+msgstr "如果有任何問題，請向相關人員請求協助。"
 
 #: app/templates/profile.html:76
 msgid "Please type username and password to confirm."
-msgstr ""
+msgstr "請輸入使用者名稱及密碼做確認。"
 
 #: app/templates/profile.html:81
 msgid "Username"
-msgstr ""
+msgstr "使用者名稱"
 
 #: app/templates/profile.html:87
 msgid "Password"
-msgstr ""
+msgstr "密碼"
 
 #: app/templates/profile.html:95
 msgid "I under stand the consequences, delete this account."
-msgstr ""
+msgstr "我已了解後果，確認刪除此帳戶。"
 
 #: app/templates/base/head.html:4 app/templates/base/header.html:7
 msgid "IoT Environment Monitor System"
-msgstr ""
+msgstr "IoT 環境監控系統"
 
 #: app/templates/base/header.html:5
 msgid "IoT"
-msgstr ""
+msgstr "IoT"
 
 #: app/templates/base/header.html:37
 msgid "Profile"
-msgstr ""
+msgstr "個人資料"
 
 #: app/templates/base/header.html:40
 msgid "Sign out"
-msgstr ""
+msgstr "登出"
 
 #: app/templates/base/sidebar.html:9
 msgid "Dashboard"
-msgstr ""
+msgstr "儀表板"
 
 #: app/templates/base/sidebar.html:10
 msgid "History"
-msgstr ""
+msgstr "歷史資料"
 
 #: app/templates/base/sidebar.html:11
 msgid "Compare"
-msgstr ""
+msgstr "資料比對"
 
 #: app/templates/base/sidebar.html:13
 msgid "Management"
-msgstr ""
-
+msgstr "系統管理"
