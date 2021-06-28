@@ -1,131 +1,133 @@
-# Chinese (Traditional, Taiwan) translations for PROJECT.
+# English translations for PROJECT.
 # Copyright (C) 2021 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# Ksoy <ksoyam95@gmail.com>, 2021.
+# FIRST AUTHOR <ksoyam95@gmail.com>, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.0\n"
 "Report-Msgid-Bugs-To: ksoyam95@gmail.com\n"
 "POT-Creation-Date: 2021-04-22 15:21+0800\n"
-"PO-Revision-Date: 2021-04-20 18:49+0800\n"
+"PO-Revision-Date: 2021-02-03 13:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: zh_Hant_TW\n"
-"Language-Team: zh_Hant_TW <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Language: th\n"
+"Language-Team: th <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.0\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: app/view.py:80
 msgid "username or password is wrong."
-msgstr ""
+msgstr "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
 
 #: app/templates/compare.html:3
 msgid "Data Compare"
-msgstr ""
+msgstr "เปรียบเทียบข้อมูล"
 
 #: app/templates/compare.html:9 app/templates/compare.html:29
 #: app/templates/demo_history.html:8 app/templates/history.html:8
 #: app/templates/management.html:59
 msgid "Field"
-msgstr ""
+msgstr "ฟิลด์"
 
 #: app/templates/compare.html:19 app/templates/compare.html:40
 #: app/templates/demo_history.html:15 app/templates/history.html:17
 #: app/templates/management.html:56
 msgid "Sensor"
-msgstr ""
+msgstr "เซนเซอร์"
 
 #: app/templates/compare.html:31
 msgid "None"
-msgstr ""
+msgstr "ไม่มี"
 
 #: app/templates/compare.html:50
 msgid "StartTime"
-msgstr ""
+msgstr "เวลาเริ่มต้น"
 
 #: app/templates/compare.html:61
 msgid "EndTime"
-msgstr ""
+msgstr "เวลาสิ้นสุด"
 
 #: app/templates/compare.html:72
 msgid "Interval"
-msgstr ""
+msgstr "ช่วงเวลา"
 
 #: app/templates/compare.html:74
 msgid "Second"
-msgstr ""
+msgstr "วินาที"
 
 #: app/templates/compare.html:75
 msgid "Minute"
-msgstr ""
+msgstr "นาที"
 
 #: app/templates/compare.html:76 app/templates/demo_history.html:27
 #: app/templates/history.html:29
 msgid "Hour"
-msgstr ""
+msgstr "ชั่วโมง"
 
 #: app/templates/compare.html:77
 msgid "Day"
-msgstr ""
+msgstr "วัน"
 
 #: app/templates/compare.html:93
 msgid "History Histogram"
-msgstr ""
+msgstr "ฮิสโตแกรมประวัติ"
 
 #: app/templates/dashboard.html:20 app/templates/demo.html:12
 msgid "More info"
-msgstr ""
+msgstr "ข้อมูล (เพิ่มเติม)"
 
 #: app/templates/dashboard.html:42
 msgid "Sensor Dashboard"
-msgstr ""
+msgstr "แผงควบคุมเซ็นเซอร์"
 
 #: app/templates/dashboard.html:51
 msgid "memo"
-msgstr ""
+msgstr "บันทึก"
 
 #: app/templates/demo_history.html:24 app/templates/history.html:26
 msgid "Time Slot"
-msgstr ""
+msgstr "ช่วงเวลา"
 
 #: app/templates/demo_history.html:26 app/templates/history.html:28
 msgid "Hours"
-msgstr ""
+msgstr "ชั่วโมง"
 
 #: app/templates/demo_history.html:28 app/templates/history.html:30
 msgid "Minutes"
-msgstr ""
+msgstr "นาที"
 
 #: app/templates/demo_history.html:38 app/templates/history.html:40
 msgid "Data Chart"
-msgstr ""
+msgstr "แผนภูมิข้อมูล"
 
 #: app/templates/history.html:3
 msgid "Latest 24 hours data history"
-msgstr ""
+msgstr "ประวัติข้อมูลล่าสุด 24 ชั่วโมง"
 
 #: app/templates/login.html:6
 msgid "Environment Monitor System"
-msgstr ""
+msgstr "ระบบตรวจสอบสภาพแวดล้อม"
 
 #: app/templates/login.html:9
 msgid "Sign in to start your session"
-msgstr ""
+msgstr "ลงชื่อเข้าใช้เพื่อเริ่มเซสชันของคุณ"
 
 #: app/templates/management.html:3
+#, fuzzy
 msgid "System Management"
-msgstr ""
+msgstr "การจัดการ"
 
 #: app/templates/management.html:53
 msgid "User"
 msgstr ""
 
 #: app/templates/management.html:73
+#, fuzzy
 msgid "Users"
-msgstr ""
+msgstr "ชั่วโมง"
 
 #: app/templates/management.html:75 app/templates/management.html:199
 #: app/templates/management.html:332
@@ -141,8 +143,9 @@ msgid "superuser"
 msgstr ""
 
 #: app/templates/management.html:112
+#, fuzzy
 msgid "User Management"
-msgstr ""
+msgstr "การจัดการ"
 
 #: app/templates/management.html:129
 msgid "password"
@@ -177,8 +180,9 @@ msgid "Close"
 msgstr ""
 
 #: app/templates/management.html:195
+#, fuzzy
 msgid "Sensors"
-msgstr ""
+msgstr "เซนเซอร์"
 
 #: app/templates/management.html:198
 msgid "Restart Server"
@@ -203,16 +207,18 @@ msgid "unit"
 msgstr ""
 
 #: app/templates/management.html:213 app/templates/management.html:281
+#, fuzzy
 msgid "icon"
-msgstr ""
+msgstr "วินาที"
 
 #: app/templates/management.html:214 app/templates/management.html:292
 msgid "color"
 msgstr ""
 
 #: app/templates/management.html:244
+#, fuzzy
 msgid "Sensor Management"
-msgstr ""
+msgstr "การจัดการ"
 
 #: app/templates/management.html:269
 msgid "Ultraviolet"
@@ -235,24 +241,27 @@ msgid "bootstrap bg-color"
 msgstr ""
 
 #: app/templates/management.html:329
+#, fuzzy
 msgid "Fields"
-msgstr ""
+msgstr "ฟิลด์"
 
 #: app/templates/management.html:331
 msgid "Restart DA"
 msgstr ""
 
 #: app/templates/management.html:368
+#, fuzzy
 msgid "Field Management"
-msgstr ""
+msgstr "การจัดการ"
 
 #: app/templates/management.html:391
 msgid "iframe URL"
 msgstr ""
 
 #: app/templates/management.html:398
+#, fuzzy
 msgid "sensors"
-msgstr ""
+msgstr "เซนเซอร์"
 
 #: app/templates/management.html:573
 msgid "Username can not be empty"
@@ -375,8 +384,9 @@ msgid "If you have any questions, please contact our staff."
 msgstr ""
 
 #: app/templates/profile.html:76
+#, fuzzy
 msgid "Please type username and password to confirm."
-msgstr ""
+msgstr "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
 
 #: app/templates/profile.html:81
 msgid "Username"
@@ -392,7 +402,7 @@ msgstr ""
 
 #: app/templates/base/head.html:4 app/templates/base/header.html:7
 msgid "IoT Environment Monitor System"
-msgstr ""
+msgstr "ระบบตรวจสอบสภาพแวดล้อม IoT"
 
 #: app/templates/base/header.html:5
 msgid "IoT"
@@ -400,25 +410,25 @@ msgstr ""
 
 #: app/templates/base/header.html:37
 msgid "Profile"
-msgstr ""
+msgstr "ข้อมูลส่วนตัว"
 
 #: app/templates/base/header.html:40
 msgid "Sign out"
-msgstr ""
+msgstr "ออกจากระบบ"
 
 #: app/templates/base/sidebar.html:9
 msgid "Dashboard"
-msgstr ""
+msgstr "แผงควบคุม"
 
 #: app/templates/base/sidebar.html:10
 msgid "History"
-msgstr ""
+msgstr "ประวัติ\"(การใช้งาน"
 
 #: app/templates/base/sidebar.html:11
 msgid "Compare"
-msgstr ""
+msgstr "\"เปรียบเทียบ"
 
 #: app/templates/base/sidebar.html:13
 msgid "Management"
-msgstr ""
+msgstr "การจัดการ"
 
