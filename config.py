@@ -36,4 +36,4 @@ SESSION_COOKIE_SECURE = True
 
 RESTART_SERVER_PORT = 5001
 
-i18n = {'English': 'en', '中文': 'zh_TW', 'ไทย': 'th'}
+i18n = {'English': 'en', '中文': 'zh_Hant_TW', 'ไทย': 'th'}
