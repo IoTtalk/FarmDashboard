@@ -1,21 +1,21 @@
 FarmDashboard
 =============
 
-* ~~`詳細安裝說明 <https://hackmd.io/5LqVk4MBSCinRXQderD_Jw>`~~ (此文件已久未更新)
+* ~~[詳細安裝說明](https://hackmd.io/5LqVk4MBSCinRXQderD_Jw)~~ (此文件已久未更新)
 
-* `Dashboard操作教學影片 <https://drive.google.com/drive/u/1/folders/13AyBQ-3m_RuPOW1J2aR1yD0svUKuEFdg>`_
+* [Dashboard操作教學影片](https://drive.google.com/drive/u/1/folders/13AyBQ-3m_RuPOW1J2aR1yD0svUKuEFdg>)
 
-***Field的名稱不可以包含特如符號如 . $ # & @ 等等，請使用全英文字母***
+***Field 的名稱不可以包含特如符號如 . $ # & @ 等等，請使用全英文字母***
 
 簡易安裝說明
 ------------
 
-1. 安裝好 **tmux**：
+1. 安裝 **tmux**：
     ubuntu: 
     ```sh
     apt-get install tmux
     ```
-2. 安裝相關需要套件：
+2. 安裝 python 相關需要套件：
     ```sh
     sudo pip3 install -r requirements.txt`` 
     ```
@@ -24,7 +24,7 @@ FarmDashboard
         ```sh
         apt-get install mysql-server
         ```
-    * 新增 MySQL 內的 user，允許連線 IP，與資料庫( `db_name` )，以及權限 (注意2)
+    * 新增 MySQL 內的 user，允許連線 IP，與資料庫( **db_name** )，以及權限 (注意2)
 4. 修改 **config.py**，根據內部註解依序填上資料，主要為設定 DB 路徑
     * 若選擇使用 MySQL：
         依 *注意2* 填 **DB_CONFIG**
@@ -104,28 +104,44 @@ use `{{ _('') }}` to the needing change words.
 
 * 首次使用
 
-  1. 將所有 python 及 html 所用到的字串頡取出來：
-      `pybabel extract -F app/babel.cfg -o messages.pot .`
+    1. 將所有 python 及 html 所用到的字串頡取出來：
+        ```sh
+        pybabel extract -F app/babel.cfg -o messages.pot .
+        ```
 
-  2. 建立字典檔 (儲放於 `app/translations` 下)：
-      `pybabel init -i messages.pot -d app/translations/ -l <lang_code>`
+    2. 建立字典檔 (儲放於 `app/translations` 下)：
+        ```sh
+        pybabel init -i messages.pot -d app/translations/ -l <lang_code>
+        ```
 
-  3. 翻譯文字，修改前一步產生的 po 檔，翻譯對應語系的文字，檔案路徑為：
-      `app/translations/<lang_code>/LC_MESSAGES/messages.po`
+    3. 翻譯文字，修改前一步產生的 po 檔，翻譯對應語系的文字，檔案路徑為：
+        ```sh
+        app/translations/<lang_code>/LC_MESSAGES/messages.po
+        ```
 
-  4. 編譯字典 po 檔成 mo 檔，供 babel 使用：
-      `pybabel compile -f -d app/translations`
+    4. 編譯字典 po 檔成 mo 檔，供 babel 使用：
+        ```sh
+        pybabel compile -f -d app/translations
+        ```
 
 * 更新字典檔 (與首次使用相同，差別在於第二步的 update 用 `update` 取代 `init`)
 
-  1. 將所有 python 及 html 所用到的字串頡取出來：
-      `pybabel extract -F app/babel.cfg -o messages.pot .`
+    1. 將所有 python 及 html 所用到的字串頡取出來：
+        ```sh
+        pybabel extract -F app/babel.cfg -o messages.pot .
+        ```
 
-  2. 更新字典檔：
-      `pybabel update -i messages.pot -d app/translations/ -l <lang_code>`
+    2. 更新字典檔：
+        ```sh
+        pybabel update -i messages.pot -d app/translations/ -l <lang_code>
+        ```
 
-  3. 翻譯文字，修改前一步產生的 po 檔，翻譯對應語系的文字，檔案路徑為：
-      `app/translations/<lang_code>/LC_MESSAGES/messages.po`
+    3. 翻譯文字，修改前一步產生的 po 檔，翻譯對應語系的文字，檔案路徑為：
+        ```sh
+        app/translations/<lang_code>/LC_MESSAGES/messages.po
+        ```
 
-  4. 編譯字典 po 檔成 mo 檔，供 babel 使用：
-      `pybabel compile -f -d app/translations`
+    4. 編譯字典 po 檔成 mo 檔，供 babel 使用：
+        ```sh
+        pybabel compile -f -d app/translations
+        ```
