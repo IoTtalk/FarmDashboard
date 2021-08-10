@@ -1,5 +1,4 @@
-FarmDashboard
-=============
+# FarmDashboard
 
 * ~~[詳細安裝說明](https://hackmd.io/5LqVk4MBSCinRXQderD_Jw)~~ (此文件已久未更新)
 
@@ -7,37 +6,55 @@ FarmDashboard
 
 ***Field 的名稱不可以包含特如符號如 . $ # & @ 等等，請使用全英文字母***
 
-簡易安裝說明
-------------
+## 簡易安裝說明
 
 1. 安裝 **tmux**：
+
     ubuntu: 
+
     ```sh
     apt-get install tmux
     ```
+
 2. 安裝 python 相關需要套件：
+
     ```sh
     sudo pip3 install -r requirements.txt`` 
     ```
+
 3. (optional) 使用 **MySQL-server**，若不使用可跳過此步並參考下一步的 SQLite 部份。
     * 安裝 MySQL (version >= 5.7) (注意1)
+
         ```sh
         apt-get install mysql-server
         ```
+
     * 新增 MySQL 內的 user，允許連線 IP，與資料庫( **db_name** )，以及權限 (注意2)
+
 4. 修改 **config.py**，根據內部註解依序填上資料，主要為設定 DB 路徑
+
     * 若選擇使用 MySQL：
+
         依 *注意2* 填 **DB_CONFIG**
+
     * 若選擇使用 SQLite：
+
         **DB_CONFIG = 'sqlite+pysqlite:///db.sqlite3'**
-5. 修改 **db/db_init.json** (設定 **admin** 密碼)
+
+5. 修改 **db/db_init.json**，設定 **admin** 密碼
+
 6. 資料庫初始化：
+
     ```sh
     python3 -m db.db init
     ```
+
     * 注意：此步只能執行一次 (只會新加入，並不會抹除舊的資料，所以執行一次以上會錯誤)
+
     * 在MAC上面使用時可能會遇到加密錯誤的錯誤訊息，這時需要安裝套件 cryptography
+
 8. 啟動 Server：
+
     ```sh
     bash startup.sh
     ```
