@@ -9,14 +9,14 @@
 <thead>
   <tr>
     <th></th>
-    <th>name</th>
-    <th>df_name</th>
-    <th>alias</th>
-    <th>unit</th>
-    <th>icon</th>
-    <th>bg_color</th>
-    <th>alert_min</th>
-    <th>alert_max</th>
+    <th>{{ _('name') }}</th>
+    <th>{{ _('df_name') }}</th>
+    <th>{{ _('alias') }}</th>
+    <th>{{ _('unit') }}</th>
+    <th>{{ _('icon') }}</th>
+    <th>{{ _('bg_color') }}</th>
+    <th>{{ _('alert_min') }}</th>
+    <th>{{ _('alert_max') }}</th>
   </tr>
 </thead>
 <draggable :element="'tbody'" :list="sensors">
@@ -120,7 +120,7 @@
                   <div class="form-group">
                     <label for="user-username" class="col-sm-2 control-label">{{ _('username') }}</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="user-username" placeholder="username" v-model="temp_user.username" @blur="handle_blur_event" required>
+                      <input type="text" class="form-control" id="user-username" placeholder="{{ _('username') }}" v-model="temp_user.username" @blur="handle_blur_event" required>
                       <span class="text-danger" v-if="invalid_username">{{ '{{' }}username_error_msg{{ '}}' }}</span>
                     </div>
                   </div>
@@ -128,7 +128,7 @@
                   <div class="form-group" v-if="temp_user.id === ''">
                     <label for="user-password" class="col-sm-2 control-label">{{ _('password') }}</label>
                     <div class="col-sm-10">
-                      <input type="password" class="form-control" id="user-password" placeholder="password" @input="validate_password" @blur="handle_blur_event" v-model="temp_user.password" required>
+                      <input type="password" class="form-control" id="user-password" placeholder="{{ _('password') }}" @input="validate_password" @blur="handle_blur_event" v-model="temp_user.password" required>
                       <span class="text-danger" v-if="invalid_password">{{ '{{' }}password_error_msg{{ '}}' }}</span>
                     </div>
                   </div>
@@ -252,28 +252,28 @@
                   <div class="form-group">
                     <label for="sensor-name" class="col-sm-2 control-label">{{ _('name') }}</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="sensor-name" placeholder="name, ex: uv" v-model="temp_sensor.name" required>
+                      <input type="text" class="form-control" id="sensor-name" placeholder="{{ _('name') }}, ex: uv" v-model="temp_sensor.name" required>
                     </div>
                   </div>
                   <!-- sensor.df_name -->
                   <div class="form-group">
                     <label for="sensor-name" class="col-sm-2 control-label">{{ _('df_name') }}</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="sensor-df_name" placeholder="df name, ex: UV1" v-model="temp_sensor.df_name" required>
+                      <input type="text" class="form-control" id="sensor-df_name" placeholder="{{ _('df_name') }}, ex: UV1" v-model="temp_sensor.df_name" required>
                     </div>
                   </div>
                   <!-- sensor.alias -->
                   <div class="form-group">
                     <label for="sensor-name" class="col-sm-2 control-label">{{ _('alias') }}</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="sensor-alias" placeholder="alias, ex: {{ _('Ultraviolet') }}" v-model="temp_sensor.alias" required>
+                      <input type="text" class="form-control" id="sensor-alias" placeholder="{{ _('alias') }}, ex: {{ _('Ultraviolet') }}" v-model="temp_sensor.alias" required>
                     </div>
                   </div>
                   <!-- sensor.unit -->
                   <div class="form-group">
                     <label for="sensor-unit" class="col-sm-2 control-label">{{ _('unit') }}</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="sensor-unit" placeholder="unit, ex: mw/cm²" v-model="temp_sensor.unit">
+                      <input type="text" class="form-control" id="sensor-unit" placeholder="{{ _('unit') }}, ex: mw/cm²" v-model="temp_sensor.unit">
                     </div>
                   </div>
                   <!-- sensor.icon -->
@@ -281,7 +281,7 @@
                     <label for="sensor-icon" class="col-sm-2 control-label">{{ _('icon') }}</label>
                     <div class="col-sm-10">
                       <div class="input-group">
-                        <input type="text" class="form-control" id="sensor-icon" placeholder="icon, ex: ion-android-sunny" v-model="temp_sensor.icon">
+                        <input type="text" class="form-control" id="sensor-icon" placeholder="{{ _('icon') }}, ex: ion-android-sunny" v-model="temp_sensor.icon">
                         <span class="input-group-addon"><i class="fa" :class="temp_sensor.icon"></i></span>
                       </div>
                       <span>{{ _('You can use icon') }} <a href="https://adminlte.io/themes/AdminLTE/pages/UI/icons.html" target="_blank">{{ _('here') }}</a>.</span>
@@ -292,7 +292,7 @@
                     <label for="sensor-bg_color" class="col-sm-2 control-label">{{ _('color') }}</label>
                     <div class="col-sm-10">
                       <div class="input-group">
-                        <input type="text" class="form-control" id="sensor-bg_color" placeholder="background color, ex: bg-aqua" v-model="temp_sensor.bg_color">
+                        <input type="text" class="form-control" id="sensor-bg_color" placeholder="{{ _('background') }} {{ _('color') }}, ex: bg-aqua" v-model="temp_sensor.bg_color">
                         <span class="input-group-addon" :class="temp_sensor.bg_color"><i class="fa"></i></span>
                       </div>
                       <span>{{ _('You can use') }} <a href="http://basscss.com/v7/docs/background-colors/" target="_blank">{{ _('bootstrap bg-color') }}</a>.</span>
@@ -376,21 +376,21 @@
                   <div class="form-group">
                     <label for="field-name" class="col-sm-2 control-label">{{ _('name') }}</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="field-name" placeholder="name, ex: bao1" v-model="temp_field.name" required>
+                      <input type="text" class="form-control" id="field-name" placeholder="{{ _('name') }}, ex: bao1" v-model="temp_field.name" required>
                     </div>
                   </div>
                   <!-- field.alias -->
                   <div class="form-group">
                     <label for="field-alias" class="col-sm-2 control-label">{{ _('alias') }}</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="field-alias" placeholder="alias, ex: 寶山一場" v-model="temp_field.alias" required>
+                      <input type="text" class="form-control" id="field-alias" placeholder="{{ _('alias') }}, ex: 寶山一場" v-model="temp_field.alias" required>
                     </div>
                   </div>
                   <!-- field.iframe -->
                   <div class="form-group">
                     <label for="field-iframe" class="col-sm-2 control-label">{{ _('iframe URL') }}</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="field-iframe" placeholder="iframe URL, ex: http://tw.google.com" v-model="temp_field.iframe">
+                      <input type="text" class="form-control" id="field-iframe" placeholder="{{ _('iframe URL') }}, ex: http://tw.google.com" v-model="temp_field.iframe">
                     </div>
                   </div>
                   <!-- field.sensors -->

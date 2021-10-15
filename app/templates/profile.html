@@ -15,7 +15,7 @@
           <input id="csrf-token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
           <div class="form-group">
             <label for="oldpwd">{{ _('Old Password') }}</label>
-            <input type="password" class="form-control" id="oldpwd" placeholder="Old Password" required>
+            <input type="password" class="form-control" id="oldpwd" placeholder="{{ _('Old Password') }}" required>
             <span id="oldpwd-warning" class="text-danger"></span>
           </div>
           <div class="form-group">
@@ -23,12 +23,12 @@
               {{ _('New Password') }}({{ _('Must contain at least three of them: Uppercase letters,
                Lowercase letters, numbers and special symbols') }})
             </label>
-            <input type="password" class="form-control" id="newpwd" placeholder="New Password" required>
+            <input type="password" class="form-control" id="newpwd" placeholder="{{ _('New Password') }}" required>
             <span id="newpwd-warning" class="text-danger"></span>
           </div>
           <div class="form-group">
             <label for="repnewpwd">{{ _('Repeat New Password') }}</label>
-            <input type="password" class="form-control" id="repnewpwd" placeholder="Repeat New Password" required>
+            <input type="password" class="form-control" id="repnewpwd" placeholder="{{ _('Repeat New Password') }}" required>
             <span id="repnewpwd-warning" class="text-danger"></span>
           </div>
         </form>
@@ -79,13 +79,13 @@
             <input type="hidden" id="username" value="{{username}}"/>
             <div class="form-group">
               <label for="delacc">{{ _('Username') }}</label>
-              <input type="text" class="form-control" id="delacc" placeholder="Username" required>
+              <input type="text" class="form-control" id="delacc" placeholder="{{ _('Username') }}" required>
               <span id="delacc-warning" class="text-danger"></span>
             </div>
 
             <div class="form-group">
               <label for="delpwd">{{ _('Password') }}</label>
-              <input type="password" class="form-control" id="delpwd" placeholder="Password" required>
+              <input type="password" class="form-control" id="delpwd" placeholder="{{ _('Password') }}" required>
               <span id="delpwd-warning" class="text-danger"></span>
             </div>
           </form>
