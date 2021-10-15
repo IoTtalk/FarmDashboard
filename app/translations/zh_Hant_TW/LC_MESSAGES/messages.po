@@ -5,20 +5,20 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0.0\n"
+"Project-Id-Version:  1.0.0\n"
 "Report-Msgid-Bugs-To: ksoyam95@gmail.com\n"
-"POT-Creation-Date: 2021-04-22 15:21+0800\n"
+"POT-Creation-Date: 2021-10-15 14:50+0800\n"
 "PO-Revision-Date: 2021-04-20 18:49+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hant_TW\n"
 "Language-Team: zh_Hant_TW <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.9.0\n"
 
-#: app/view.py:80
+#: app/view.py:86
 msgid "username or password is wrong."
 msgstr "使用者名稱或密碼錯誤。"
 
@@ -27,6 +27,7 @@ msgid "Data Compare"
 msgstr "資料比對"
 
 #: app/templates/compare.html:9 app/templates/compare.html:29
+#: app/templates/compare.html:83 app/templates/compare.html:84
 #: app/templates/demo_history.html:8 app/templates/history.html:8
 #: app/templates/management.html:59
 msgid "Field"
@@ -71,6 +72,14 @@ msgstr "小時"
 msgid "Day"
 msgstr "日"
 
+#: app/templates/compare.html:82
+msgid "Query"
+msgstr "查詢"
+
+#: app/templates/compare.html:83 app/templates/compare.html:84
+msgid "Download"
+msgstr "下載"
+
 #: app/templates/compare.html:93
 msgid "History Histogram"
 msgstr "歷史圖表"
@@ -79,11 +88,11 @@ msgstr "歷史圖表"
 msgid "More info"
 msgstr "更多資訊"
 
-#: app/templates/dashboard.html:42
+#: app/templates/dashboard.html:46
 msgid "Sensor Dashboard"
 msgstr "感測器看板"
 
-#: app/templates/dashboard.html:51
+#: app/templates/dashboard.html:55
 msgid "memo"
 msgstr "備註"
 
@@ -119,6 +128,48 @@ msgstr "登入以開始使用"
 msgid "System Management"
 msgstr "系統管理"
 
+#: app/templates/management.html:12 app/templates/management.html:209
+#: app/templates/management.html:253 app/templates/management.html:255
+#: app/templates/management.html:342 app/templates/management.html:377
+#: app/templates/management.html:379
+msgid "name"
+msgstr "名字"
+
+#: app/templates/management.html:13 app/templates/management.html:210
+#: app/templates/management.html:260 app/templates/management.html:262
+msgid "df_name"
+msgstr "df_name"
+
+#: app/templates/management.html:14 app/templates/management.html:211
+#: app/templates/management.html:267 app/templates/management.html:269
+#: app/templates/management.html:343 app/templates/management.html:384
+#: app/templates/management.html:386
+msgid "alias"
+msgstr "別名"
+
+#: app/templates/management.html:15 app/templates/management.html:212
+#: app/templates/management.html:274 app/templates/management.html:276
+msgid "unit"
+msgstr "單位"
+
+#: app/templates/management.html:16 app/templates/management.html:213
+#: app/templates/management.html:281 app/templates/management.html:284
+msgid "icon"
+msgstr "圖示"
+
+#: app/templates/management.html:17
+#, fuzzy
+msgid "bg_color"
+msgstr "顏色"
+
+#: app/templates/management.html:18
+msgid "alert_min"
+msgstr ""
+
+#: app/templates/management.html:19
+msgid "alert_max"
+msgstr ""
+
 #: app/templates/management.html:53
 msgid "User"
 msgstr "使用者"
@@ -133,6 +184,7 @@ msgid "add"
 msgstr "新增"
 
 #: app/templates/management.html:86 app/templates/management.html:121
+#: app/templates/management.html:123
 msgid "username"
 msgstr "使用者名稱"
 
@@ -144,7 +196,7 @@ msgstr "超級使用者"
 msgid "User Management"
 msgstr "使用者管理"
 
-#: app/templates/management.html:129
+#: app/templates/management.html:129 app/templates/management.html:131
 msgid "password"
 msgstr "密碼"
 
@@ -184,29 +236,8 @@ msgstr "感測器"
 msgid "Restart Server"
 msgstr "重啟伺服器"
 
-#: app/templates/management.html:209 app/templates/management.html:253
-#: app/templates/management.html:342 app/templates/management.html:377
-msgid "name"
-msgstr "名字"
-
-#: app/templates/management.html:210 app/templates/management.html:260
-msgid "df_name"
-msgstr "df_name"
-
-#: app/templates/management.html:211 app/templates/management.html:267
-#: app/templates/management.html:343 app/templates/management.html:384
-msgid "alias"
-msgstr "別名"
-
-#: app/templates/management.html:212 app/templates/management.html:274
-msgid "unit"
-msgstr "單位"
-
-#: app/templates/management.html:213 app/templates/management.html:281
-msgid "icon"
-msgstr "圖示"
-
 #: app/templates/management.html:214 app/templates/management.html:292
+#: app/templates/management.html:295
 msgid "color"
 msgstr "顏色"
 
@@ -216,7 +247,7 @@ msgstr "感測器管理"
 
 #: app/templates/management.html:269
 msgid "Ultraviolet"
-msgstr ""
+msgstr "紫外線"
 
 #: app/templates/management.html:287
 msgid "You can use icon"
@@ -225,6 +256,10 @@ msgstr "你可以使用圖示"
 #: app/templates/management.html:287
 msgid "here"
 msgstr "這裡"
+
+#: app/templates/management.html:295
+msgid "background"
+msgstr "背景"
 
 #: app/templates/management.html:298
 msgid "You can use"
@@ -246,7 +281,7 @@ msgstr "重啟 DA"
 msgid "Field Management"
 msgstr "場域管理"
 
-#: app/templates/management.html:391
+#: app/templates/management.html:391 app/templates/management.html:393
 msgid "iframe URL"
 msgstr ""
 
@@ -263,9 +298,8 @@ msgid "Password length must be greater than or equal to 6"
 msgstr "密碼長度需大於等於 6"
 
 #: app/templates/management.html:590
-msgid ""
-"Password must contain at least three of them: Uppercase letters, Lowercase "
-"letters, numbers and special symbols"
+msgid "Password must contain at least three of them: Uppercase letters, "
+"Lowercase letters, numbers and special symbols"
 msgstr "密碼需至少包含以下其中三種：大寫英文字母、小寫英文字母、數字、特殊符號"
 
 #: app/templates/management.html:603
@@ -277,16 +311,16 @@ msgid "Please enter your new password"
 msgstr "請輸入新的密碼"
 
 #: app/templates/management.html:637
-msgid "You need to \"Restart Server\" to use the new sensor."
-msgstr "您需要\"重啟伺服器\"以使用新的感測器。"
+msgid "You need to 'Restart Server' to use the new sensor."
+msgstr "您需要 '重啟伺服器' 以使用新的感測器。"
 
 #: app/templates/management.html:685
 msgid "Field name cannot be empty."
 msgstr "場域名稱不可空白。"
 
 #: app/templates/management.html:693
-msgid "You need to \"Restart DA\" to activate the new field."
-msgstr "您需要\"重啟伺服器\"以使用新的場域。"
+msgid "You need to 'Restart DA' to activate the new field."
+msgstr "您需要 '重啟伺服器' 以使用新的場域。"
 
 #: app/templates/management.html:714
 msgid "Related information in DB will also be deleted, are you sure?"
@@ -297,9 +331,8 @@ msgid "Restart successfully."
 msgstr "重啟成功。"
 
 #: app/templates/management.html:771
-msgid ""
-"The server will restart... if it doesn't recover after a few minutes, please "
-"contact the administrator"
+msgid "The server will restart... if it doesn't recover after a few minutes, "
+"please contact the administrator"
 msgstr "伺服器重啟中...如果在幾分鐘內未恢復，聯絡管理員以請求協助"
 
 #: app/templates/profile.html:3
@@ -310,21 +343,20 @@ msgstr "個人檔案"
 msgid "Change Password"
 msgstr "修改密碼"
 
-#: app/templates/profile.html:17
+#: app/templates/profile.html:17 app/templates/profile.html:18
 msgid "Old Password"
 msgstr "現在使用的密碼"
 
-#: app/templates/profile.html:23
+#: app/templates/profile.html:23 app/templates/profile.html:26
 msgid "New Password"
 msgstr "新的密碼"
 
 #: app/templates/profile.html:23
-msgid ""
-"Must contain at least three of them: Uppercase letters,\n"
+msgid "Must contain at least three of them: Uppercase letters,\n"
 "               Lowercase letters, numbers and special symbols"
 msgstr "密碼需至少包含以下其中三種：大寫英文字母、小寫英文字母、數字、特殊符號"
 
-#: app/templates/profile.html:30
+#: app/templates/profile.html:30 app/templates/profile.html:31
 msgid "Repeat New Password"
 msgstr "重覆新的密碼"
 
@@ -365,8 +397,7 @@ msgid "account and remove all related information."
 msgstr "及其相關資料。"
 
 #: app/templates/profile.html:72
-msgid ""
-"After deleting this account, you will not be able to log in and use our "
+msgid "After deleting this account, you will not be able to log in and use our "
 "services again."
 msgstr "在刪除此帳號後，您將無法再次登入以及使用任何相關服務。"
 
@@ -378,17 +409,29 @@ msgstr "如果有任何問題，請向相關人員請求協助。"
 msgid "Please type username and password to confirm."
 msgstr "請輸入使用者名稱及密碼做確認。"
 
-#: app/templates/profile.html:81
+#: app/templates/profile.html:81 app/templates/profile.html:82
 msgid "Username"
 msgstr "使用者名稱"
 
-#: app/templates/profile.html:87
+#: app/templates/profile.html:87 app/templates/profile.html:88
 msgid "Password"
 msgstr "密碼"
 
 #: app/templates/profile.html:95
 msgid "I under stand the consequences, delete this account."
 msgstr "我已了解後果，確認刪除此帳戶。"
+
+#: app/templates/base/footer.html:3
+msgid "Version"
+msgstr "版本"
+
+#: app/templates/base/footer.html:5
+msgid "Copyright"
+msgstr ""
+
+#: app/templates/base/footer.html:5
+msgid "All rights reserved."
+msgstr ""
 
 #: app/templates/base/head.html:4 app/templates/base/header.html:7
 msgid "IoT Environment Monitor System"
@@ -398,11 +441,11 @@ msgstr "IoT 環境監控系統"
 msgid "IoT"
 msgstr "IoT"
 
-#: app/templates/base/header.html:37
+#: app/templates/base/header.html:47
 msgid "Profile"
 msgstr "個人資料"
 
-#: app/templates/base/header.html:40
+#: app/templates/base/header.html:50
 msgid "Sign out"
 msgstr "登出"
 
@@ -421,3 +464,4 @@ msgstr "資料比對"
 #: app/templates/base/sidebar.html:13
 msgid "Management"
 msgstr "系統管理"
+
