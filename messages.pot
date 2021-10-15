@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-04-22 15:21+0800\n"
+"POT-Creation-Date: 2021-10-15 14:50+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#: app/view.py:80
+#: app/view.py:86
 msgid "username or password is wrong."
 msgstr ""
 
@@ -26,6 +26,7 @@ msgid "Data Compare"
 msgstr ""
 
 #: app/templates/compare.html:9 app/templates/compare.html:29
+#: app/templates/compare.html:83 app/templates/compare.html:84
 #: app/templates/demo_history.html:8 app/templates/history.html:8
 #: app/templates/management.html:59
 msgid "Field"
@@ -70,6 +71,14 @@ msgstr ""
 msgid "Day"
 msgstr ""
 
+#: app/templates/compare.html:82
+msgid "Query"
+msgstr ""
+
+#: app/templates/compare.html:83 app/templates/compare.html:84
+msgid "Download"
+msgstr ""
+
 #: app/templates/compare.html:93
 msgid "History Histogram"
 msgstr ""
@@ -78,11 +87,11 @@ msgstr ""
 msgid "More info"
 msgstr ""
 
-#: app/templates/dashboard.html:42
+#: app/templates/dashboard.html:46
 msgid "Sensor Dashboard"
 msgstr ""
 
-#: app/templates/dashboard.html:51
+#: app/templates/dashboard.html:55
 msgid "memo"
 msgstr ""
 
@@ -118,6 +127,47 @@ msgstr ""
 msgid "System Management"
 msgstr ""
 
+#: app/templates/management.html:12 app/templates/management.html:209
+#: app/templates/management.html:253 app/templates/management.html:255
+#: app/templates/management.html:342 app/templates/management.html:377
+#: app/templates/management.html:379
+msgid "name"
+msgstr ""
+
+#: app/templates/management.html:13 app/templates/management.html:210
+#: app/templates/management.html:260 app/templates/management.html:262
+msgid "df_name"
+msgstr ""
+
+#: app/templates/management.html:14 app/templates/management.html:211
+#: app/templates/management.html:267 app/templates/management.html:269
+#: app/templates/management.html:343 app/templates/management.html:384
+#: app/templates/management.html:386
+msgid "alias"
+msgstr ""
+
+#: app/templates/management.html:15 app/templates/management.html:212
+#: app/templates/management.html:274 app/templates/management.html:276
+msgid "unit"
+msgstr ""
+
+#: app/templates/management.html:16 app/templates/management.html:213
+#: app/templates/management.html:281 app/templates/management.html:284
+msgid "icon"
+msgstr ""
+
+#: app/templates/management.html:17
+msgid "bg_color"
+msgstr ""
+
+#: app/templates/management.html:18
+msgid "alert_min"
+msgstr ""
+
+#: app/templates/management.html:19
+msgid "alert_max"
+msgstr ""
+
 #: app/templates/management.html:53
 msgid "User"
 msgstr ""
@@ -132,6 +182,7 @@ msgid "add"
 msgstr ""
 
 #: app/templates/management.html:86 app/templates/management.html:121
+#: app/templates/management.html:123
 msgid "username"
 msgstr ""
 
@@ -143,7 +194,7 @@ msgstr ""
 msgid "User Management"
 msgstr ""
 
-#: app/templates/management.html:129
+#: app/templates/management.html:129 app/templates/management.html:131
 msgid "password"
 msgstr ""
 
@@ -183,29 +234,8 @@ msgstr ""
 msgid "Restart Server"
 msgstr ""
 
-#: app/templates/management.html:209 app/templates/management.html:253
-#: app/templates/management.html:342 app/templates/management.html:377
-msgid "name"
-msgstr ""
-
-#: app/templates/management.html:210 app/templates/management.html:260
-msgid "df_name"
-msgstr ""
-
-#: app/templates/management.html:211 app/templates/management.html:267
-#: app/templates/management.html:343 app/templates/management.html:384
-msgid "alias"
-msgstr ""
-
-#: app/templates/management.html:212 app/templates/management.html:274
-msgid "unit"
-msgstr ""
-
-#: app/templates/management.html:213 app/templates/management.html:281
-msgid "icon"
-msgstr ""
-
 #: app/templates/management.html:214 app/templates/management.html:292
+#: app/templates/management.html:295
 msgid "color"
 msgstr ""
 
@@ -223,6 +253,10 @@ msgstr ""
 
 #: app/templates/management.html:287
 msgid "here"
+msgstr ""
+
+#: app/templates/management.html:295
+msgid "background"
 msgstr ""
 
 #: app/templates/management.html:298
@@ -245,7 +279,7 @@ msgstr ""
 msgid "Field Management"
 msgstr ""
 
-#: app/templates/management.html:391
+#: app/templates/management.html:391 app/templates/management.html:393
 msgid "iframe URL"
 msgstr ""
 
@@ -276,7 +310,7 @@ msgid "Please enter your new password"
 msgstr ""
 
 #: app/templates/management.html:637
-msgid "You need to \"Restart Server\" to use the new sensor."
+msgid "You need to 'Restart Server' to use the new sensor."
 msgstr ""
 
 #: app/templates/management.html:685
@@ -284,7 +318,7 @@ msgid "Field name cannot be empty."
 msgstr ""
 
 #: app/templates/management.html:693
-msgid "You need to \"Restart DA\" to activate the new field."
+msgid "You need to 'Restart DA' to activate the new field."
 msgstr ""
 
 #: app/templates/management.html:714
@@ -309,11 +343,11 @@ msgstr ""
 msgid "Change Password"
 msgstr ""
 
-#: app/templates/profile.html:17
+#: app/templates/profile.html:17 app/templates/profile.html:18
 msgid "Old Password"
 msgstr ""
 
-#: app/templates/profile.html:23
+#: app/templates/profile.html:23 app/templates/profile.html:26
 msgid "New Password"
 msgstr ""
 
@@ -323,7 +357,7 @@ msgid ""
 "               Lowercase letters, numbers and special symbols"
 msgstr ""
 
-#: app/templates/profile.html:30
+#: app/templates/profile.html:30 app/templates/profile.html:31
 msgid "Repeat New Password"
 msgstr ""
 
@@ -377,16 +411,28 @@ msgstr ""
 msgid "Please type username and password to confirm."
 msgstr ""
 
-#: app/templates/profile.html:81
+#: app/templates/profile.html:81 app/templates/profile.html:82
 msgid "Username"
 msgstr ""
 
-#: app/templates/profile.html:87
+#: app/templates/profile.html:87 app/templates/profile.html:88
 msgid "Password"
 msgstr ""
 
 #: app/templates/profile.html:95
 msgid "I under stand the consequences, delete this account."
+msgstr ""
+
+#: app/templates/base/footer.html:3
+msgid "Version"
+msgstr ""
+
+#: app/templates/base/footer.html:5
+msgid "Copyright"
+msgstr ""
+
+#: app/templates/base/footer.html:5
+msgid "All rights reserved."
 msgstr ""
 
 #: app/templates/base/head.html:4 app/templates/base/header.html:7
@@ -397,11 +443,11 @@ msgstr ""
 msgid "IoT"
 msgstr ""
 
-#: app/templates/base/header.html:37
+#: app/templates/base/header.html:47
 msgid "Profile"
 msgstr ""
 
-#: app/templates/base/header.html:40
+#: app/templates/base/header.html:50
 msgid "Sign out"
 msgstr ""
 
