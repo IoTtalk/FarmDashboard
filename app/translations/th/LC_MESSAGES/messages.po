@@ -1,13 +1,13 @@
-# English translations for PROJECT.
+# English translations for .
 # Copyright (C) 2021 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
+# This file is distributed under the same license as the  project.
 # FIRST AUTHOR <ksoyam95@gmail.com>, 2021.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0.0\n"
+"Project-Id-Version:  1.0.0\n"
 "Report-Msgid-Bugs-To: ksoyam95@gmail.com\n"
-"POT-Creation-Date: 2021-04-22 15:21+0800\n"
+"POT-Creation-Date: 2021-10-15 14:50+0800\n"
 "PO-Revision-Date: 2021-02-03 13:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: th\n"
@@ -16,9 +16,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.9.0\n"
 
-#: app/view.py:80
+#: app/view.py:86
 msgid "username or password is wrong."
 msgstr "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
 
@@ -27,6 +27,7 @@ msgid "Data Compare"
 msgstr "เปรียบเทียบข้อมูล"
 
 #: app/templates/compare.html:9 app/templates/compare.html:29
+#: app/templates/compare.html:83 app/templates/compare.html:84
 #: app/templates/demo_history.html:8 app/templates/history.html:8
 #: app/templates/management.html:59
 msgid "Field"
@@ -71,6 +72,14 @@ msgstr "ชั่วโมง"
 msgid "Day"
 msgstr "วัน"
 
+#: app/templates/compare.html:82
+msgid "Query"
+msgstr "สอบถาม"
+
+#: app/templates/compare.html:83 app/templates/compare.html:84
+msgid "Download"
+msgstr "ดาวน์โหลด"
+
 #: app/templates/compare.html:93
 msgid "History Histogram"
 msgstr "ฮิสโตแกรมประวัติ"
@@ -79,11 +88,11 @@ msgstr "ฮิสโตแกรมประวัติ"
 msgid "More info"
 msgstr "ข้อมูล (เพิ่มเติม)"
 
-#: app/templates/dashboard.html:42
+#: app/templates/dashboard.html:46
 msgid "Sensor Dashboard"
 msgstr "แผงควบคุมเซ็นเซอร์"
 
-#: app/templates/dashboard.html:51
+#: app/templates/dashboard.html:55
 msgid "memo"
 msgstr "บันทึก"
 
@@ -116,16 +125,55 @@ msgid "Sign in to start your session"
 msgstr "ลงชื่อเข้าใช้เพื่อเริ่มเซสชันของคุณ"
 
 #: app/templates/management.html:3
-#, fuzzy
 msgid "System Management"
 msgstr "การจัดการ"
+
+#: app/templates/management.html:12 app/templates/management.html:209
+#: app/templates/management.html:253 app/templates/management.html:255
+#: app/templates/management.html:342 app/templates/management.html:377
+#: app/templates/management.html:379
+msgid "name"
+msgstr "ชื่อ"
+
+#: app/templates/management.html:13 app/templates/management.html:210
+#: app/templates/management.html:260 app/templates/management.html:262
+msgid "df_name"
+msgstr ""
+
+#: app/templates/management.html:14 app/templates/management.html:211
+#: app/templates/management.html:267 app/templates/management.html:269
+#: app/templates/management.html:343 app/templates/management.html:384
+#: app/templates/management.html:386
+msgid "alias"
+msgstr ""
+
+#: app/templates/management.html:15 app/templates/management.html:212
+#: app/templates/management.html:274 app/templates/management.html:276
+msgid "unit"
+msgstr "ยูนิต"
+
+#: app/templates/management.html:16 app/templates/management.html:213
+#: app/templates/management.html:281 app/templates/management.html:284
+msgid "icon"
+msgstr "ไอคอน"
+
+#: app/templates/management.html:17
+msgid "bg_color"
+msgstr "สี"
+
+#: app/templates/management.html:18
+msgid "alert_min"
+msgstr ""
+
+#: app/templates/management.html:19
+msgid "alert_max"
+msgstr ""
 
 #: app/templates/management.html:53
 msgid "User"
 msgstr "ผู้ใช้งาน"
 
 #: app/templates/management.html:73
-#, fuzzy
 msgid "Users"
 msgstr "ผู้ใช้งาน"
 
@@ -135,6 +183,7 @@ msgid "add"
 msgstr "เพิ่ม"
 
 #: app/templates/management.html:86 app/templates/management.html:121
+#: app/templates/management.html:123
 msgid "username"
 msgstr "ชื่อผู้ใช้"
 
@@ -143,11 +192,10 @@ msgid "superuser"
 msgstr "ซูเปอร์ยูสเซอร์"
 
 #: app/templates/management.html:112
-#, fuzzy
 msgid "User Management"
 msgstr "การจัดการ"
 
-#: app/templates/management.html:129
+#: app/templates/management.html:129 app/templates/management.html:131
 msgid "password"
 msgstr "รหัสผ่าน"
 
@@ -180,7 +228,6 @@ msgid "Close"
 msgstr "ปิด"
 
 #: app/templates/management.html:195
-#, fuzzy
 msgid "Sensors"
 msgstr "เซนเซอร์"
 
@@ -188,35 +235,12 @@ msgstr "เซนเซอร์"
 msgid "Restart Server"
 msgstr "รีสตาร์ทเซิฟเวอร์"
 
-#: app/templates/management.html:209 app/templates/management.html:253
-#: app/templates/management.html:342 app/templates/management.html:377
-msgid "name"
-msgstr "ชื่อ"
-
-#: app/templates/management.html:210 app/templates/management.html:260
-msgid "df_name"
-msgstr ""
-
-#: app/templates/management.html:211 app/templates/management.html:267
-#: app/templates/management.html:343 app/templates/management.html:384
-msgid "alias"
-msgstr ""
-
-#: app/templates/management.html:212 app/templates/management.html:274
-msgid "unit"
-msgstr "ยูนิต"
-
-#: app/templates/management.html:213 app/templates/management.html:281
-#, fuzzy
-msgid "icon"
-msgstr "ไอคอน"
-
 #: app/templates/management.html:214 app/templates/management.html:292
+#: app/templates/management.html:295
 msgid "color"
 msgstr "สี"
 
 #: app/templates/management.html:244
-#, fuzzy
 msgid "Sensor Management"
 msgstr "การจัดการ"
 
@@ -232,6 +256,10 @@ msgstr "คุณสามารใช้งานไอคอน"
 msgid "here"
 msgstr "ที่นี่"
 
+#: app/templates/management.html:295
+msgid "background"
+msgstr "พื้นหลัง"
+
 #: app/templates/management.html:298
 msgid "You can use"
 msgstr "คุณสามารใช้งาน"
@@ -241,7 +269,6 @@ msgid "bootstrap bg-color"
 msgstr ""
 
 #: app/templates/management.html:329
-#, fuzzy
 msgid "Fields"
 msgstr "ฟิลด์"
 
@@ -250,16 +277,14 @@ msgid "Restart DA"
 msgstr "รีสตาร์ทดีเอ"
 
 #: app/templates/management.html:368
-#, fuzzy
 msgid "Field Management"
 msgstr "การจัดการ"
 
-#: app/templates/management.html:391
+#: app/templates/management.html:391 app/templates/management.html:393
 msgid "iframe URL"
 msgstr ""
 
 #: app/templates/management.html:398
-#, fuzzy
 msgid "sensors"
 msgstr "เซนเซอร์"
 
@@ -272,8 +297,7 @@ msgid "Password length must be greater than or equal to 6"
 msgstr "รหัสต้องมีความยาวอย่างน้อยหกตัว"
 
 #: app/templates/management.html:590
-msgid ""
-"Password must contain at least three of them: Uppercase letters, "
+msgid "Password must contain at least three of them: Uppercase letters, "
 "Lowercase letters, numbers and special symbols"
 msgstr "รหัสผ่านต้องประกอบไปด้วย ตัวอักษรใหญ่ ตัวอักษรเล็ก ตัวเลขและสัญลักษณ์"
 
@@ -286,7 +310,7 @@ msgid "Please enter your new password"
 msgstr "กรุณาใส่รหัสใหม่"
 
 #: app/templates/management.html:637
-msgid "You need to \"Restart Server\" to use the new sensor."
+msgid "You need to 'Restart Server' to use the new sensor."
 msgstr "คุณต้องรีสตาร์ทเซิฟเวอร์เพื่อใช้งานนิวเซนเซอร์"
 
 #: app/templates/management.html:685
@@ -294,7 +318,7 @@ msgid "Field name cannot be empty."
 msgstr "ระบุชื่อฟิลด์ (ชื่อฟิลด์จะปล่อยว่างไม่ได้)"
 
 #: app/templates/management.html:693
-msgid "You need to \"Restart DA\" to activate the new field."
+msgid "You need to 'Restart DA' to activate the new field."
 msgstr "คุณต้องรีสาร์ต DA เพื่อที่จะเปิดใช้งาน new field"
 
 #: app/templates/management.html:714
@@ -306,10 +330,10 @@ msgid "Restart successfully."
 msgstr "รีสตาร์ทสำเร็จ"
 
 #: app/templates/management.html:771
-msgid ""
-"The server will restart... if it doesn't recover after a few minutes, "
+msgid "The server will restart... if it doesn't recover after a few minutes, "
 "please contact the administrator"
-msgstr "ระบบกำลังจะรีสตาร์ท กรุณาติดต่อผู้ดูแลระบบหากยังไม่สามารถใช้งานได้ในอีกสักพัก"
+msgstr "ระบบกำลังจะรีสตาร์ท "
+"กรุณาติดต่อผู้ดูแลระบบหากยังไม่สามารถใช้งานได้ในอีกสักพัก"
 
 #: app/templates/profile.html:3
 msgid "Personal Profile"
@@ -319,21 +343,20 @@ msgstr "ประวัติส่วนตัว(ผู้ใช้)"
 msgid "Change Password"
 msgstr "เปลี่ยนรหัส"
 
-#: app/templates/profile.html:17
+#: app/templates/profile.html:17 app/templates/profile.html:18
 msgid "Old Password"
 msgstr "รหัสเก่า"
 
-#: app/templates/profile.html:23
+#: app/templates/profile.html:23 app/templates/profile.html:26
 msgid "New Password"
 msgstr "รหัสใหม่"
 
 #: app/templates/profile.html:23
-msgid ""
-"Must contain at least three of them: Uppercase letters,\n"
+msgid "Must contain at least three of them: Uppercase letters,\n"
 "               Lowercase letters, numbers and special symbols"
 msgstr "(รหัสผ่าน)ต้องประกอบไปด้วย ตัวอักษรใหญ่ ตัวอักษรเล็ก ตัวเลขและสัญลักษณ์"
 
-#: app/templates/profile.html:30
+#: app/templates/profile.html:30 app/templates/profile.html:31
 msgid "Repeat New Password"
 msgstr "ใส่รหัสผ่านใหม่อีกครั้ง"
 
@@ -374,31 +397,42 @@ msgid "account and remove all related information."
 msgstr ""
 
 #: app/templates/profile.html:72
-msgid ""
-"After deleting this account, you will not be able to log in and use our "
+msgid "After deleting this account, you will not be able to log in and use our "
 "services again."
-msgstr "หลังจากที่ทำการลบบัญชีนี้แล้ว คุณจะไม่สามารถเข้าใช้งานและใช้บริการของเราได้อีก"
+msgstr "หลังจากที่ทำการลบบัญชีนี้แล้ว "
+"คุณจะไม่สามารถเข้าใช้งานและใช้บริการของเราได้อีก"
 
 #: app/templates/profile.html:74
 msgid "If you have any questions, please contact our staff."
 msgstr "หากคุณมีคำถาม กรุณาติดต่อเจ้าหน้าที่ของเรา"
 
 #: app/templates/profile.html:76
-#, fuzzy
 msgid "Please type username and password to confirm."
 msgstr "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
 
-#: app/templates/profile.html:81
+#: app/templates/profile.html:81 app/templates/profile.html:82
 msgid "Username"
 msgstr "ชื่อผู้ใช้"
 
-#: app/templates/profile.html:87
+#: app/templates/profile.html:87 app/templates/profile.html:88
 msgid "Password"
 msgstr "รหัสผ่าน"
 
 #: app/templates/profile.html:95
 msgid "I under stand the consequences, delete this account."
 msgstr "ฉันเข้าใจถึงผลที่จะตามมา, ลบบัญชีผู้ใช้"
+
+#: app/templates/base/footer.html:3
+msgid "Version"
+msgstr ""
+
+#: app/templates/base/footer.html:5
+msgid "Copyright"
+msgstr ""
+
+#: app/templates/base/footer.html:5
+msgid "All rights reserved."
+msgstr ""
 
 #: app/templates/base/head.html:4 app/templates/base/header.html:7
 msgid "IoT Environment Monitor System"
@@ -408,11 +442,11 @@ msgstr "ระบบตรวจสอบสภาพแวดล้อม IoT"
 msgid "IoT"
 msgstr "IoT"
 
-#: app/templates/base/header.html:37
+#: app/templates/base/header.html:47
 msgid "Profile"
 msgstr "ข้อมูลส่วนตัว"
 
-#: app/templates/base/header.html:40
+#: app/templates/base/header.html:50
 msgid "Sign out"
 msgstr "ออกจากระบบ"
 
