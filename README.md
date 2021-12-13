@@ -35,8 +35,10 @@
         status
         ```
         編碼應該要如下圖:四個都是utf8
+
         https://i.imgur.com/4P5Dobl.png
-        若不是，修改 my.cnf       
+
+        若不是，則修改 my.cnf       
         ```
         sudo vim /etc/mysql/my.cnf
         ```
