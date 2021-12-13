@@ -1,7 +1,5 @@
 # FarmDashboard
 
-* ~~[詳細安裝說明](https://hackmd.io/5LqVk4MBSCinRXQderD_Jw)~~ (此文件已久未更新)
-
 * [Dashboard操作教學影片](https://drive.google.com/drive/u/1/folders/13AyBQ-3m_RuPOW1J2aR1yD0svUKuEFdg>)
 
 ***Field 的名稱不可以包含特如符號如 . $ # & @ 等等，請使用全英文字母***
@@ -19,7 +17,7 @@
 2. 安裝 python 相關需要套件：
 
     ```sh
-    sudo pip3 install -r requirements.txt`` 
+    sudo pip3 install -r requirements.txt
     ```
 
 3. (optional) 使用 **MySQL-server**，若不使用可跳過此步並參考下一步的 SQLite 部份。
@@ -30,7 +28,13 @@
         ```
 
     * 新增 MySQL 內的 user，允許連線 IP，與資料庫( **db_name** )，以及權限 (注意2)
-
+        ```
+        sudo -u root -p
+        CREATE USER '<user_name>'@'%' IDENTIFIED BY '<user_password>';
+        GRANT ALL PRIVILEGES ON *.* TO '<user_name>'@'%';
+        CREATE DATABASE <db_name>;
+        ```
+        
 4. 修改 **config.py**，根據內部註解依序填上資料，主要為設定 DB 路徑
 
     * 若選擇使用 MySQL：
@@ -162,3 +166,5 @@ use `{{ _('') }}` to the needing change words.
         ```sh
         pybabel compile -f -d app/translations
         ```
+
+* [詳細安裝說明](https://hackmd.io/5LqVk4MBSCinRXQderD_Jw) (此文件已久未更新，僅供參考)
