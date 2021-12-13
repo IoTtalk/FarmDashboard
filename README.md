@@ -26,6 +26,28 @@
         ```sh
         apt-get install mysql-server
         ```
+    * ogin mysql(以root使用者登入)
+        ```
+        mysql -u root -p
+        ```
+    * check characterset status
+        ```
+        status
+        ```
+        編碼應該要如下圖:四個都是utf8
+        https://i.imgur.com/4P5Dobl.png
+        若不是，修改 my.cnf       
+        ```
+        sudo vim /etc/mysql/my.cnf
+        ```
+        加入設定:複製下列程式碼，於my.cnf貼上
+        ```
+        [mysqld]
+        init_connect = 'SET collation_connection = utf8_bin'
+        init_connect = 'SET NAMES utf8'
+        character-set-server = utf8
+        collation-server = utf8_bin
+        ```
 
     * 新增 MySQL 內的 user，允許連線 IP，與資料庫( **db_name** )，以及權限 (注意2)
         ```
