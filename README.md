@@ -72,7 +72,7 @@
         DB_CONFIG = 'mysql+pymysql://<user_name>:<user_password>@localhost:3306/<db_name>?charset=utf8'
      
 
-    修改大約在 Line 21 附近，修改  **CSM_HOST**
+    大約在 Line 21 附近，修改  **CSM_HOST**
     
      
         CSM_HOST = 'IoTtalk Server IP'
