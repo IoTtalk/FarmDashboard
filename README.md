@@ -66,7 +66,7 @@
         
 4. 修改 **config.py**，根據內部註解依序填上資料，主要為設定 DB 路徑
 
-    依 *注意2* 填入 **DB_CONFIG**， 修大約在Line 13行附近
+    依 *注意2* 填入 **DB_CONFIG**， 修改大約在Line 13行附近
 
     DB_CONFIG = 'mysql+pymysql://<user_name>:<user_password>@localhost:3306/<db_name>?charset=utf8'
 
