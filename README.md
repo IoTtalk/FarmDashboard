@@ -26,11 +26,11 @@
         ```sh
         apt-get install mysql-server
         ```
-    * ogin mysql(以root使用者登入)
+    * Login mysql(以root使用者登入)
         ```
         mysql -u root -p
         ```
-    * check characterset status
+    * Check characterset status
         ```
         status
         ```
@@ -51,6 +51,10 @@
         collation-server = utf8_bin
         ```
 
+    *重啟mysql以更新設定
+        ```
+        sudo service mysql restart
+        ```
     * 新增 MySQL 內的 user，允許連線 IP，與資料庫( **db_name** )，以及權限 (注意2)
         ```
         sudo -u root -p
