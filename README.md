@@ -57,9 +57,8 @@
         sudo service mysql restart
         ```
         
-    * 新增 MySQL 內的 user，允許連線 IP，與資料庫( **db_name** )，以及權限 (注意2)
+    * 登進mysql新增 MySQL 內的 user，允許連線 IP，與資料庫( **db_name** )，以及權限 (注意2)
         ```
-        sudo -u root -p
         CREATE USER '<user_name>'@'%' IDENTIFIED BY '<user_password>';
         GRANT ALL PRIVILEGES ON *.* TO '<user_name>'@'%';
         CREATE DATABASE <db_name>;
