@@ -51,10 +51,12 @@
         collation-server = utf8_bin
         ```
 
-    *重啟mysql以更新設定
+    * 重啟mysql以更新設定
+
         ```
         sudo service mysql restart
         ```
+        
     * 新增 MySQL 內的 user，允許連線 IP，與資料庫( **db_name** )，以及權限 (注意2)
         ```
         sudo -u root -p
