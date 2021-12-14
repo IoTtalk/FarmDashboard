@@ -20,7 +20,7 @@
     sudo pip3 install -r requirements.txt
     ```
 
-3. (optional) 使用 **MySQL-server**，若不使用可跳過此步並參考下一步的 SQLite 部份。
+3. Database可選擇使用 MySQL(支援大量存取) 或是  SQLlite(僅支援單一存取)
     * 安裝 MySQL (version >= 5.7) (注意1)
 
         ```sh
@@ -69,6 +69,7 @@
     * 若選擇使用 MySQL：
 
         依 *注意2* 填 **DB_CONFIG**
+        DB_CONFIG = 'mysql+pymysql://<user_name>:<user_password>@localhost:3306/<db_name>?charset=utf8'
 
     * 若選擇使用 SQLite：
 
