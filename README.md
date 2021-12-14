@@ -94,7 +94,7 @@
     ```
 
 至此 Dashboard 已啟動完成，可用指令 ```tmux a``` 查看運行狀況
-(按ctrl+b 1 / ctrl+b 2切換 dashboard 主程式與 DA 查看運行狀況)。
+(按ctrl+b 1 查看 dashboard 主程式與 DA 運行狀況)。
 
 ### 注意
 
