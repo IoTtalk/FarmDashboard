@@ -68,11 +68,15 @@
 
     依 *注意2* 填入 **DB_CONFIG**， 修改大約在Line 13行附近
 
-    DB_CONFIG = 'mysql+pymysql://<user_name>:<user_password>@localhost:3306/<db_name>?charset=utf8'
+        ```
+        DB_CONFIG = 'mysql+pymysql://<user_name>:<user_password>@localhost:3306/<db_name>?charset=utf8'
+        ```
 
     修改大約在 Line 21 附近，修改  **CSM_HOST**
     
-    CSM_HOST = 'IoTtalk Server IP'
+        ```
+        CSM_HOST = 'IoTtalk Server IP'
+        ```
 
     
 5. 修改 **db/db_init.json**，設定 **admin** 密碼
