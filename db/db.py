@@ -52,7 +52,7 @@ def clear():
 def inject_new_model(df_name):
     reload(models)
     if not df_name or hasattr(models, df_name):
-        return
+        return False
 
     code = '''
 class {}(base):
@@ -67,6 +67,8 @@ class {}(base):
 
     with open('models.py', 'a') as f:
         f.write(code)
+
+    return True
 
 
 def init(data):

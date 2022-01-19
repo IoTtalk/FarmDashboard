@@ -1,6 +1,7 @@
 import inspect
 import json
 import logging
+import re
 
 from datetime import datetime
 from dateutil import parser
@@ -526,6 +527,8 @@ def api_sensor():
         if sensor_record > 0:
             return 'The sensor name "{}" or df_name "{}" already exists'.format(name, df_name), 404
 
+        db.inject_new_model(re.sub(r'-O[\d]*$', '', df_name))
+
         new_sensor = db.models.sensor(df_name=df_name,
                                       name=request.json.get('name'),
                                       alias=request.json.get('alias'),
@@ -534,8 +537,6 @@ def api_sensor():
                                       bg_color=request.json.get('bg_color'))
         g.session.add(new_sensor)
         g.session.commit()
-
-        db.inject_new_model(df_name.replace('-O', ''))
 
         return json.dumps(utils.row2dict(new_sensor))
     elif request.method == 'PUT':
@@ -561,6 +562,8 @@ def api_sensor():
                           .count())
         if sensor_record > 0:
             return 'The sensor name "{}" or df_name "{}" already exists'.format(name, df_name), 404
+
+        db.inject_new_model(re.sub(r'-O[\d]*$', '', df_name))
 
         (g.session
           .query(db.models.sensor)
