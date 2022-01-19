@@ -65,7 +65,7 @@ class {}(base):
                                        name='UC_field_time'),)
 '''.format(df_name, df_name.lower())
 
-    with open('models.py', 'a') as f:
+    with open('db/models.py', 'a') as f:
         f.write(code)
 
     return True
