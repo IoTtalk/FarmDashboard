@@ -23,7 +23,7 @@
   <tr v-for="(sensor, index) in sensors">
       <td><input type="button" @click="field_sensor_remove(index)" value="x"></td>
       <td>{{ '{{' }}sensor.name{{ '}}' }}</td>
-      <td><input type="text" v-model="sensor.df_name"></td>
+      <td>{{ '{{' }}sensor.df_name{{ '}}' }}</td>
       <td><input type="text" v-model="sensor.alias"></td>
       <td><input type="text" v-model="sensor.unit"></td>
       <td>
