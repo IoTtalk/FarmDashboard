@@ -22,10 +22,10 @@ app = Flask(__name__)
 app.secret_key = config.FLASK_SECRET_KEY
 app.config['SESSION_COOKIE_SECURE'] = config.SESSION_COOKIE_SECURE
 
-app.register_blueprint(view_api, url_prefix='/')
-app.register_blueprint(view_api, url_prefix='/<lang_code>')
-app.register_blueprint(api, url_prefix='/api')
-app.register_blueprint(demo_api, url_prefix='/demo')
+app.register_blueprint(view_api, name='VIEW', url_prefix='/')
+app.register_blueprint(view_api, name='LANG_VIEW', url_prefix='/<lang_code>')
+app.register_blueprint(api, name='API', url_prefix='/api')
+app.register_blueprint(demo_api, name='DEMO', url_prefix='/demo')
 
 db.connect()
 
