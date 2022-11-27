@@ -27,3 +27,5 @@ pymysql~=0.10.1
 # Local timezone module
 # https://github.com/regebro/tzlocal
 tzlocal~=2.1
+
+MarkupSafe==2.0.1
