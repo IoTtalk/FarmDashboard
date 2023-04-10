@@ -85,10 +85,8 @@ def main():#執行process
 	        profile['odf_list'].append(df.df_name)
 	        alert_range[df.df_name] = {'min': df.alert_min,
 	                                   'max': df.alert_max}
-	    #odf_list = profile['odf_list']
-	    #device_addr = profile['d_name']
 	    
-	    
+	 
 	    sa = SaClass(host, field, field.id, profile, profile['odf_list'], alert_range, profile['d_name'])
 	    
 	    process = module_to_sa(sa)
