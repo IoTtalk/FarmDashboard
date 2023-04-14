@@ -29,3 +29,5 @@ pymysql~=0.10.1
 tzlocal~=2.1
 
 MarkupSafe==2.0.1
+
+iottalk-py==2.3.1
