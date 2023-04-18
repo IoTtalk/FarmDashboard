@@ -527,7 +527,8 @@ def api_sensor():
         if sensor_record > 0:
             return 'The sensor name "{}" or df_name "{}" already exists'.format(name, df_name), 404
 
-        db.inject_new_model(re.sub(r'-O[\d]*$', '', df_name))
+        #db.inject_new_model(re.sub(r'-O[\d]*$', '', df_name))
+        db.inject_new_model(re.sub(r'-O', '', df_name))
 
         new_sensor = db.models.sensor(df_name=df_name,
                                       name=request.json.get('name'),
@@ -563,7 +564,8 @@ def api_sensor():
         if sensor_record > 0:
             return 'The sensor name "{}" or df_name "{}" already exists'.format(name, df_name), 404
 
-        db.inject_new_model(re.sub(r'-O[\d]*$', '', df_name))
+        #db.inject_new_model(re.sub(r'-O[\d]*$', '', df_name))
+        db.inject_new_model(re.sub(r'-O', '', df_name))
 
         (g.session
           .query(db.models.sensor)
