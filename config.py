@@ -19,6 +19,9 @@ REQUEST_TIMEOUT = 10
 # IoTtalk server's 'IP' or 'DomainName' only, without any protocol 'http://' or 'https://'.
 # ex: '8.8.8.8' or 'google.com',
 CSM_HOST = '127.0.0.1:9999'
+IOTTALK_VERSION = 1
+#CSM_HOST = 'https://iottalk2.tw/csm'
+#IOTTALK_VERSION = 2
 
 # For the demo page without login
 # The data format is '<Field Name>':'<token>', examples are shown as follows.
