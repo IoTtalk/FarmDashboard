@@ -9,44 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- 讓使用者自定要使用V1版本還是V2版本
-- 在`config.py`裡新增常數`IOTTALK_VERSION=1`(#0a21efd)
-
-### Changed
-
-- update `server.py`，判斷IOTTALK_VERSION是1還是2，1的話啟動`da/DAI.py`，2的話啟動`da/app.py` (#eac7f6f)
+- 讓使用者自定要使用V1版本還是V2版本 (#eac7f6f)
+- 新增常數`IOTTALK_VERSION` (#0a21efd)
 
 ## 2023-04-18
 
 ### Changed
 
-- update `app/api.py`，修改tablename的命名方式，只刪除-O，不刪後面的數字 (#14b45a9)
-
-## 2023-04-14
-
-### Changed
-
-- update `requirements.txt`，載入iottalk-py module (#51a8e0f)
+- tablename的命名方式，改成只刪除-O，不刪後面的數字 (#14b45a9)
 
 ## 2023-04-12
 
 ### Changed
 
-- update `da/app.py`，改成動態產生以當前odf_name為名的odf_function，讓`v2/dai/on_data`可以執行 (#a2fe8a6)
+- IoTtalk-v2可使用的dashboard(dynamic) (#a2fe8a6)
 
 ## 2023-04-10
 
 ### Added
 
-- 新增IoTtalk-v2可使用的sa `da/app0330.py`，但還沒加上動態產生odf_function的功能 (#9ab73b1)
-
+- IoTtalk-v2可使用的dashboard(static)(#9ab73b1) 
 
 ### Changed
 
-- update`server.py` ，改成啟動`da/app.py`(#ba17e43)
 - rename `app0330.py` to `app.py` (#e145710)
-
-
 
 ## Rule
 每一個軟體的版本必須：
