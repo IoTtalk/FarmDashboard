@@ -1,0 +1,114 @@
+<!--解決問題：1.日期跑版 2.目前js為學長手刻，可以找現在有什麼好的作圖html工具 3.若其中一筆資料不到一小時，會直接被去掉，造成兩個list長度不一樣，因為沒填0進去-->
+{% extends 'base/base.html' %} 
+
+{% block page_title %} {{ _('Data Compare test') }} {% endblock %}
+
+{% block page_content %}
+<div class="row" id="app">
+  <!-- field 1 -->
+  <div class="col-sm-6 col-xs-12">
+    <label for="field1">{{ _('Field') }}1:</label>
+    <select class="form-control" id="field1" v-model="active_field1" @change="field1_change">
+      <template v-for="field in fields">
+        <option :value="field.name">{{ '{{' }}field.alias{{ '}}' }}</option>
+      </template>
+    </select>
+  </div>
+
+  <!-- sensor1 -->
+  <div class="col-sm-6 col-xs-12">
+    <label for="sensor1">{{ _('Sensor') }}1: </label>
+    <select class="form-control" id="sensor1">
+      <template v-for="sensor in active_sensor1">
+        <option :value="sensor.df_name">{{ '{{' }}sensor.alias{{ '}}' }}</option>
+      </template>
+    </select>
+  </div>
+
+  <!-- field 2 -->
+  <div class="col-sm-6 col-xs-12">
+    <label for="field2">{{ _('Field') }}2: </label>
+    <select class="form-control" id="field2" v-model="active_field2" @change="field2_change">
+      <option value="">{{ _('None') }}</option>
+      <template v-for="field in fields">
+        <option :value="field.name">{{ '{{' }}field.alias{{ '}}' }}</option>
+      </template>
+    </select>
+  </div>
+
+  <!-- sensor2 -->
+  <div class="col-sm-6 col-xs-12">
+    <label for="sensor2">{{ _('Sensor') }}2: </label>
+    <select class="form-control" id="sensor2">
+      <template v-for="sensor in active_sensor2">
+        <option :value="sensor.df_name">{{ '{{' }}sensor.alias{{ '}}' }}</option>
+      </template>
+    </select>
+  </div>
+
+  <!-- start time -->
+  <div class="col-sm-4 col-xs-12">
+    <label for="start-time">{{ _('StartTime') }}: </label>
+    <div class="input-group date">
+      <div class="input-group-addon">
+        <i class="fa fa-calendar"></i>
+      </div>
+      <input class="form-control" type='date' id="start-time" />
+    </div>
+  </div>
+
+  <!-- end time -->
+  <div class="col-sm-4 col-xs-12">
+    <label for="end-time">{{ _('EndTime') }}: </label>
+    <div class="input-group date">
+      <div class="input-group-addon">
+        <i class="fa fa-calendar"></i>
+      </div>
+      <input class="form-control" type='date' id="end-time" />
+    </div>
+  </div>
+
+  <!-- interval -->
+  <div class="col-sm-4 col-xs-12">
+    <label for="interval">{{ _('Interval') }}:</label>
+    <select class="form-control" id="interval">
+      <option value="second">{{ _('Second') }}</option>
+      <option value="minute">{{ _('Minute') }}</option>
+      <option value="hour" selected>{{ _('Hour') }}</option>
+      <option value="day">{{ _('Day') }}</option>
+    </select>
+  </div>
+  <div class="col-sm-12 col-xs-12">
+    <br>
+    <input type="button" onclick="update();" value="{{ _('Query') }}" />
+    <input type="button" onclick="download_field1();" value="{{ _('Field') }}1 {{ _('Download')}}" />
+    <input type="button" onclick="download_field2();" value="{{ _('Field') }}2 {{ _('Download')}}" />
+  </div>
+  <div class="col-xs-12">
+    <!-- interactive chart -->
+    <br>
+    <div id="chart"></div>
+    <div class="box-body"><div id="interactive" style="height: 300px;"></div></div>
+</div>
+
+{% endblock %}
+
+{% block page_script %}
+<script>
+var chart = c3.generate({
+    data: {
+        url: '/static/liao_AvgTD.csv',
+        type: 'line'
+    },
+    axis: {
+            y: {
+                min: 0,
+                padding: {
+                    bottom: 5
+                }
+            }
+        }
+});
+
+</script>
+{% endblock %}
