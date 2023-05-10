@@ -22,7 +22,7 @@ class SaClass:
         self.profile = profile
         self.odf_list = odf_list
         self.alert_range = alert_range
-        self.device_addr = device_addr   # uuid
+        self.device_addr = device_addr
         self.device_name = field.name + '_DataServer'
         self.api_url = host   # get from config CSM_HOST
         self.device_model = 'DataServer'
