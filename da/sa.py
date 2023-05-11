@@ -27,7 +27,7 @@ class SaClass:
         self.api_url = host   # get from config CSM_HOST
         self.device_model = 'DataServer'
         self.push_interval = 10
-        self.interval = {'Dummy_Sensor': 3, }
+        self.interval = {}
         self.kwargs = kwargs
 
         for k, v in kwargs.items():
