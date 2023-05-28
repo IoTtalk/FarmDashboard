@@ -24,16 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - IoTtalk-v2可使用的dashboard(dynamic) (#a2fe8a6)
 
-## 2023-04-10
-
-### Added
-
-- IoTtalk-v2可使用的dashboard(static)(#9ab73b1) 
-
-### Changed
-
-- rename `app0330.py` to `app.py` (#e145710)
-
 ## Rule
 每一個軟體的版本必須：
 * 標明日期（要用上面說過的規範）
