@@ -1,10 +1,12 @@
-import time
 import logging
 import re
+import time
+
+from config import CSM_HOST
 from datetime import datetime
 from db import db
 from iottalkpy.dai import module_to_sa
-from config import CSM_HOST as host
+
 
 log = logging.getLogger("\033[1;35m[DA]: \033[0m")
 
@@ -14,20 +16,17 @@ def on_register(dan):
 
 
 class SaClass:
-    def __init__(self, host, field, field_id, profile={}, odf_list=[],
-                 alert_range={}, device_addr=None, **kwargs):
-        self.host = host
+    def __init__(self, api_url, field, field_id, d_name, dm_name,
+                 odf_list=[], device_addr=None, **kwargs):
+        self.api_url = api_url
         self.field = field
         self.field_id = field_id
-        self.profile = profile
+        self.device_name = d_name
+        self.device_model = dm_name
         self.odf_list = odf_list
-        self.alert_range = alert_range
         self.device_addr = device_addr
-        self.device_name = field.name + '_DataServer'
-        self.api_url = host   # get from config CSM_HOST
-        self.device_model = 'DataServer'
         self.push_interval = 10
-        self.interval = {'Dummy_Sensor': 3, }
+        self.interval = {}
         self.kwargs = kwargs
 
         for k, v in kwargs.items():
@@ -35,9 +34,9 @@ class SaClass:
 
         for odf in odf_list:
             odf = re.sub(r'-', r'_', odf)
-            setattr(self, odf, lambda data, odf=odf: self.run(data, odf))
+            setattr(self, odf, lambda data, odf=odf: self.on_data(data, odf))
 
-    def run(self, data: list, odf):
+    def on_data(self, data: list, odf):
         try:
             session = db.get_session()
             if data:
@@ -57,7 +56,6 @@ class SaClass:
                 log.error('Reg_addr is not found. Try to re-register...')
             else:
                 log.error('Connection failed due to unknow reasons.')
-                time.sleep(1)
         finally:
             session.close()
 
@@ -69,24 +67,17 @@ def main():
     session = db.get_session()
 
     for field in (session.query(db.models.field).all()):
-        profile = {'d_name': field.name + '_DataServer',
-                   'dm_name': 'DataServer',
-                   'odf_list': [],
-                   'is_sim': False}
-        alert_range = {}
+        odf_list = []
         query_df = (session.query(db.models.field_sensor)
                            .select_from(db.models.field_sensor)
-                           .join(db.models.sensor)
                            .filter(db.models.field_sensor.field == field.id)
                            .all())
         for df in query_df:
-            profile['odf_list'].append(df.df_name)
-            alert_range[df.df_name] = {'min': df.alert_min,
-                                       'max': df.alert_max}
-        sa = SaClass(host, field, field.id,
-                     profile=profile,
-                     odf_list=profile['odf_list'],
-                     aler_range=alert_range)
+            odf_list.append(df.df_name)
+        sa = SaClass(CSM_HOST, field, field.id,
+                     d_name=field.name + '_DataServer',
+                     dm_name='DataServer',
+                     odf_list=odf_list,)
 
         process = module_to_sa(sa)
         process.daemon = True
