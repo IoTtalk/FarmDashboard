@@ -50,7 +50,7 @@ def _start_da():
     if config.IOTTALK_VERSION == 1:
     	from da.DAI import main as da
     elif config.IOTTALK_VERSION == 2:
-    	from da.app import main as da
+    	from da.sa import main as da
     da()
 
 
