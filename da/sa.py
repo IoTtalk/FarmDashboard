@@ -16,13 +16,14 @@ def on_register(dan):
 
 
 class SaClass:
-    def __init__(self, api_url, field, field_id, d_name, dm_name,
-                 odf_list=[], device_addr=None, **kwargs):
+    def __init__(self, api_url, field, field_id, device_name, device_model,
+                 idf_list=[], odf_list=[], device_addr=None, **kwargs):
         self.api_url = api_url
         self.field = field
         self.field_id = field_id
-        self.device_name = d_name
-        self.device_model = dm_name
+        self.device_name = device_name
+        self.device_model = device_model
+        self.idf_list = idf_list
         self.odf_list = odf_list
         self.device_addr = device_addr
         self.push_interval = 10
@@ -75,8 +76,8 @@ def main():
         for df in query_df:
             odf_list.append(df.df_name)
         sa = SaClass(CSM_HOST, field, field.id,
-                     d_name=field.name + '_DataServer',
-                     dm_name='DataServer',
+                     device_name=field.name + '_DataServer',
+                     device_model='DataServer',
                      odf_list=odf_list,)
 
         process = module_to_sa(sa)
