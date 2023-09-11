@@ -33,7 +33,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
         if not rc:
             print('MQTT broker: {}'.format(broker))
             if ODF_list == []:
-                print('ODF_list is not exist.')
+                print('ODF_list is not exist. {}: {}'.format(field, reg_addr))
                 return
             topic_list=[]
             for odf in ODF_list:
