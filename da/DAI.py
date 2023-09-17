@@ -8,6 +8,8 @@ import paho.mqtt.client as mqtt
 from db import db
 from da.DAN import DAN, log
 
+from da.errorlog import errorlog 
+
 from config import CSM_HOST as host
 from config import MQTT_broker as broker
 from config import MQTT_port as mqt_port
@@ -46,6 +48,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
 
     def on_disconnect(client, userdata,  rc):
         print('MQTT Disconnected. Re-connect...')
+        errorlog('Disconnect', reg_addr, field)
         client.reconnect()
 
     def on_message(client, userdata, msg):
@@ -54,7 +57,13 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
         ODF_timestamp = samples['samples'][0][0]
         ODF_data = samples['samples'][0][1][0]
         print('{}: {}, {}, {}, {}'.format(ODF_timestamp, field, device_id, ODF_name, ODF_data))
-        insert_into_db(ODF_name, ODF_data, ODF_timestamp)
+
+        try:
+            insert_into_db(ODF_name, ODF_data, ODF_timestamp)
+        except Exception as e:
+            print('DB_error:{}--->{}'.format(field, str(e)))
+            errorlog('DB_error', reg_addr, field, ODF_name, str(e))
+
         log.debug(field, ODF_name, ODF_data)
         check_alert(client, device_id, ODF_name, ODF_data)        
 
