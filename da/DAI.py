@@ -86,7 +86,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
     if broker:
         mqttc = mqtt.Client()
         MQTT_config(mqttc, broker, mqt_port, mqt_usr, mqt_pw, mqt_encrypt)
-        mqttc.loop_forever(timeout=10,retry_first_connection=True)    
+        mqttc.loop_forever(timeout=25,retry_first_connection=True)    
 
     while True:
         try:
@@ -154,7 +154,7 @@ def main():
         thread.daemon = True
         thread.start()
         threads.append(thread)
-        time.sleep(1)
+        time.sleep(2)
 
     session.close()
 
