@@ -24,6 +24,8 @@ python-dateutil~=2.8.1
 # https://pymysql.readthedocs.io/en/latest/
 pymysql~=0.10.1
 
+paho-mqtt
+
 # Local timezone module
 # https://github.com/regebro/tzlocal
 tzlocal~=2.1
