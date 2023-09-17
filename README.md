@@ -1,6 +1,6 @@
 # FarmDashboard
 
-* [Dashboard操作教學影片](https://drive.google.com/drive/folders/138rAzXiJvQN2fL64BXayNKMBn17JXzzX?usp=sharing)
+* [Dashboard操作教學影片](https://drive.google.com/drive/folders/1FzIw1JNRFQnolcPIUbQeKGKvFmZ63EKW?usp=drive_link)
 
 ***Field 的名稱不可以包含特如符號如 . $ # & @ 等等，請使用全英文字母***
 
