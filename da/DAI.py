@@ -31,7 +31,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
 
     def on_connect(client, userdata, flags, rc):
         if not rc:
-            print('MQTT broker: {}'.format(broker))
+            print('************** {}: MQTT broker: {}'.format(field, broker))
             if ODF_list == []:
                 print('ODF_list is not exist. {}: {}'.format(field, reg_addr))
                 return
