@@ -64,7 +64,8 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
         client.on_message = on_message
         client.on_disconnect = on_disconnect
         if encryption: client.tls_set()
-        client.connect(broker, port, keepalive=60)
+        #client.connect(broker, port, keepalive=90)
+        client.connect_async(broker, port, keepalive=60)
 
     def mqtt_pub(client, deviceId, IDF, data):
         topic = '{}//{}'.format(deviceId, IDF)
@@ -85,7 +86,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
     if broker:
         mqttc = mqtt.Client()
         MQTT_config(mqttc, broker, mqt_port, mqt_usr, mqt_pw, mqt_encrypt)
-        mqttc.loop_forever()    
+        mqttc.loop_forever(timeout=10,retry_first_connection=True)    
 
     while True:
         try:
@@ -153,6 +154,7 @@ def main():
         thread.daemon = True
         thread.start()
         threads.append(thread)
+        time.sleep(1)
 
     session.close()
 
