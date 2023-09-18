@@ -1,4 +1,4 @@
-import time, json, random
+import time, json
 from threading import Thread
 from copy import deepcopy
 from datetime import datetime as dt
