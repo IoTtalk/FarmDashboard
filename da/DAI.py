@@ -1,7 +1,8 @@
-import time, json
+import time, json, random
 from threading import Thread
 from copy import deepcopy
-from datetime import datetime
+from datetime import datetime as dt
+from datetime import timedelta
 
 import paho.mqtt.client as mqtt
 
@@ -25,11 +26,54 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
     ODF_list = deepcopy(dan.selected_DF)
     ODF_list.remove('Alert-I')
 
+    previous_timestamp=[]
+    def check_timestamp(timestamp):
+        cut_ms = timestamp.split('.')[0]
+        if cut_ms in previous_timestamp:
+            nts = dt.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
+            while True:
+                nts = nts + timedelta(seconds=1)
+                if (str(nts).split('.')[0]) not in previous_timestamp: break
+            previous_timestamp.append(str(nts).split('.')[0])
+            if len(previous_timestamp)>500: previous_timestamp.pop(0) 
+            return str(nts)
+        else:
+            previous_timestamp.append(cut_ms)
+            return 0
+
+    data_queue = []
+    def to_data_queue(data_queue, data):
+        data_queue.append(data)  #data = [ODF_name, ODF_data, ODF_timestamp]
+
+    def queue_mgr(data_queue):
+        while True:
+            if len(data_queue)<1: 
+                time.sleep(0.5)
+                continue
+            data = data_queue.pop(0)
+            r = check_timestamp(data[2])        
+            if r: data[2]=r
+            insert_into_db(data[0], data[1], data[2])
+    queue_thd = Thread(target=queue_mgr, args=(data_queue,))
+    queue_thd.daemon = True
+    queue_thd.start()
+
+    def logdata(timestamp, odf, value):
+        f = open('./log/'+field,'a')
+        f.write('{}: {}, {}\n'.format(timestamp, odf, value))
+        f.close()
+
     session = db.get_session()
     def insert_into_db(odf, value, timestamp):
-        new_value = getattr(db.models, odf.replace('-O', ''))(timestamp=timestamp, field=field_id, value=value)
-        session.add(new_value)
-        session.commit()
+#        if field=='NCYU' or field=='JianJi_M2_1':
+#            logdata(timestamp, odf, value)
+        try:
+            new_value = getattr(db.models, odf.replace('-O', ''))(timestamp=timestamp, field=field_id, value=value)
+            session.add(new_value)
+            session.commit()
+        except Exception as e:
+            print('insert_into_db_error:{}->{}'.format(field, str(e)))
+            errorlog('insert_into_db_error', reg_addr, field, data[0], '{}---{}'.format(timestamp, str(e)))
 
     def on_connect(client, userdata, flags, rc):
         if not rc:
@@ -59,7 +103,10 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
         print('{}: {}, {}, {}, {}'.format(ODF_timestamp, field, device_id, ODF_name, ODF_data))
 
         try:
-            insert_into_db(ODF_name, ODF_data, ODF_timestamp)
+#            r = check_timestamp(ODF_timestamp)
+#            if r: ODF_timestamp = r
+#            insert_into_db(ODF_name, ODF_data, ODF_timestamp)
+            to_data_queue(data_queue, [ODF_name, ODF_data, ODF_timestamp])
         except Exception as e:
             print('DB_error:{}--->{}'.format(field, str(e)))
             errorlog('DB_error', reg_addr, field, ODF_name, str(e))
@@ -78,7 +125,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
 
     def mqtt_pub(client, deviceId, IDF, data):
         topic = '{}//{}'.format(deviceId, IDF)
-        sample = [str(datetime.today()), data]
+        sample = [str(dt.today()), data]
         payload  = json.dumps({'samples':[sample]})
         status = client.publish(topic, payload)
         if status[0]: print('topic:{}, status:{}'.format(topic, status))
