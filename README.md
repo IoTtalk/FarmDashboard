@@ -195,7 +195,17 @@ use `{{ _('') }}` to the needing change words.
         ```sh
         app/translations/<lang_code>/LC_MESSAGES/messages.po
         ```
-#### 注意事項
+
+    4. 編譯字典 po 檔成 mo 檔，供 babel 使用：
+        ```sh
+        pybabel compile -f -d app/translations
+        ```
+
+* [詳細安裝說明](https://hackmd.io/5LqVk4MBSCinRXQderD_Jw) (此文件已久未更新，僅供參考)
+
+
+
+#### **注意事項**
 使用MQTT傳送時，感測器數值的傳輸秒數間隔，不可少於感測器數量。
 例如，如果有4顆sensor，則當此4顆sensor傳送完畢後，要進行下一輪傳輸，其間隔要大於4秒，
 不然會造成資料庫無法寫入而卡住的問題(會發生Duplicate primary key狀況，然後該field的DB的thread就會卡住而再也無法寫入，需要重啟DA才能復原)
@@ -203,13 +213,3 @@ use `{{ _('') }}` to the needing change words.
 而MQTT傳輸效率高，就算15顆感測器也可以在1秒內就可以全部都送達Dashboard，而timestamp精度卻只使用到"秒"，
 導致這15顆感測器數值的Primary key都是一樣的，進而發生Duplicate primary key狀況，
 目前解法是遇到Primary key同秒時，後來者會往後位移一秒錯開，但如果傳輸間隔秒數低於感測器數量，這解法就會失效。
-
-
-
-)
-    4. 編譯字典 po 檔成 mo 檔，供 babel 使用：
-        ```sh
-        pybabel compile -f -d app/translations
-        ```
-
-* [詳細安裝說明](https://hackmd.io/5LqVk4MBSCinRXQderD_Jw) (此文件已久未更新，僅供參考)
