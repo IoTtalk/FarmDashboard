@@ -44,7 +44,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
     def to_data_queue(data_queue, data):
         data_queue.append(data)  #data = [ODF_name, ODF_data, ODF_timestamp]
 
-    def queue_mgr(data_queue):
+    def queue_mgr(db, data_queue):
         while True:
             if len(data_queue)<1: 
                 time.sleep(0.5)
@@ -52,14 +52,14 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
             data = data_queue.pop(0)
             r = check_timestamp(data[2])        
             if r: data[2]=r
-            insert_into_db(data[0], data[1], data[2])
+            insert_into_db(db, data[0], data[1], data[2])
 
-    queue_thd = Thread(target=queue_mgr, args=(data_queue,))
+    queue_thd = Thread(target=queue_mgr, args=(db, data_queue,))
     queue_thd.daemon = True
     queue_thd.start()
 
-    session = db.get_session()
-    def insert_into_db(odf, value, timestamp):
+    def insert_into_db(db, odf, value, timestamp):
+        session = db.get_session()
         try:
             new_value = getattr(db.models, odf.replace('-O', ''))(timestamp=timestamp, field=field_id, value=value)
             session.add(new_value)
@@ -67,6 +67,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
         except Exception as e:
             print('insert_into_db_error:{}->{}'.format(field, str(e)))
             errorlog('insert_into_db_error', reg_addr, field, data[0], '{}---{}'.format(timestamp, str(e)))
+        session.close()
 
     def on_connect(client, userdata, flags, rc):
         if not rc:
