@@ -122,6 +122,11 @@ def history():
 def compare_():
     return render_template('compare.html')
 
+@view_api.route('/compare_same_sensor/', methods=['GET'], strict_slashes=False)
+@utils.required_login
+def compare_same_sensor_():
+    return render_template('compare_same_sensor.html')
+
 
 @view_api.route('/profile/', methods=['GET'], strict_slashes=False)
 @utils.required_login
