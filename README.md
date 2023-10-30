@@ -196,6 +196,24 @@ use `{{ _('') }}` to the needing change words.
         app/translations/<lang_code>/LC_MESSAGES/messages.po
         ```
 
+### V2使用
+1. 修改 **config.py**，根據內部註解依序填上資料。
+
+    大約在 Line 25 附近，修改  **CSM_HOST** 跟 **IOTTALK_VERSION**
+    
+     
+        CSM_HOST = 'IoTtalk Server IP'
+        IOTTALK_VERSION = '1 or 2'
+    
+    下面為範例，擇一使用:
+    
+        CSM_HOST = 'https://1.iottalk.tw'
+        IOTTALK_VERSION = 1
+        ------------------------------------
+        CSM_HOST = 'https://iottalk2.tw/csm'
+        IOTTALK_VERSION = 2
+     
+
     4. 編譯字典 po 檔成 mo 檔，供 babel 使用：
         ```sh
         pybabel compile -f -d app/translations
