@@ -18,6 +18,10 @@ from config import MQTT_PW as mqt_pw
 from config import MQTT_encryption as mqt_encrypt
 
 
+CR = '\033[1;32;41m'
+CB = '\033[1;33;44m'
+R  = '\033[0m'  # RESET COLOR
+
 def _run(profile, reg_addr, field, field_id, alert_range={}):
     dan = DAN()
     dan.device_registration_with_retry(profile, host, reg_addr)
@@ -25,19 +29,22 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
     ODF_list = deepcopy(dan.selected_DF)
     ODF_list.remove('Alert-I')
 
+    log_ts_len = 30
     previous_timestamp=[]
     def check_timestamp(timestamp):
         cut_ms = timestamp.split('.')[0]
-        if cut_ms in previous_timestamp:
-            nts = dt.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
+        ts = dt.strptime(cut_ms, '%Y-%m-%d %H:%M:%S')
+        if ts in previous_timestamp:
+            if len(previous_timestamp)>log_ts_len: return 'DROPOUT'
             while True:
-                nts = nts + timedelta(seconds=1)
-                if (str(nts).split('.')[0]) not in previous_timestamp: break
-            previous_timestamp.append(str(nts).split('.')[0])
-            if len(previous_timestamp)>20: previous_timestamp.pop(0) 
-            return str(nts)
+                ts = ts + timedelta(seconds=1)
+                if ts not in previous_timestamp: break
+            previous_timestamp.append(ts)
+            return str(ts)
         else:
-            previous_timestamp.append(cut_ms)
+            if len(previous_timestamp)>log_ts_len:
+                if ts > previous_timestamp[-1]: previous_timestamp.clear()
+            previous_timestamp.append(ts)
             return 0
 
     data_queue = []
@@ -51,12 +58,13 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
                 continue
             data = data_queue.pop(0)
             r = check_timestamp(data[2])        
-            if r: data[2]=r
+            if r: 
+                if r == 'DROPOUT': 
+                    print('{}{}: Extended timestamp list is full. Data dropped.{}'.format(CR, field, R))
+                    continue
+                data[2]=r
             insert_into_db(db, data[0], data[1], data[2])
 
-    queue_thd = Thread(target=queue_mgr, args=(db, data_queue,))
-    queue_thd.daemon = True
-    queue_thd.start()
 
     def insert_into_db(db, odf, value, timestamp):
         session = db.get_session()
@@ -71,7 +79,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
 
     def on_connect(client, userdata, flags, rc):
         if not rc:
-            print('\033[1;93;44m {}: MQTT broker = {}  \033[0m'.format(field, broker))
+            print('{}{}: MQTT broker = {}{}'.format(CB, field, broker, R))
             if ODF_list == []:
                 print('ODF_list is not exist. {}: {}'.format(field, reg_addr))
                 return
@@ -126,7 +134,8 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
     if broker:
         mqttc = mqtt.Client()
         MQTT_config(mqttc, broker, mqt_port, mqt_usr, mqt_pw, mqt_encrypt)
-        mqttc.loop_forever(timeout=25,retry_first_connection=True)    
+        mqttc.loop_start()    
+        queue_mgr(db, data_queue)
 
     while True:
         try:
