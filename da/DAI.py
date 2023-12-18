@@ -9,7 +9,6 @@ import paho.mqtt.client as mqtt
 from db import db
 from da.DAN import DAN, log
 from da.errorlog import errorlog 
-from da.ilog import ilog
 
 from config import CSM_HOST as host
 from config import MQTT_broker as broker
