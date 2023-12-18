@@ -103,8 +103,8 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
         ODF_timestamp = samples['samples'][0][0]
         ODF_data = samples['samples'][0][1][0]
         print('{}: {}, {}, {}, {}'.format(ODF_timestamp, field, device_id, ODF_name, ODF_data))
-        #to_data_queue(data_queue, [ODF_name, ODF_data, ODF_timestamp])
-        to_data_queue(data_queue, [ODF_name, ODF_data, str(dt.today())])
+        to_data_queue(data_queue, [ODF_name, ODF_data, ODF_timestamp])
+        #to_data_queue(data_queue, [ODF_name, ODF_data, str(dt.today())])
         log.debug(field, ODF_name, ODF_data)
         check_alert(client, device_id, ODF_name, ODF_data)        
 
