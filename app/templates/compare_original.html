@@ -292,6 +292,23 @@
         y1_min = 0;
       }
 
+      dataset.push({
+              label: label1,
+              data: res1,
+              yaxis: 1,
+              points: { show: true, radius: 5, symbol: 'triangle' },
+              lines : { show: true },
+              color: "#000000",
+      });
+
+      yaxes.push({
+          position: 'left',
+          min: y1_min,
+          max: y1_max,
+          axisLabel: label1,
+          axisLabelUseCanvas: true,
+      });
+
 
       let data2 = null;
 //      if (fields.length >= 2) {
@@ -306,26 +323,7 @@
 
       if(target2[0]) data2 = data[target2[1]][target2[0]];  
 
-      if(!data2) { //no data2,only data1
-          dataset.push({
-              label: label1,
-              data: res1, //res1.push([idx, value])
-              yaxis: 1,
-              points: { show: true, radius: 5, symbol: 'triangle' },
-              lines : { show: true },
-              color: "#000000",
-          });
-
-          yaxes.push({
-              position: 'left',
-              min: y1_min,
-              max: y1_max,
-              axisLabel: label1,
-              axisLabelUseCanvas: true,
-              axisLabelPadding: 10,
-          });
-      }
-      else{ //data1 and data2
+      if (data2) {
           let res2 = [];
           let max2 = -Infinity;
           let min2 = Infinity;
@@ -361,97 +359,25 @@
           if (y2_min < 0 && min2 >= 0) {
             y2_min = 0;
           }
-        
-          //sensor1 and sensor2 are the same
-          if (target1[1] == target2[1]){
-            //console.log(target1[1])
-            let y_max = 100;
-            let y_min = 0;
 
-            if(y1_max >= y2_max) { y_max = y1_max;}
-            else{ y_max = y2_max;}
-
-            if(y1_min <= y2_min) {y_min = y1_min;}
-            else{ y_min = y2_min}
-
-            //data1's plot
-            dataset.push({
-              label: label1,
-              data: res1, //res1.push([idx, value])
-              yaxis: 1,
-              points: { show: true, radius: 5, symbol: 'triangle' },
+          dataset.push({
+              label: label2,
+              data: res2,
+              yaxis: 2,
+              points: { show: true, radius: 5, symbol: 'square' },
               lines : { show: true },
-              color: "#000000",
-            });
+              alignTicksWithAxis: 2,
+              color: "#008800", 
+          });
 
-            yaxes.push({
-              position: 'left',
-              min: y_min,
-              max: y_max,
-              axisLabel: label1,
+          yaxes.push({
+              alignTicksWithAxis: 2,
+              position: 'right',
+              min: y2_min,
+              max: y2_max,
+              axisLabel: label2,
               axisLabelUseCanvas: true,
-              axisLabelPadding: 10,
-            });
-
-            //data2's plot
-            dataset.push({
-                label: label2,
-                data: res2,
-                yaxis: 2,
-                points: { show: true, radius: 5, symbol: 'square' },
-                lines : { show: true },
-                alignTicksWithAxis: 1,
-                color: "#008800", 
-            });
-
-            yaxes.push({
-                alignTicksWithAxis: 1,
-                position: 'right',
-                min: y_min,
-                max: y_max,
-                axisLabel: label2,
-                axisLabelUseCanvas: true,
-            });       
-          }
-          else{ //sensor1 and sensor2 are not the same
-              dataset.push({
-                  label: label1,
-                  data: res1, //res1.push([idx, value])
-                  yaxis: 1,
-                  points: { show: true, radius: 5, symbol: 'triangle' },
-                  lines : { show: true },
-                  color: "#000000",
-              });
-
-              yaxes.push({
-                  position: 'left',
-                  min: y1_min,
-                  max: y1_max,
-                  axisLabel: label1,
-                  axisLabelUseCanvas: true,
-                  axisLabelPadding: 10,
-              });
-              
-              dataset.push({
-                  label: label2,
-                  data: res2,
-                  yaxis: 2,
-                  points: { show: true, radius: 5, symbol: 'square' },
-                  lines : { show: true },
-                  alignTicksWithAxis: 2,
-                  color: "#008800", 
-              });
-
-              yaxes.push({
-                  alignTicksWithAxis: 2,
-                  position: 'right',
-                  min: y2_min,
-                  max: y2_max,
-                  axisLabel: label2,
-                  axisLabelUseCanvas: true,
-                  axisLabelPadding: 10,
-              });
-         }
+          });
       }
 
       $.plot('#interactive', dataset, {
