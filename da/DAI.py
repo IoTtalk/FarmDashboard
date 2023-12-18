@@ -34,11 +34,8 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
     def check_timestamp(timestamp):
         cut_ms = timestamp.split('.')[0]
         ts = dt.strptime(cut_ms, '%Y-%m-%d %H:%M:%S')
-
         if ts in previous_timestamp:
-            if len(previous_timestamp)>log_ts_len: 
-                return 'DROPOUT'
-                if ts < previous_timestamp[-1]: return 'DROPOUT' 
+            if len(previous_timestamp)>log_ts_len: return 'DROPOUT'
             while True:
                 ts = ts + timedelta(seconds=1)
                 if ts not in previous_timestamp: break
@@ -46,9 +43,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
             return str(ts)
         else:
             if len(previous_timestamp)>log_ts_len:
-                if ts > previous_timestamp[-1]:
-                     previous_timestamp.clear()
-
+                if ts > previous_timestamp[-1]: previous_timestamp.clear()
             previous_timestamp.append(ts)
             return 0
 
@@ -84,7 +79,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
 
     def on_connect(client, userdata, flags, rc):
         if not rc:
-            print('\033[1;93;44m {}: MQTT broker = {}  \033[0m'.format(field, broker))
+            print('{}{}: MQTT broker = {}{}'.format(CB, field, broker, R))
             if ODF_list == []:
                 print('ODF_list is not exist. {}: {}'.format(field, reg_addr))
                 return
