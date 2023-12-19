@@ -92,7 +92,7 @@ class DAN():
             log.info(self.profile['d_name'] + ': Searching for the IoTtalk server...')
             data, addr = s.recvfrom(1024)
             if str(data.decode()) == 'easyconnect':
-                self.csmapi.host = '{}'.format(addr[0])
+                self.csmapi.host = 'http://{}:9999'.format(addr[0])
                 break
 
     def register_device(self, profile=None, host=None, mac_addr=None):
