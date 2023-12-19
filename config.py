@@ -16,10 +16,10 @@ DB_POOL_SIZE = 100
 QUERY_LIMIT = 100
 REQUEST_TIMEOUT = 10
 
-# IoTtalk server's 'IP' or 'DomainName' only, without any protocol 'http://' or 'https://'.
-# ex: '8.8.8.8' or 'google.com',
-CSM_HOST = '127.0.0.1:9999'
+# IoTtalk server's URL, for example, 'https://DomainName' or 'http://IP:9999'
+CSM_HOST = 'http://127.0.0.1:9999'
 
+#MQTT connection information (optional)
 MQTT_broker = None
 MQTT_port = 1883
 MQTT_encryption = False
