@@ -26,6 +26,9 @@ MQTT_encryption = False
 MQTT_User = '?'
 MQTT_PW = '?'
 
+# Set IoTtalk version, 1 or 2 
+IOTTALK_VERSION = 1
+
 # For the demo page without login
 # The data format is '<Field Name>':'<token>', examples are shown as follows.
 demo_token = {

@@ -47,7 +47,10 @@ def _start_server():
 
 
 def _start_da():
-    from da.DAI import main as da
+    if config.IOTTALK_VERSION == 1:
+    	from da.DAI import main as da
+    elif config.IOTTALK_VERSION == 2:
+    	from da.sa import main as da
     da()
 
 

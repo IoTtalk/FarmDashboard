@@ -201,6 +201,23 @@ use `{{ _('') }}` to the needing change words.
         pybabel compile -f -d app/translations
         ```
 
+### V2使用
+1. 修改 **config.py**，根據內部註解依序填上資料。
+
+    大約在 Line 25 附近，修改  **CSM_HOST** 跟 **IOTTALK_VERSION**
+    
+     
+        CSM_HOST = 'IoTtalk Server IP'
+        IOTTALK_VERSION = '1 or 2'
+    
+    下面為範例，擇一使用:
+    
+        CSM_HOST = 'https://1.iottalk.tw'
+        IOTTALK_VERSION = 1
+        ------------------------------------
+        CSM_HOST = 'https://iottalk2.tw/csm'
+        IOTTALK_VERSION = 2
+
 * [詳細安裝說明](https://hackmd.io/5LqVk4MBSCinRXQderD_Jw) (此文件已久未更新，僅供參考)
 
 
