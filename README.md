@@ -206,4 +206,4 @@ use `{{ _('') }}` to the needing change words.
 
 
 #### **備註**
-資料庫儲存方式，是以timestamp作為primary key索引，但timestamp的精度卻只使用到"秒"。
+資料庫儲存方式，是以timestamp作為primary key索引，但timestamp的精度卻只使用到"秒"，這設計導致一個場域每秒只能記錄一個sensor的數值。
