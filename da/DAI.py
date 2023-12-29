@@ -51,8 +51,10 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
     def to_data_queue(data_queue, data):
         data_queue.append(data)  #data = [ODF_name, ODF_data, ODF_timestamp]
 
-    def queue_mgr(db, data_queue):
+    def queue_mgr(db, data_queue, mqtt_client):
+        nonlocal DISCONNECT
         while True:
+            if DISCONNECT: reconnect(mqtt_client)
             if len(data_queue)<1: 
                 time.sleep(0.5)
                 continue
@@ -64,7 +66,21 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
                     continue
                 data[2]=r
             insert_into_db(db, data[0], data[1], data[2])
+            time.sleep(0.01)
 
+    def reconnect(client):
+        client.disconnect()
+        client.loop_stop()
+        time.sleep(0.5)
+        print('[{}] MQTT reconnect...'.format(dt.now().strftime('%Y-%m-%d %H:%M:%S')))
+        while True:
+            try:
+                client.reconnect()
+                break
+            except BaseException as err:
+                print(err)
+        client.loop_start()
+        time.sleep(0.5)
 
     def insert_into_db(db, odf, value, timestamp):
         session = db.get_session()
@@ -77,9 +93,12 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
             errorlog('insert_into_db_error', reg_addr, field, data[0], '{}---{}'.format(timestamp, str(e)))
         session.close()
 
+    DISCONNECT = False
     def on_connect(client, userdata, flags, rc):
+        nonlocal DISCONNECT
         if not rc:
-            print('{}{}: MQTT broker = {}{}'.format(CB, field, broker, R))
+            if DISCONNECT: DISCONNECT = False
+            print('{}[{}]{}: MQTT broker = {}{}'.format(CB, dt.now().strftime('%Y-%m-%d %H:%M:%S'), field, broker, R))
             if ODF_list == []:
                 print('ODF_list is not exist. {}: {}'.format(field, reg_addr))
                 return
@@ -93,16 +112,17 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
         else: print('Connect to MQTT borker failed. Error code:{}'.format(rc))
 
     def on_disconnect(client, userdata,  rc):
-        print('MQTT Disconnected. Re-connect...')
+        nonlocal DISCONNECT
+        print('{}[{}] MQTT disconnected.{}'.format(CR, dt.now().strftime('%Y-%m-%d %H:%M:%S'), R))
         errorlog('Disconnect', reg_addr, field)
-        client.reconnect()
+        DISCONNECT = True
 
     def on_message(client, userdata, msg):
         samples = json.loads(msg.payload)
         device_id, ODF_name = msg.topic.split('//')
         ODF_timestamp = samples['samples'][0][0]
         ODF_data = samples['samples'][0][1][0]
-        print('{}: {}, {}, {}, {}'.format(ODF_timestamp, field, device_id, ODF_name, ODF_data))
+        print('[{}] {}, {}, {}, {}'.format((ODF_timestamp.split('.'))[0], field, device_id, ODF_name, ODF_data))
         to_data_queue(data_queue, [ODF_name, ODF_data, ODF_timestamp])
         log.debug(field, ODF_name, ODF_data)
         check_alert(client, device_id, ODF_name, ODF_data)        
@@ -135,7 +155,7 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
         mqttc = mqtt.Client()
         MQTT_config(mqttc, broker, mqt_port, mqt_usr, mqt_pw, mqt_encrypt)
         mqttc.loop_start()    
-        queue_mgr(db, data_queue)
+        queue_mgr(db, data_queue, mqttc)
 
     while True:
         try:
