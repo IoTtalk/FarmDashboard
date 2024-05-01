@@ -15,6 +15,9 @@ import config
 from . import utils
 from db import db
 
+import pandas as pd
+import plotly.express as px
+
 log = logging.getLogger("\033[1;33m[API]: \033[0m")
 api = Blueprint('API', __name__)
 
@@ -132,6 +135,15 @@ def api_datas():
 
     data1 = _query_data(interval, table1.__tablename__, field1, start, end, limit)
     result[sensor1].update({field1: data1})
+
+    if interval == 'hour':
+        df = pd.DataFrame(data1)
+        print('df: ',df)
+        df['datetime'] = df['date'] + ' ' + df['hour']
+        df['datetime'] = pd.to_datetime(df['datetime'])
+        df['value'] = pd.to_numeric(df['value'])
+        fig = px.line(df, x = 'datetime', y='value')
+        fig.show()
 
     field2 = request.args.get('f2')
     if field2:
