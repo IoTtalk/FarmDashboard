@@ -206,4 +206,15 @@ use `{{ _('') }}` to the needing change words.
 
 
 #### **備註**
-資料庫儲存方式，是以timestamp作為primary key索引，但timestamp的精度卻只使用到"秒"，這設計導致一個場域每秒只能記錄一個sensor的數值。
+Python 3.11.6 安裝方式:
+```
+wget https://www.python.org/ftp/python/3.11.6/Python-3.11.6.tgz
+sudo apt update
+sudo -H apt-get install libsqlite3-dev libffi-dev libssl-dev openssl zlib1g-dev build-essential -y
+tar xzvf Python-3.11.6.tgz
+cd Python-3.11.6
+./configure --prefix=/usr/local
+make -j
+sudo make install
+cd ..
+```
