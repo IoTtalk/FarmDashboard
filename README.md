@@ -28,7 +28,7 @@
         ```
     * Login mysql(以root使用者登入)
         ```
-        mysql -u root -p
+        sudo mysql -u root -p     
         ```
     * Check characterset status
         ```
@@ -108,6 +108,12 @@
     sudo mysqladmin -u root password
     ```
     Reference: https://emn178.pixnet.net/blog/post/87659567
+
+  或是查看系統預設密碼
+  ```
+  sudo vim /etc/mysql/debian.cnf
+  ```
+  Reference: https://andy6804tw.github.io/2019/01/31/ubuntu-mysql-password/
 
 * 注意2: **DB_CONFIG=mysql+pymysql://<user>:<pass>@localhost:3306/<db_name>?charset=utf8**
 
