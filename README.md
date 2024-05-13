@@ -109,7 +109,7 @@
     ```
     Reference: https://emn178.pixnet.net/blog/post/87659567
 
-  或是查看系統預設密碼
+  或是查看系統預設的 帳號 與 密碼
   ```
   sudo vim /etc/mysql/debian.cnf
   ```
