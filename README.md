@@ -11,7 +11,7 @@
     ubuntu: 
 
     ```sh
-    apt-get install tmux
+    sudo apt-get install tmux
     ```
 
 2. 安裝 python 相關需要套件：
@@ -24,7 +24,7 @@
     * 安裝 MySQL (version >= 5.7) (注意1)
 
         ```sh
-        apt-get install mysql-server
+        sudo apt-get install mysql-server
         ```
     * Login mysql(以root使用者登入)
         ```
