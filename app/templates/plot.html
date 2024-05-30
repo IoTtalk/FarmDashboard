@@ -4,57 +4,36 @@
 
 {% block page_content %}
 <div class="row" id="app">
-  <!-- number of datas -->
-  <div class="col-sm-12 col-xs-12">
-    <label for="field1">{{ _('Number of datas') }}:</label>
-    <select class="form-control" id="numberdatas">
-      <option value="second">{{ _('1') }}</option>
-      <option value="minute" selected>{{ _('2') }}</option>
-      <option value="hour">{{ _('3') }}</option>
-      <option value="day">{{ _('4') }}</option>
-    </select>
+  <!-- Dynamic add fields and sensors -->
+  <div v-for="(item, index) in fieldsSensors" :key="index">
+    <!-- field -->
+    <div class="col-sm-6 col-xs-12">
+      <label :for="'field' + index">{{ _('Field') }}{{ '{{ index + 1 }}' }}:</label>
+      <select class="form-control" :id="'field' + index" v-model="item.active_field" @change="field_change(index)">
+        <template v-for="field in fields">
+          <option :value="field.name">{{ '{{ field.alias }}' }}</option>
+        </template>
+      </select>
+    </div>
+	  
+    <!-- sensor -->
+    <div class="col-sm-6 col-xs-12">
+      <label :for="'sensor' + index">{{ _('Sensor') }}{{ '{{ index + 1 }}' }}:</label>
+      <select class="form-control" :id="'sensor' + index" v-model="item.active_sensor">
+        <template v-for="sensor in item.active_sensors">
+          <option :value="sensor.df_name">{{ '{{ sensor.alias }}' }}</option>
+        </template>
+      </select>
+    </div>
   </div>
   
-  <!-- field 1 -->
-  <div class="col-sm-6 col-xs-12">
-    <label for="field1">{{ _('Field') }}1:</label>
-    <select class="form-control" id="field1" v-model="active_field1" @change="field1_change">
-      <template v-for="field in fields">
-        <option :value="field.name">{{ '{{' }}field.alias{{ '}}' }}</option>
-      </template>
-    </select>
+  <!-- add field and sensor -->
+  <div class="col-sm-2 col-xs-6">
+    <br>
+    <button class="btn btn-primary" style="width: 100%;" @click="addFieldSensor">{{ _('Add Field and Sensor') }}</button>
+    <br>
   </div>
-
-  <!-- sensor1 -->
-  <div class="col-sm-6 col-xs-12">
-    <label for="sensor1">{{ _('Sensor') }}1: </label>
-    <select class="form-control" id="sensor1">
-      <template v-for="sensor in active_sensor1">
-        <option :value="sensor.df_name">{{ '{{' }}sensor.alias{{ '}}' }}</option>
-      </template>
-    </select>
-  </div>
-  
-  <!-- field 2 -->
-  <div class="col-sm-6 col-xs-12">
-    <label for="field2">{{ _('Field') }}2: </label>
-    <select class="form-control" id="field2" v-model="active_field2" @change="field2_change">
-      <option value="">{{ _('None') }}</option>
-      <template v-for="field in fields">
-        <option :value="field.name">{{ '{{' }}field.alias{{ '}}' }}</option>
-      </template>
-    </select>
-  </div>
-
-  <!-- sensor2 -->
-  <div class="col-sm-6 col-xs-12">
-    <label for="sensor2">{{ _('Sensor') }}2: </label>
-    <select class="form-control" id="sensor2">
-      <template v-for="sensor in active_sensor2">
-        <option :value="sensor.df_name">{{ '{{' }}sensor.alias{{ '}}' }}</option>
-      </template>
-    </select>
-  </div>
+  <div class="clearfix"></div>
   
   <!-- start time -->
   <div class="col-sm-3 col-xs-12">
@@ -178,71 +157,61 @@ function update() {
         let zValues = [];
         let xValues = [];
 
-	for (let i = 0; i < sensors.length; i++) {
-            let sensor = sensors[i];
-            let fields = Object.keys(data[sensor]);
-            if (!fields.length) {
-                continue;
-            }
-
-            let field = fields[0];
-            let sensorData = data[sensor][field];
-
-            let timestamps = [];
-            if (interval == 'day') {
-                timestamps = sensorData.map(item => `${item.date}`);
-            } else if (interval == 'hour') {
-                timestamps = sensorData.map(item => `${item.date} ${item.hour}:00:00`);
-            } else if(interval == 'minute'){
-                timestamps = sensorData.map(item => `${item.date} ${item.hour}:${item.minute}:00`);
-            } else{
-                timestamps = sensorData.map(item => item.timestamp);
-            }
+        for (let sensor in data) {
+            for (let field in data[sensor]) {
+                let sensorData = data[sensor][field];
+                let timestamps = [];
+                if (interval == 'day') {
+                    timestamps = sensorData.map(item => `${item.date}`);
+                } else if (interval == 'hour') {
+                    timestamps = sensorData.map(item => `${item.date} ${item.hour}:00:00`);
+                } else if(interval == 'minute'){
+                    timestamps = sensorData.map(item => `${item.date} ${item.hour}:${item.minute}:00`);
+                } else{
+                    timestamps = sensorData.map(item => item.timestamp);
+                }
         
-            let values = sensorData.map(item => parseFloat(item.value));
+                let values = sensorData.map(item => parseFloat(item.value));
 		
-            if (plotMethod === 'heatmap') {
-                yValues = yValues.concat(Array(timestamps.length).fill(`${field} - ${sensor}`));
-                zValues = zValues.concat(values);
-                xValues = xValues.concat(timestamps);
-            } else {
-                let trace = {
-                    x: timestamps,
-                    y: values,
-                    mode: 'lines+markers',
-                    type: 'scatter',
-                    name: `${field} - ${sensor}`
-                };
-                if (plotMethod === 'line') {
-                    trace.mode = 'lines+markers';
-                } else if (plotMethod === 'scatter') {
-                    trace.mode = 'markers';
-                } else if (plotMethod === 'box') {
-                    trace = {
+                if (plotMethod === 'heatmap') {
+                    yValues = yValues.concat(Array(timestamps.length).fill(`${field} - ${sensor}`));
+                    zValues = zValues.concat(values);
+                    xValues = xValues.concat(timestamps);
+		    let trace = {
+                        x: xValues,
+                        y: yValues,
+                        z: zValues,
+                        type: 'heatmap',
+                        name: 'Heatmap',
+                        colorscale: 'Viridis'
+                    };
+                    traces.push(trace);
+                } else {
+                    let trace = {
+                        x: timestamps,
                         y: values,
-                        type: 'box',
+                        mode: 'lines+markers',
+                        type: 'scatter',
                         name: `${field} - ${sensor}`
                     };
-                } else if (plotMethod === 'bar') {
-                    trace.type = 'bar';
-                    trace.mode = undefined;
+                    if (plotMethod === 'line') {
+                        trace.mode = 'lines+markers';
+                    } else if (plotMethod === 'scatter') {
+                        trace.mode = 'markers';
+                    } else if (plotMethod === 'box') {
+                        trace = {
+                            y: values,
+                            type: 'box',
+                            name: `${field} - ${sensor}`
+                        };
+                    } else if (plotMethod === 'bar') {
+                        trace.type = 'bar';
+                        trace.mode = undefined;
+                    }
+                    traces.push(trace);
                 }
-                traces.push(trace);
             }
-        }
-	    
-        if (plotMethod === 'heatmap') {
-            let trace = {
-                x: xValues,
-                y: yValues,
-                z: zValues,
-                type: 'heatmap',
-                name: 'Heatmap',
-                colorscale: 'Viridis'
-            };
-            traces.push(trace);
-        }
-	    
+	}    
         Plotly.newPlot("plot", traces, layout);
     });
 }
