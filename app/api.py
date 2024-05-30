@@ -280,6 +280,55 @@ def _get_mysql_raw_sql(interval, table_name, field, start, end, limit):
     return raw_sql
 
 
+# 新增動態處理函數
+@api.route('/dynamic_datas', methods=['GET'])
+@utils.required_login
+def api_dynamic_datas():
+    """
+    :args f: fields, like ['flower', 'orange']
+    :args s: sensors, like ['Temperature', 'AtPressure']
+    :args st: start_time, any time format
+    :args et: end_time, any time format
+    :args i: interval, only allow `second`, `minute`, `hour`, `day`, default `hour`
+    :args l: limit, query limit, default config.QUERY_LIMIT
+
+    example:
+        http://your.domain/api/dynamic_datas?f=flower&f=orange&s=Temperature&s=AtPressure&st=2018-06-26&et=2018-06-27&i=second
+    """
+    stime = datetime.now()
+
+    fields = request.args.getlist('f')
+    sensors = request.args.getlist('s')
+    start_time = request.args.get('st')
+    end_time = request.args.get('et')
+    interval = request.args.get('i', 'hour')
+    limit = int(request.args.get('l')) if request.args.get('l') else None
+
+    if not fields or not sensors or not start_time or not end_time:
+        abort(404)
+
+    start = parser.parse(start_time).strftime('%Y-%m-%d %H:%M:%S')
+    end = parser.parse(end_time).strftime('%Y-%m-%d %H:%M:%S')
+
+    result = {}
+
+    for field, sensor in zip(fields, sensors):
+        tablename = sensor.replace('-O', '')
+        if not hasattr(db.models, tablename):
+            abort(404)
+        table = getattr(db.models, tablename)
+
+        if sensor not in result:
+            result[sensor] = {}
+        
+        data = _query_data(interval, table.__tablename__, field, start, end, limit)
+        result[sensor].update({field: data})
+
+    etime = datetime.now()
+    log.debug((etime - stime).total_seconds())
+    return jsonify(result)
+
+
 @api.route('/user/pwd', methods=['POST'])
 @utils.required_login
 def api_user_change_pwd():
