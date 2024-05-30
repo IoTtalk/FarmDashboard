@@ -91,12 +91,13 @@
 
   <!-- plot method -->
   <div class="col-sm-3 col-xs-12">
-    <label for="interval">{{ _('Choose Plot') }}:</label>
-    <select class="form-control" id="interval">
-      <option value="line">{{ _('Line') }}</option>
+    <label for="interval">{{ _('Plot Method') }}:</label>
+    <select class="form-control" id="plotmethod">
+      <option value="line" selected>{{ _('Line') }}</option>
       <option value="scatter">{{ _('Scatter') }}</option>
       <option value="box" selected>{{ _('Box') }}</option>
-      <option value="LR">{{ _('Linear Regression') }}</option>
+      <option value="bar">{{ _('Bar') }}</option>
+      <option value="heatmap">{{ _('HeatMap') }}</option>
     </select>
   </div>
 
@@ -113,23 +114,11 @@
         <h3 class="box-title">{{ _('History Histogram') }}</h3>
 
         <div class="box-tools pull-right">
-          <!--
-          Real time
-          <div class="btn-group" id="realtime" data-toggle="btn-toggle">
-            <button type="button" class="btn btn-default btn-xs active" data-toggle="on">On</button>
-            <button type="button" class="btn btn-default btn-xs" data-toggle="off">Off</button>
-          </div>
-          -->
         </div>
       </div>
       <div class="box-body"><div id="plot" style="height: 500px;"></div></div>
     </div>
-  </div>
-  <!-- plot 
-    <div class="col-sm-4 col-xs-12">
-      <iframe src="http://localhost:8000/pH.html" width="2100" height="800" frameborder="no"></iframe>
-    </div>
--->  
+  </div> 
 </div>
 
 {% endblock %}
@@ -176,300 +165,88 @@ function update() {
                 title: 'Value'
             }
         };
-        Plotly.newPlot("plot", traces, layout);
         
         let sensors = Object.keys(data);
         if (!sensors.length) {
             return;
         }
+        
+	let interval = $('#interval').val();
+	let plotMethod = $('#plotmethod').val();
 
-        let sensor1 = sensors[0];
-        let fields1 = Object.keys(data[sensor1]);
-        if (!fields1.length) {
-            return;
-        }
-        
-        let field1 = fields1[0];
-        let sensor1Data = data[sensor1][field1];
-        
-        let timestamps1 = [];
-        let interval = $('#interval').val();
-        console.log('interval: ',interval);
-        
-        if (interval == 'day') {
-            timestamps1 = sensor1Data.map(item => `${item.date}`);
-            console.log('timestamps1: ',timestamps1);
-        } else if (interval == 'hour') {
-            timestamps1 = sensor1Data.map(item => `${item.date} ${item.hour}:00:00`);
-            console.log('timestamps1: ',timestamps1);
-        } else if(interval == 'minute'){
-            timestamps1 = sensor1Data.map(item => `${item.date} ${item.hour}:${item.minute}:00`);
-            console.log('timestamps1: ',timestamps1);
-        } else{
-            timestamps1 = sensor1Data.map(item => item.timestamp);
-            console.log('timestamps1: ',timestamps1);
-        }
-        
-        let values1 = sensor1Data.map(item => parseFloat(item.value));
-        console.log('values1: ',values1);
-        
-        //let timestamps1 = sensor1Data.map(item => `${item.date} ${item.hour}:${item.minute}:${item.second}`);
-        //console.log('timestamps1: ',timestamps1);
-        //let values1 = sensor1Data.map(item => parseFloat(item.value));
-        //console.log('values1: ',values1);
-        
-        let trace1 = {
-            x: timestamps1,
-            y: values1,
-            mode: 'lines+markers',
-            type: 'scatter',
-            name: `${field1} - ${sensor1}`
-        };
-        
-        traces.push(trace1);
+	let yValues = [];
+        let zValues = [];
+        let xValues = [];
 
-        let sensor2, fields2, field2, sensor2Data, timestamps2, values2, trace2;
+	for (let i = 0; i < sensors.length; i++) {
+            let sensor = sensors[i];
+            let fields = Object.keys(data[sensor]);
+            if (!fields.length) {
+                continue;
+            }
 
-        if (sensors.length >= 2) {
-            sensor2 = sensors[1];
-            fields2 = Object.keys(data[sensor2]);
-            if (fields2.length) {
-                field2 = fields2[0];
-                sensor2Data = data[sensor2][field2];
-                timestamps2 = sensor2Data.map(item => `${item.date} ${item.hour}:${item.minute}`);
-                values2 = sensor2Data.map(item => parseFloat(item.value));
+            let field = fields[0];
+            let sensorData = data[sensor][field];
 
-                trace2 = {
-                    x: timestamps2,
-                    y: values2,
+            let timestamps = [];
+            if (interval == 'day') {
+                timestamps = sensorData.map(item => `${item.date}`);
+            } else if (interval == 'hour') {
+                timestamps = sensorData.map(item => `${item.date} ${item.hour}:00:00`);
+            } else if(interval == 'minute'){
+                timestamps = sensorData.map(item => `${item.date} ${item.hour}:${item.minute}:00`);
+            } else{
+                timestamps = sensorData.map(item => item.timestamp);
+            }
+        
+            let values = sensorData.map(item => parseFloat(item.value));
+		
+            if (plotMethod === 'heatmap') {
+                yValues = yValues.concat(Array(timestamps.length).fill(`${field} - ${sensor}`));
+                zValues = zValues.concat(values);
+                xValues = xValues.concat(timestamps);
+            } else {
+                let trace = {
+                    x: timestamps,
+                    y: values,
                     mode: 'lines+markers',
                     type: 'scatter',
-                    name: `${field2} - ${sensor2}`
+                    name: `${field} - ${sensor}`
                 };
-
-                traces.push(trace2);
+                if (plotMethod === 'line') {
+                    trace.mode = 'lines+markers';
+                } else if (plotMethod === 'scatter') {
+                    trace.mode = 'markers';
+                } else if (plotMethod === 'box') {
+                    trace = {
+                        y: values,
+                        type: 'box',
+                        name: `${field} - ${sensor}`
+                    };
+                } else if (plotMethod === 'bar') {
+                    trace.type = 'bar';
+                    trace.mode = undefined;
+                }
+                traces.push(trace);
             }
         }
-
+	    
+        if (plotMethod === 'heatmap') {
+            let trace = {
+                x: xValues,
+                y: yValues,
+                z: zValues,
+                type: 'heatmap',
+                name: 'Heatmap',
+                colorscale: 'Viridis'
+            };
+            traces.push(trace);
+        }
+	    
         Plotly.newPlot("plot", traces, layout);
     });
 }
 
-        
-  function update1() {
-    getData((data) => {
-      if (data == undefined) {
-          return;
-      }
-      
-      let dataset = [];
-      let yaxes = [];
-      let sensors = Object.keys(data); //sensors = ['AtPressure-O',...]
-      if (!sensors.length) { return; }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-      let source_fields, target1, target2 = null;
-      let source1 = [null, null];
-      let source2 = [null, null];
-
-      source1[1] = sensors[0];
-      source_fields  = Object.keys(data[source1[1]]);
-      if (!source_fields.length)  return;
-      source1[0] =  source_fields[0];
-     
-      if (sensors.length >= 2){
-          source2[1] = sensors[1];
-          source_fields  = Object.keys(data[source2[1]]);
-          source2[0] =  source_fields[0];
-      }
-      else if(source_fields.length >= 2) { 
-          source2[1] = sensors[0];
-          source2[0] =  source_fields[1];
-      }
-
-      if ($('#field1').val() == source1[0]) {
-          target1 = source1;
-          target2 = source2;
-      }
-      else{
-          target1 = source2;
-          target2 = source1;
-      }
-///////////////////////////////////////////////////////////////////////////////////////////////////      
-//      let sensor1 = sensors[0];
-//      let fields = Object.keys(data[sensor1]);
-
-
-//      if (!fields.length) { return; }
-//      let field1 = fields[0];
-
-      temp_data = {};
-      let res1 = [];
-      let max1 = -Infinity;
-      let min1 = Infinity;
-//      let label1 = field1 + ' - ' + sensor1;
-      let label1 = target1[0] + ' - ' + target1[1];
-      let x_tick = [];
-//      let tick_interval = Math.ceil(data[sensor1][field1].length / 7);
-      let tick_interval = Math.ceil(data[target1[1]][target1[0]].length / 7);
-      
-//      data1 = data[sensor1][field1];
-      data1 = data[target1[1]][target1[0]];
-
-      temp_data[label1] = data1;
-      data1.reverse();
-      data1.forEach((element, idx) => {
-        let value = parseFloat(element.value);
-        if (value > max1) {
-          max1 = value;
-        }
-        if (value < min1) {
-          min1 = value;
-        }
-        res1.push([idx, value]);
-        if (idx % tick_interval == 0) {
-          if (element.minute) {
-            x_tick.push([idx, element.date + ' ' + element.hour + ':' + element.minute +':00']);
-          } else if (element.hour) {
-            x_tick.push([idx, element.date + ' ' + element.hour + ':00:00']);
-          } else if (element.date) {
-            x_tick.push([idx, element.date]);
-          } else {
-            x_tick.push([idx, element.timestamp]);
-          }
-        }
-      })
-
-      let y1_max_index = 10 ** (Math.log10(max1) - 1);
-      if (!y1_max_index) { y1_max_index = 1;}
-      let y1_max = (Math.ceil(max1 / y1_max_index) + 1) * y1_max_index;
-
-      let y1_min_index = 10 ** (Math.log10(min1) - 1);
-      if (!y1_min_index) { y1_min_index = 1;}
-      let y1_min = (Math.round(min1 / y1_min_index) - 1) * y1_min_index;
-
-      if (y1_max == y1_min) {
-        y1_max += 10;
-        y1_min -= 10;
-      }
-
-      if (y1_min < 0 && min1 >= 0) {
-        y1_min = 0;
-      }
-
-      dataset.push({
-              label: label1,
-              data: res1,
-              yaxis: 1,
-              points: { show: true, radius: 5, symbol: 'triangle' },
-              lines : { show: true },
-              color: "#000000",
-      });
-
-      yaxes.push({
-          position: 'left',
-          min: y1_min,
-          max: y1_max,
-          axisLabel: label1,
-          axisLabelUseCanvas: true,
-      });
-
-
-      let data2 = null;
-//      if (fields.length >= 2) {
-//          sensor2 = sensors[0];
-//          field2 = fields[1];
-//          data2 = data[sensor2][field2];
-//      } else if (sensors.length >= 2) {
-//          sensor2 = sensors[1];
-//          field2 = Object.keys(data[sensor2])[0];
-//          data2 = data[sensor2][field2];
-//      }
-
-      if(target2[0]) data2 = data[target2[1]][target2[0]];  
-
-      if (data2) {
-          let res2 = [];
-          let max2 = -Infinity;
-          let min2 = Infinity;
-
-//          let label2 = field2 + ' - ' + sensor2;
-          let label2 = target2[0] + ' - ' + target2[1];
-          temp_data[label2] = data2;
-          data2.reverse();
-          data2.forEach((element, idx) => {
-            let value = parseFloat(element.value);
-            if (value > max2) {
-              max2 = value;
-            }
-            if (value < min2) {
-              min2 = value;
-            }
-            res2.push([idx, value]);
-          })
-
-          let y2_max_index = 10 ** (Math.log10(max2) - 1);
-          if (!y2_max_index) { y2_max_index = 1;}
-          let y2_max = (Math.ceil(max2 / y2_max_index) + 1) * y2_max_index;
-
-          let y2_min_index = 10 ** (Math.log10(min2) - 1);
-          if (!y2_min_index) { y2_min_index = 1;}
-          let y2_min = (Math.round(min2 / y2_min_index) - 1) * y2_min_index;
-
-          if (y2_max == y2_min) {
-            y2_max += 10;
-            y2_min -= 10;
-          }
-
-          if (y2_min < 0 && min2 >= 0) {
-            y2_min = 0;
-          }
-
-          dataset.push({
-              label: label2,
-              data: res2,
-              yaxis: 2,
-              points: { show: true, radius: 5, symbol: 'square' },
-              lines : { show: true },
-              alignTicksWithAxis: 2,
-              color: "#008800", 
-          });
-
-          yaxes.push({
-              alignTicksWithAxis: 2,
-              position: 'right',
-              min: y2_min,
-              max: y2_max,
-              axisLabel: label2,
-              axisLabelUseCanvas: true,
-          });
-      }
-
-      $.plot('#interactive', dataset, {
-        grid  : {
-          borderColor: '#f3f3f3',
-          borderWidth: 1,
-          tickColor  : '#f3f3f3',
-          hoverable: true,
-          borderWidth: 2,
-          backgroundColor: { colors: ["#ffffff", "#EDF5FF"] }
-
-        },
-        series: {
-          shadowSize: 0, // Drawing is faster without shadows
-        },
-        yaxes : yaxes,
-        xaxis : {
-          show: true,
-          //rotateTicks: 20,
-          ticks: x_tick,
-          tickColor: 'transparent'
-        }
-      });
-      $('#interactive').UseTooltip();
-
-    });
-  }
 
   function download_field1() {
     download_field($('#field1').val(),
