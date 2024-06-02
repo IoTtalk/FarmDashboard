@@ -1,6 +1,6 @@
 # Web Application Framework
 # https://flask.palletsprojects.com/en/1.1.x/
-flask~=1.1.2
+flask~=1.1.4
 # Integration of Flask and WTForms
 # https://flask-wtf.readthedocs.io/en/latest/
 flask-wtf~=0.14.3
