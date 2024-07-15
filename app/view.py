@@ -125,7 +125,7 @@ def compare_():
 
 @view_api.route('/plot/', methods=['GET'], strict_slashes=False)
 @utils.required_login
-def compare_():
+def plot_():
     return render_template('plot.html')
 
 
