@@ -1,8 +1,8 @@
 #!/bin/sh
-
+cd $(dirname $0)
 path=$(pwd)
 venvfile="$path/venv/bin/activate"
-session_name="graphserver"
+session_name="Dashboard"
 
 tmux kill-session -t $session_name 2>/dev/null
 
@@ -10,7 +10,7 @@ if [ $(tmux ls 2>/dev/null | grep $session_name | wc -l) -eq "0" ]
 then
   tmux new-session -s $session_name -d;
   sleep 1
-  tmux new-window -t $session_name -n Dashboard -d "source $venvfile; python3 $path/server.py; bash -i"
+  tmux new-window -t $session_name -n Dashboard -d "python3 $path/server.py; bash -i"
 else
   echo "Can't kill previous tmux session..."
 fi
