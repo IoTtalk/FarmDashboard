@@ -190,7 +190,6 @@ function update() {
                     let trace = {
                         x: timestamps,
                         y: values,
-                        mode: 'lines+markers',
                         type: 'scatter',
                         name: `${field} - ${sensor}`
                     };
@@ -199,14 +198,12 @@ function update() {
                     } else if (plotMethod === 'scatter') {
                         trace.mode = 'markers';
                     } else if (plotMethod === 'box') {
-                        trace = {
-                            y: values,
-                            type: 'box',
-                            name: `${field} - ${sensor}`
-                        };
+			trace.type = 'box';
+			trace.x = undefined;
+			layout.xaxis.title = 'Sensor';
+              		layout.yaxis.title = 'Value';
                     } else if (plotMethod === 'bar') {
                         trace.type = 'bar';
-                        trace.mode = undefined;
                     }
                     traces.push(trace);
                 }
