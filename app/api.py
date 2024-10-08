@@ -5,6 +5,8 @@ import re
 
 from datetime import datetime
 from dateutil import parser
+import plotly.graph_objs as go
+import plotly.io as pio
 
 from flask import Blueprint, abort, jsonify, g, redirect, request, session
 from sqlalchemy import text, or_
@@ -796,3 +798,68 @@ def api_field():
         return 'ok'
 
     abort(404)
+
+#plotly繪圖api
+@api.route('/plotly', methods=['POST'])
+def plotly_api():
+    try:
+        # 從前端的請求中獲取資料
+        traces = request.json['traces']
+        plot_method = request.json.get('plotMethod', 'line')
+
+        all_traces = []
+        for trace_data in traces:
+            timestamps = trace_data['timestamps']
+            values = trace_data['values']
+            field = trace_data.get('field', 'Unknown')
+            sensor = trace_data.get('sensor', 'Unknown')
+
+            # 創建單個 trace
+            trace = create_trace(plot_method, timestamps, values, field, sensor)
+            all_traces.append(trace)
+
+        layout = {
+            'xaxis': {'title': 'Time', 'tickformat': '%Y-%m-%d %H:%M:%S', 'tickangle': 45},
+            'yaxis': {'title': 'Value'}
+        }
+
+        # 生成圖表
+        fig = go.Figure(data=all_traces, layout=layout)
+        graph_json = pio.to_json(fig)
+
+        return jsonify(graph_json), 200
+
+    except Exception as e:
+        # 印出錯誤訊息以幫助診斷問題
+        print(f"Error: {str(e)}")
+        return jsonify({'error': str(e)}), 400
+
+
+
+
+# 生成trace的函式
+def create_trace(plot_method, timestamps, values, field, sensor):
+    trace = {}
+    
+    if plot_method == 'heatmap':
+        trace = go.Heatmap(
+            x=timestamps,
+            y=[f"{field} - {sensor}"] * len(timestamps),
+            z=values,
+            colorscale='Viridis'
+        )
+    else:
+        trace = go.Scatter(
+            x=timestamps,
+            y=values,
+            name=f"{field} - {sensor}",
+            mode='lines+markers' if plot_method == 'line' else 'markers'
+        )
+        if plot_method == 'box':
+            trace = go.Box(y=values, name=f"{field} - {sensor}")
+        elif plot_method == 'bar':
+            trace = go.Bar(x=timestamps, y=values, name=f"{field} - {sensor}")
+        elif plot_method == 'histogram':
+            trace = go.Histogram(x=values, name=f"{field} - {sensor}")
+
+    return trace
