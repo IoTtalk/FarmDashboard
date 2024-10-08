@@ -123,6 +123,12 @@ def compare_():
     return render_template('compare.html')
 
 
+@view_api.route('/plot/', methods=['GET'], strict_slashes=False)
+@utils.required_login
+def plot_():
+    return render_template('plot.html')
+
+
 @view_api.route('/profile/', methods=['GET'], strict_slashes=False)
 @utils.required_login
 def profile():

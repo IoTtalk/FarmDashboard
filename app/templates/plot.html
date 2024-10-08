@@ -1,0 +1,306 @@
+{% extends 'base/base.html' %} 
+
+{% block page_title %} {{ _('Data Visualization') }} {% endblock %}
+
+{% block page_content %}
+<div class="row" id="app">
+  <!-- Dynamic add fields and sensors -->
+  <div v-for="(item, index) in fieldsSensors" :key="index">
+    <!-- field -->
+    <div class="col-sm-6 col-xs-12">
+      <label :for="'field' + index">{{ _('Field') }}{{ '{{ index + 1 }}' }}:</label>
+      <select class="form-control" :id="'field' + index" v-model="item.active_field" @change="field_change(index)">
+        <template v-for="field in fields">
+          <option :value="field.name">{{ '{{ field.alias }}' }}</option>
+        </template>
+      </select>
+    </div>
+	  
+    <!-- sensor -->
+    <div class="col-sm-6 col-xs-12">
+      <label :for="'sensor' + index">{{ _('Sensor') }}{{ '{{ index + 1 }}' }}:</label>
+      <select class="form-control" :id="'sensor' + index" v-model="item.active_sensor">
+        <template v-for="sensor in item.active_sensors">
+          <option :value="sensor.df_name">{{ '{{ sensor.alias }}' }}</option>
+        </template>
+      </select>
+    </div>
+  </div>
+  
+  <!-- add field and sensor -->
+  <div class="col-sm-2 col-xs-6">
+    <br>
+    <button class="btn btn-primary" style="width: 100%;" @click="addFieldSensor">{{ _('Add Field and Sensor') }}</button>
+    <br>
+  </div>
+  <div class="clearfix"></div>
+  
+  <!-- start time -->
+  <div class="col-sm-3 col-xs-12">
+    <label for="start-time">{{ _('StartTime') }}: </label>
+    <div class="input-group date">
+      <div class="input-group-addon">
+        <i class="fa fa-calendar"></i>
+      </div>
+      <input class="form-control" type='date' id="start-time" />
+    </div>
+  </div>
+
+  <!-- end time -->
+  <div class="col-sm-3 col-xs-12">
+    <label for="end-time">{{ _('EndTime') }}: </label>
+    <div class="input-group date">
+      <div class="input-group-addon">
+        <i class="fa fa-calendar"></i>
+      </div>
+      <input class="form-control" type='date' id="end-time" />
+    </div>
+  </div>
+
+  <!-- interval -->
+  <div class="col-sm-3 col-xs-12">
+    <label for="interval">{{ _('Interval') }}:</label>
+    <select class="form-control" id="interval">
+      <option value="second">{{ _('Second') }}</option>
+      <option value="minute">{{ _('Minute') }}</option>
+      <option value="hour" selected>{{ _('Hour') }}</option>
+      <option value="day">{{ _('Day') }}</option>
+    </select>
+  </div>
+
+  <!-- plot method -->
+  <div class="col-sm-3 col-xs-12">
+    <label for="interval">{{ _('Plot Method') }}:</label>
+    <select class="form-control" id="plotmethod">
+      <option value="line" selected>{{ _('Line') }}</option>
+      <option value="scatter">{{ _('Scatter') }}</option>
+      <option value="box" selected>{{ _('Box') }}</option>
+      <option value="bar">{{ _('Bar') }}</option>
+      <option value="heatmap">{{ _('HeatMap') }}</option>
+    </select>
+  </div>
+
+  <br>
+  <input type="button" onclick="update();" value="{{ _('Query') }}" />
+
+  <div class="col-xs-12">
+    <!-- interactive chart -->
+    <br>
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <i class="fa fa-bar-chart-o"></i>
+
+        <h3 class="box-title">{{ _('History Histogram') }}</h3>
+
+        <div class="box-tools pull-right">
+        </div>
+      </div>
+      <div class="box-body"><div id="plot" style="height: 500px;"></div></div>
+    </div>
+  </div> 
+</div>
+
+{% endblock %}
+
+
+{% block page_script %}
+<!-- Page script -->
+<script>
+	function getData(callback) {
+	    let field1 = $('#field1').val();
+	    let field2 = $('#field2').val();
+	    let sensor1 = $('#sensor1').val();
+	    let sensor2 = $('#sensor2').val() || "";
+	    let starttime = $('#start-time')[0].value;
+	    let endtime = $('#end-time')[0].value + " 23:59:59";
+	    let interval = $('#interval').val();
+	    $.ajax({
+	      'url': '/api/datas?f1=' + field1 + '&f2=' + field2 + '&s1=' + sensor1 +'&s2=' + sensor2 + '&st=' + starttime + '&et=' + endtime + '&i=' + interval,
+	    }).done((data) => {
+	      if (callback && data){
+		callback(data);
+	      } else if (callback) {
+		callback();
+	      }
+	    }).fail(() => {
+	      callback();
+	    });
+	  }
+
+function update() {
+    getData((data) => {
+        if (!data) {
+            return;
+        }
+        
+        let traces = [];
+        let layout = {
+            xaxis: {
+                title: 'Time',
+                tickformat: '%Y-%m-%d %H:%M:%S',
+                tickangle: 45
+            },
+            yaxis: {
+                title: 'Value'
+            }
+        };
+        
+        let sensors = Object.keys(data);
+        if (!sensors.length) {
+            return;
+        }
+        
+	let interval = $('#interval').val();
+	let plotMethod = $('#plotmethod').val();
+
+	let yValues = [];
+        let zValues = [];
+        let xValues = [];
+
+        for (let sensor in data) {
+            for (let field in data[sensor]) {
+                let sensorData = data[sensor][field];
+                let timestamps = [];
+                if (interval == 'day') {
+                    timestamps = sensorData.map(item => `${item.date}`);
+                } else if (interval == 'hour') {
+                    timestamps = sensorData.map(item => `${item.date} ${item.hour}:00:00`);
+                } else if(interval == 'minute'){
+                    timestamps = sensorData.map(item => `${item.date} ${item.hour}:${item.minute}:00`);
+                } else{
+                    timestamps = sensorData.map(item => item.timestamp);
+                }
+        
+                let values = sensorData.map(item => parseFloat(item.value));
+		
+                if (plotMethod === 'heatmap') {
+                    yValues = yValues.concat(Array(timestamps.length).fill(`${field} - ${sensor}`));
+                    zValues = zValues.concat(values);
+                    xValues = xValues.concat(timestamps);
+		    let trace = {
+                        x: xValues,
+                        y: yValues,
+                        z: zValues,
+                        type: 'heatmap',
+                        name: 'Heatmap',
+                        colorscale: 'Viridis'
+                    };
+                    traces.push(trace);
+                } else {
+                    let trace = {
+                        x: timestamps,
+                        y: values,
+                        type: 'scatter',
+                        name: `${field} - ${sensor}`
+                    };
+                    if (plotMethod === 'line') {
+                        trace.mode = 'lines+markers';
+                    } else if (plotMethod === 'scatter') {
+                        trace.mode = 'markers';
+                    } else if (plotMethod === 'box') {
+			trace.type = 'box';
+			trace.x = undefined;
+			layout.xaxis.title = 'Sensor';
+              		layout.yaxis.title = 'Value';
+                    } else if (plotMethod === 'bar') {
+                        trace.type = 'bar';
+                    }
+                    traces.push(trace);
+                }
+            }
+	}    
+        Plotly.newPlot("plot", traces, layout);
+    });
+}
+
+
+  function download_field1() {
+    download_field($('#field1').val(),
+                   $('#sensor1').val(),
+                   $('#start-time')[0].value,
+                   $('#end-time')[0].value,
+                   $('#interval').val());
+  }
+  
+  function download_field(field, sensor, starttime, endtime, interval, limit) {
+    let a = document.createElement('a');;
+    a.href = '/api/export_datas?f=' + field + '&s=' + sensor + '&st=' + starttime + '&et=' + endtime + ' 23:59:59&i=' + interval;
+    a.download = field + '_' + sensor + '_' + starttime + '_' + endtime + '.csv';
+    a.click();
+  }
+  
+  function getFormatDate(date) {
+    let year = date.getFullYear();
+    let month = '' + (date.getMonth() + 1);
+    let day = '' + date.getDate();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+  
+  var app = new Vue({
+    el: '#app',
+    data: function () {
+      let initialFieldsSensors = {
+        active_field: '',
+        active_sensor: '',
+        active_sensors: []
+      };
+      return {
+        fields: {{ fields|safe }}, //Jinja2 模板語言中的語法，用來在 HTML 模板中插入變數或表達式的值。當模板被渲染時，變數的值會替換掉
+        fieldsSensors: [Object.assign({}, initialFieldsSensors)]
+      }
+    },
+    methods: {
+      addFieldSensor() {
+        this.fieldsSensors.push({
+          active_field: '',
+          active_sensor: '',
+          active_sensors: []
+        });
+      },
+      field_change(index) {
+        let field = this.fieldsSensors[index].active_field;
+        this.fieldsSensors[index].active_sensors = this.fields.find(f => f.name === field).sensors;
+      }
+    },
+    mounted() {
+      this.fieldsSensors[0].active_field = this.fields[0].name;
+      this.fieldsSensors[0].active_sensors = this.fields[0].sensors;
+      this.fieldsSensors[0].active_sensor = this.fields[0].sensors[0].df_name;
+
+      // set default time
+      let d = new Date();
+      $('#end-time')[0].value = getFormatDate(d);
+      d.setDate(d.getDate() - 1);
+      $('#start-time')[0].value = getFormatDate(d);
+    }
+  });
+
+
+	$(document).ready(function(){
+		$('#upload').click(function(){
+		    var csv = $('#filename');
+		    var csvFile = csv[0].files[0];
+		    var ext = csv.val().split(".").pop().toLowerCase();
+
+		    if($.inArray(ext, ["csv"]) === -1){
+		        alert('upload csv');
+		        return false;
+		    }
+		    if(csvFile != undefined){
+		        reader = new FileReader();
+		        reader.onload = function(e){
+
+		            csvResult = e.target.result.split(/\r|\n|\r\n/);
+		            $('.csv').append(csvResult);
+		        }
+		        reader.readAsText(csvFile);
+		    }
+		});
+	});
+</script>
+
+{% endblock %}
