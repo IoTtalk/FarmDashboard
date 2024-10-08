@@ -240,48 +240,43 @@ function update() {
     return [year, month, day].join('-');
   }
   
-  var apps = null;
-  $(() => {
-    apps = new Vue({ //建立一個新的vue
-      el: '#app', //此vue控制的html id為"app"，也就是說此vue將會操控擁有id="app"的html元素
-      data: function () { //定義了該Vue實例的資料屬性，包括fields、active_field1、active_sensor1、active_field2和active_sensor2
-        fields = {{ fields|safe }}.filter((data)=>{return data.sensors.length});
-        active_field1 = fields[0].name;
-        active_sensor1 = fields[0]['sensors'];
-        return {
-          fields: fields,
-          active_field1: active_field1,
-          active_sensor1: active_sensor1,
-          active_field2: '',
-          active_sensor2: []
-        }
+  var app = new Vue({
+    el: '#app',
+    data: function () {
+      let initialFieldsSensors = {
+        active_field: '',
+        active_sensor: '',
+        active_sensors: []
+      };
+      return {
+        fields: {{ fields|safe }}, //Jinja2 模板語言中的語法，用來在 HTML 模板中插入變數或表達式的值。當模板被渲染時，變數的值會替換掉
+        fieldsSensors: [Object.assign({}, initialFieldsSensors)]
+      }
+    },
+    methods: {
+      addFieldSensor() {
+        this.fieldsSensors.push({
+          active_field: '',
+          active_sensor: '',
+          active_sensors: []
+        });
       },
-      methods: { //定義了該 Vue 實例的方法，包括 field1_change 和 field2_change
-        field1_change(e) {
-          this.active_sensor1 = [];
-          this.fields.forEach((field) => {
-            if (field.name == e.target.value) {
-              this.active_sensor1 = field['sensors'];
-            }
-          })
-        },
-        field2_change(e) {
-          this.active_sensor2 = [];
-          this.fields.forEach((field) => {
-            if (field.name == e.target.value) {
-              this.active_sensor2 = field['sensors'];
-            }
-          })
-        }
-      },
-    })
-    
-    // set default time
-    let d = new Date();
-    $('#end-time')[0].value = getFormatDate(d);
-    d.setDate(d.getDate() - 1);
-    $('#start-time')[0].value = getFormatDate(d);  
+      field_change(index) {
+        let field = this.fieldsSensors[index].active_field;
+        this.fieldsSensors[index].active_sensors = this.fields.find(f => f.name === field).sensors;
+      }
+    },
+    mounted() {
+      this.fieldsSensors[0].active_field = this.fields[0].name;
+      this.fieldsSensors[0].active_sensors = this.fields[0].sensors;
+      this.fieldsSensors[0].active_sensor = this.fields[0].sensors[0].df_name;
 
+      // set default time
+      let d = new Date();
+      $('#end-time')[0].value = getFormatDate(d);
+      d.setDate(d.getDate() - 1);
+      $('#start-time')[0].value = getFormatDate(d);
+    }
   });
 
 
