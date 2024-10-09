@@ -1,0 +1,403 @@
+{% extends 'base/base.html' %} 
+
+{% block page_title %} {{ _('Data Analysis') }} {% endblock %}
+
+{% block page_content %}
+<div class="row" id="app">
+  <!-- Dynamic add fields and sensors -->
+  <div v-for="(item, index) in fieldsSensors" :key="index">
+    <!-- Field -->
+    <div class="col-sm-6 col-xs-12">
+      <label :for="'field' + index">{{ _('Field') }}{{ '{{ index + 1 }}' }}:</label>
+      <select class="form-control" :id="'field' + index" v-model="item.active_field" @change="field_change(index)">
+        <template v-for="field in fields">
+          <option :value="field.name">{{ '{{ field.alias }}' }}</option>
+        </template>
+      </select>
+    </div>
+    <!-- Sensor -->
+    <div class="col-sm-6 col-xs-12">
+      <label :for="'sensor' + index">{{ _('Sensor') }}{{ '{{ index + 1 }}' }}:</label>
+      <select class="form-control" :id="'sensor' + index" v-model="item.active_sensor">
+        <template v-for="sensor in item.active_sensors">
+          <option :value="sensor.df_name">{{ '{{ sensor.alias }}' }}</option>
+        </template>
+      </select>
+    </div>
+  </div>
+  
+  <!-- Add fields and sensors (Button) -->
+  <div class="col-sm-2 col-xs-6">
+    <br>
+    <button class="btn btn-primary" style="width: 100%;" @click="addFieldSensor">{{ _('Add Field and Sensor') }}</button>
+    <br>
+  </div>
+  <div class="clearfix"></div>
+
+
+  <!-- start time -->
+  <div class="col-sm-4 col-xs-12">
+    <label for="start-time">{{ _('StartTime') }}: </label>
+    <div class="input-group date">
+      <div class="input-group-addon">
+        <i class="fa fa-calendar"></i>
+      </div>
+      <input class="form-control" type='date' id="start-time" />
+    </div>
+  </div>
+
+  <!-- end time -->
+  <div class="col-sm-4 col-xs-12">
+    <label for="end-time">{{ _('EndTime') }}: </label>
+    <div class="input-group date">
+      <div class="input-group-addon">
+        <i class="fa fa-calendar"></i>
+      </div>
+      <input class="form-control" type='date' id="end-time" />
+    </div>
+  </div>
+
+  <!-- interval -->
+  <div class="col-sm-4 col-xs-12">
+    <label for="interval">{{ _('Interval') }}:</label>
+    <select class="form-control" id="interval">
+      <option value="second">{{ _('Second') }}</option>
+      <option value="minute">{{ _('Minute') }}</option>
+      <option value="hour" selected>{{ _('Hour') }}</option>
+      <option value="day">{{ _('Day') }}</option>
+    </select>
+  </div>
+  
+  <!-- plot method and plot button with better control over spacing -->
+  <div class="col-sm-4 col-xs-12">
+    <br>
+    <label for="plotmethod">{{ _('Plot Method') }}:</label>
+    <div class="row">
+      <div class="col-sm-9 col-xs-8">
+        <select class="form-control" id="plotmethod">
+          <option value="line" selected>{{ _('Line') }}</option>
+          <option value="scatter">{{ _('Scatter') }}</option>
+          <option value="box">{{ _('Box') }}</option>
+          <option value="bar">{{ _('Bar') }}</option>
+          <option value="histogram">{{ _('Histogram') }}</option>
+          <option value="heatmap">{{ _('HeatMap') }}</option>
+          <option value="calendar_heatmap">{{ _('Calendar Heatmap') }}</option>
+        </select>
+      </div>
+      <div class="col-sm-3 col-xs-4">
+        <button class="btn btn-primary" type="button" onclick="update();" style="width: 100%;">{{ _('Plot') }}</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- analysis method and analysis button with better control over spacing -->
+  <div class="col-sm-4 col-xs-12">
+    <br>
+    <label for="analysismethod">{{ _('Analysis Method') }}:</label>
+    <div class="row">
+      <div class="col-sm-9 col-xs-8">
+        <select class="form-control" id="analysismethod">
+          <option value="stl">{{ _('STL Decomposition') }}</option>
+          <option value="outlier" selected>{{ _('Outlier') }}</option>
+        </select>
+      </div>
+      <div class="col-sm-3 col-xs-4">
+        <button class="btn btn-primary" type="button" onclick="analysis();" style="width: 100%;">{{ _('Analysis') }}</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- interactive chart -->
+  <div class="col-xs-12">
+    <br>
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <i class="fa fa-bar-chart-o"></i>
+        <h3 class="box-title">{{ _('History Histogram') }}</h3>
+        <div class="box-tools pull-right"></div>
+      </div>
+      <div class="box-body">
+        <div id="plot" style="height: 500px;"></div></div>
+      </div>
+    </div>  
+  </div>  
+  
+  <!-- 在 AJAX 請求中添加 CSRF token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}"> 
+  
+</div>
+
+{% endblock %}
+
+
+{% block page_script %}
+<!-- Page script -->
+<script>
+  function getData(callback) {
+    let fields = app.fieldsSensors.map(item => item.active_field);
+    let sensors = app.fieldsSensors.map(item => item.active_sensor);
+    let starttime = $('#start-time')[0].value;
+    let endtime = $('#end-time')[0].value + " 23:59:59";
+    let interval = $('#interval').val();
+
+    $.ajax({
+      'url': '/api/dynamic_datas',
+      'data': {
+        f: fields,
+        s: sensors,
+        st: starttime,
+        et: endtime,
+        i: interval
+      },
+      'traditional': true
+    }).done((data) => {
+      callback(data);
+    }).fail(() => {
+      callback();
+    });
+  }
+
+  function update() {
+    getData((data) => {
+      if (!data) { // 如果數據為空則返回，不進行繪圖
+        return;
+      }
+
+      let interval = $('#interval').val();
+      let plotmethod = $('#plotmethod').val();
+      let traces = [];         // 用來存儲所有的 traces
+
+      // 根據interval取資料，並且準備trace資料
+      for (let sensor in data) {
+        for (let field in data[sensor]) {
+          let sensorData = data[sensor][field];
+          let timestamps = [];
+          if (interval === 'day') {
+            timestamps = sensorData.map(item => `${item.date}`);
+          } else if (interval === 'hour') {
+            timestamps = sensorData.map(item => `${item.date} ${item.hour}:00:00`);
+          } else if (interval === 'minute') {
+            timestamps = sensorData.map(item => `${item.date} ${item.hour}:${item.minute}:00`);
+          } else {
+            timestamps = sensorData.map(item => item.timestamp); // 完整的時間戳
+          }
+          let values = sensorData.map(item => parseFloat(item.value));
+          // 準備 trace 資料
+          traces.push({
+            timestamps: timestamps,
+            values: values,
+            field: field,
+            sensor: sensor
+          });
+        }
+      }
+
+      // 將預處理後的資料發送到後端，並進行一次 AJAX 請求
+      $.ajax({
+        url: '/api/plotly',
+	type: 'POST',
+        contentType: 'application/json',
+        headers: {
+	  'X-CSRFToken': $('meta[name="csrf-token"]').attr('content')  // 加入 CSRF token
+	},
+	data: JSON.stringify({
+          traces: traces,  // 發送所有的 traces
+	  plotmethod: plotmethod
+	}),
+	success: function(response) {
+	  Plotly.newPlot('plot', JSON.parse(response)).then(() => { // 顯示後端返回的圖表
+	    document.getElementById('plot').style.height = '100%'; // 當圖表繪製完成後，將高度設置為 100%
+          });
+        },
+	error: function(error) {
+	  console.error("Error generating plot: ", error);
+	}
+      });
+    });
+  }
+
+  function analysis() {
+    getData((data) => {
+      if (!data) { // 如果數據為空則返回，不進行繪圖
+        return;
+      }
+
+      let interval = $('#interval').val();
+      let analysismethod = $('#analysismethod').val();
+      let traces = [];         // 用來存儲所有的 traces
+      let field1 = app.fieldsSensors[0].active_field; // 因為stl跟zscore只會處理一個欄位的資料，當使用者有很多欄位時，處理的資料集會是Field1+sensor1
+      let sensor1 = app.fieldsSensors[0].active_sensor;
+
+        // 資料預處理邏輯
+      for (let sensor in data) {
+        for (let field in data[sensor]) {
+          let sensorData = data[sensor][field];
+          let timestamps = [];
+          if (interval === 'day') {
+            timestamps = sensorData.map(item => `${item.date}`);
+          } else if (interval === 'hour') {
+            timestamps = sensorData.map(item => `${item.date} ${item.hour}:00:00`);
+          } else if (interval === 'minute') {
+            timestamps = sensorData.map(item => `${item.date} ${item.hour}:${item.minute}:00`);
+          } else {
+            timestamps = sensorData.map(item => item.timestamp); // 完整的時間戳
+          }
+          let values = sensorData.map(item => parseFloat(item.value));
+               
+          // 準備 trace 資料
+          traces.push({
+            timestamps: timestamps,
+            values: values,
+            field: field,
+            sensor: sensor
+          });
+        }
+      }
+
+      // 當欄位有一個以上時，只處理第一組欄位 (trace) 的 STL 分解 跟 Z-Score 離群值檢測
+      let active_trace = traces.find(item => item.field === field1 && item.sensor === sensor1);
+      const x = active_trace.timestamps;
+      const y = active_trace.values;
+      
+      if (analysismethod === 'stl') {
+        // 發送數據到後端 API 進行 STL 分解
+        $.ajax({
+          'url': '/api/stl_decomposition',
+          type: 'POST',
+          contentType: 'application/json',
+          headers: {
+            'X-CSRFToken': $('meta[name="csrf-token"]').attr('content')  // 加入 CSRF token
+          },
+          data: JSON.stringify({ x: x, y: y }),
+          success: function(stl_components) {
+            // 獲取後端傳回的圖表 JSON
+            const graph_json = stl_components.graph;
+            // 更新 STL chart，這裡正確解析 graph_json
+            //Plotly.newPlot('plot', JSON.parse(graph_json));
+            Plotly.newPlot('plot', JSON.parse(graph_json)).then(() => {
+              document.getElementById('plot').style.height = '100%'; // 當圖表繪製完成後，將高度設置為 100%
+            });
+          },
+          error: function(xhr, status, error) {
+            console.error('Error in STL decomposition:', error);
+          }
+        });
+      } else if (analysismethod === 'outlier'){
+        $.ajax({
+          'url': '/api/detect_outliers',
+          type: 'POST',
+          contentType: 'application/json',
+          headers: {
+            'X-CSRFToken': $('meta[name="csrf-token"]').attr('content')  // 加入 CSRF token
+          },
+          data: JSON.stringify({ data: y }),
+          success: function(outliers) {
+            const outlierFlags = outliers;
+            // 將原始資料點和離群值分別顯示
+            const originalData = y.map((value, index) => ({
+              x: x[index],
+              y: value,
+              outlier: outlierFlags[index]
+            }));
+    
+            // 將離群值分開
+            const normalData = originalData.filter(d => !d.outlier);
+            const outlierData = originalData.filter(d => d.outlier);
+
+            // 使用 Plotly 繪製原始資料的面積圖
+            const traceArea = {
+              x: x,
+              y: y,
+              fill: 'tozeroy',
+              type: 'scatter',
+              mode: 'lines',
+              name: 'Original Data'
+            };
+
+            // 繪製垂直線標記異常值
+            const outlierMarkers = outlierData.map(d => ({
+              type: 'line',
+              x0: d.x,
+              x1: d.x,
+              y0: Math.min(...y),
+              y1: Math.max(...y),
+              line: {
+                color: 'red',
+                width: 2,
+                dash: 'dash'
+              }
+            }));
+
+            // 圖表的 layout 設定   f"{field} - {sensor}"
+            const layout = {
+              title: `Outlier Detection for ${field1} - ${sensor1}`,
+              xaxis: { title: 'Time' },
+              yaxis: { title: 'Value' },
+              shapes: outlierMarkers // 在圖表中加入異常值的垂直線
+            };
+
+            // 繪製圖表，包含面積圖和異常值標記
+            Plotly.newPlot('plot', [traceArea], layout).then(() => {
+              document.getElementById('plot').style.height = '100%';
+            });
+          },
+          error: function(xhr, status, error) {
+            console.error('Error in outlier detection:', error);
+          }
+        });
+      }
+    });
+  }
+
+
+  function getFormatDate(date) {
+    let year = date.getFullYear();
+    let month = '' + (date.getMonth() + 1);
+    let day = '' + date.getDate();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+  
+  var app = new Vue({
+    el: '#app',
+    data: function () {
+      let initialFieldsSensors = {
+        active_field: '',
+        active_sensor: '',
+        active_sensors: []
+      };
+      return {
+        fields: {{ fields|safe }}, //Jinja2 模板語言中的語法，用來在 HTML 模板中插入變數或表達式的值。當模板被渲染時，變數的值會替換掉
+        fieldsSensors: [Object.assign({}, initialFieldsSensors)]
+      }
+    },
+    methods: {
+      addFieldSensor() {
+        this.fieldsSensors.push({
+          active_field: '',
+          active_sensor: '',
+          active_sensors: []
+        });
+      },
+      field_change(index) {
+        let field = this.fieldsSensors[index].active_field;
+        this.fieldsSensors[index].active_sensors = this.fields.find(f => f.name === field).sensors;
+      }
+    },
+    mounted() {
+      this.fieldsSensors[0].active_field = this.fields[0].name;
+      this.fieldsSensors[0].active_sensors = this.fields[0].sensors;
+      this.fieldsSensors[0].active_sensor = this.fields[0].sensors[0].df_name;
+
+      // set default time
+      let d = new Date();
+      $('#end-time')[0].value = getFormatDate(d);
+      d.setDate(d.getDate() - 1);
+      $('#start-time')[0].value = getFormatDate(d);
+    }
+  });
+</script>
+{% endblock %}
