@@ -747,3 +747,148 @@ def api_field():
         return 'ok'
 
     abort(404)
+
+
+# Z-Score 離群值檢測
+@api.route('/outlier_detection', methods=['POST'])
+@utils.required_login
+def outlier_detection():
+    try:
+        # 接收前端傳來的資料
+        timestamps = request.json['timestamps']
+        values = request.json['values']
+        zscore_threshold = request.json.get('zscoreThreshold', 3)  # 預設閾值為3
+        
+        # 將數據轉換為 DataFrame
+        df = pd.DataFrame({'time': timestamps, 'value': values})
+        df['time'] = pd.to_datetime(df['time'])  # 確保時間格式正確
+        df.set_index('time', inplace=True)
+        
+        # 計算 Z-score
+        mean = df['value'].mean()
+        std_dev = df['value'].std()
+        df['zscore'] = (df['value'] - mean) / std_dev
+        
+        # 根據 Z-score 閾值篩選離群值
+        outlier_indices = df[df['zscore'].abs() > zscore_threshold].index.tolist()
+        outlier_index_positions = [df.index.get_loc(index) for index in outlier_indices]
+        
+        # 返回離群值的索引
+        return jsonify({
+            'outlierIndices': outlier_index_positions
+        })
+    except Exception as e:
+        log.error(f"Error in Z-score outlier detection: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+        
+    
+# STL 資料分解
+@api.route('/stl_decomposition', methods=['POST'])
+@utils.required_login
+def stl_decomposition():
+    try:
+        # 接收前端傳送的時間序列資料
+        x_data = request.json['x']  # 接收時間數據
+        y_data = request.json['y']  # 接收對應的數值數據
+        period = request.json.get('period', 7)  # 週期，預設12（根據資料的性質可調整）
+        
+        # 構建 DataFrame，並將 x_data 作為索引
+        df = pd.DataFrame({'time': x_data, 'value': y_data})
+        df['time'] = pd.to_datetime(df['time'])  # 將時間轉換為 datetime 格式
+        df.set_index('time', inplace=True)  # 設置時間為索引
+        
+        if len(df.columns) != 1:
+            return jsonify({"error": "Only one column of data is expected."}), 400
+        
+        # 對 value 進行 STL 分解
+        stl = STL(df['value'], period=period)
+        result = stl.fit()
+
+        fig = psp.make_subplots(rows=4, cols=1, shared_xaxes=True, vertical_spacing=0.02,
+                                subplot_titles=["Observed", "Trend", "Seasonal", "Residual"])
+        # 繪製觀察值
+        fig.add_trace(go.Scatter(x=df['value'].index, y=result.observed, mode='lines', name='Observed'), row=1, col=1)
+        # 繪製趨勢
+        fig.add_trace(go.Scatter(x=df['value'].index, y=result.trend, mode='lines', name='Trend'), row=2, col=1) #line=dict(color='red')
+        # 繪製季節性
+        fig.add_trace(go.Scatter(x=df['value'].index, y=result.seasonal, mode='lines', name='Seasonal'), row=3, col=1) #, line=dict(color='green')
+        # 繪製殘差
+        fig.add_trace(go.Scatter(x=df['value'].index, y=result.resid, mode='lines', name='Residual'), row=4, col=1) #, line=dict(color='purple')
+        # 更新整個圖表的佈局
+        fig.update_layout(height=900, title="STL Decomposition Chart", showlegend=False)
+
+        # 將圖表轉換為 JSON 格式，傳回前端
+        graph_json = pio.to_json(fig)
+
+        return jsonify({
+            'trend': result.trend.tolist(),
+            'seasonal': result.seasonal.tolist(),
+            'resid': result.resid.tolist(),
+            'graph': graph_json
+        })
+    except Exception as e:
+        log.error(f"Error in STL decomposition: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route('/plotly', methods=['POST'])
+@utils.required_login
+def plotly_api():
+    try:
+        # 從前端的請求中獲取資料，分別為 traces 跟 plot_method
+        traces = request.json['traces']
+        plot_method = request.json.get('plotmethod', 'line')
+
+
+        all_traces = []
+        for trace_data in traces: # 分別對每筆資料集進行繪圖，並存入 all_traces
+            x = timestamps = trace_data['timestamps']
+            y = values = trace_data['values']
+            field = trace_data.get('field')
+            sensor = trace_data.get('sensor')
+            name = f"{field} - {sensor}" # DashBoard會截取field跟sensor，其他系統不需要，因此可以將name設定成自己的變數名稱
+
+            trace, layout = create_trace(plot_method, x, y, name) # 創建單個 trace，並依序加入到 all_traces
+            all_traces.append(trace)
+        
+        # 使用 to_plotly_json() 轉換 traces 和 layout ，這樣前端才能應用
+        serialized_traces = [trace.to_plotly_json() for trace in all_traces]
+        print(serialized_traces)
+
+        # 將 traces 和 layout 分別返回
+        return jsonify({'traces': serialized_traces, 'layout': layout}), 200
+
+    except Exception as e:
+        # 錯誤訊息以幫助診斷問題
+        print(f"Error: {str(e)}")
+        return jsonify({'error': str(e)}), 400
+
+# 生成繪圖資料trace的函式
+def create_trace(plot_method, x, y, name): # DashBoard通常為時間序列資料，因此這裡的x = timestamps, y = values
+    trace = go.Scatter(x=x, y=y, name=name, mode='lines+markers' if plot_method == 'line' else 'markers') # 預設trace
+    layout = {
+      'xaxis': {'title': 'Time', 'tickformat': '%Y-%m-%d %H:%M:%S', 'tickangle': 45},
+      'yaxis': {'title': 'Value'}
+    } # 預設layout
+
+    if plot_method == 'heatmap':
+        z_values = np.array(y).reshape(1, len(y)).tolist()
+        trace = go.Heatmap(
+            x=x,
+            y=[name],
+            z=z_values,
+            colorscale='Viridis',
+            showscale=True
+        )
+    elif plot_method == 'box':
+      trace = go.Box(y=y, name=name)
+    elif plot_method == 'bar':
+      trace = go.Bar(x=x, y=y, name=name)
+    elif plot_method == 'histogram':
+      trace = go.Histogram(x=y, name=name)
+      layout = {'xaxis': {}, 'yaxis': {}}
+    elif plot_method == 'area':
+      trace = go.Scatter(x=x, y=y, name=name, mode='lines', fill='tozeroy')    
+
+    return trace, layout
+    
