@@ -309,6 +309,35 @@
   }
 
 
+  function correlation_matrix(traces) {  
+    console.log(traces);    
+    // 發送數據到後端 API 進行 STL 分解
+    $.ajax({
+      url: '/api/correlation_matrix',
+      type: 'POST',
+      contentType: 'application/json',
+        headers: {
+	  'X-CSRFToken': $('meta[name="csrf-token"]').attr('content')  // 加入 CSRF token
+	},
+      data: JSON.stringify({
+        traces: traces  // 發送所有的 traces
+      }),
+      success: function(response) {
+        console.log("Response:", response);
+	const fig = JSON.parse(response.fig);
+	
+	// 使用 Plotly 渲染圖表
+	Plotly.newPlot('interactive', fig.data, fig.layout).then(() => {
+          document.getElementById('interactive').style.height = '100%';
+        });
+      },
+      error: function(error) {
+        console.error("Error generating plot: ", error);
+      }
+    }); 
+  }
+	
+
   // Z-score 計算函數
   function calculateZScores(values) {
     let mean = values.reduce((a, b) => a + b, 0) / values.length;
@@ -434,6 +463,8 @@
           });
         } else if (this.selectedMethod === 'stl') {
           getTraces(this.selectedMethod, stl);
+        } else if (this.selectedMethod === 'correlation_matrix') {
+            getTraces(this.selectedMethod, correlation_matrix);
         } else {
           // 調用外部的 getTraces 函數，並將選擇的繪圖方法和回調傳入
           getTraces(this.selectedMethod, visualization);  // `plot` 作為回調函數
