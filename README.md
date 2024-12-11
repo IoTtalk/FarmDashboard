@@ -1,4 +1,9 @@
-此branch的目的在於新增兩個資料分析的功能在DashBoard上，分別為Z-score的離群值偵測跟STL資料分解
+此branch的目的在於新增四個資料分析的功能在DashBoard上，分別為Z-score的離群值偵測、STL資料分解、特徵關聯矩陣、K-Means資料分群
+
+**11/24**
+1. 完成特徵關聯矩陣：
+    *  correlation_matrix():
+    將資料傳到後端的correlation_matrix()進行繪圖，最後回傳fig到前端顯示
 
 **10/24**
 1. 完成z-score離群值檢測：
