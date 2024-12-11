@@ -831,6 +831,52 @@ def stl_decomposition():
         return jsonify({"error": str(e)}), 500
 
 
+# 特徵關聯矩陣
+@api.route('/correlation_matrix', methods=['POST'])
+@utils.required_login
+def correlation_matrix():
+    try:
+        # 從請求中提取 traces
+        traces = request.json['traces']
+
+        # 將 traces 數據轉換為多個 DataFrame
+        dfs = []
+        for trace in traces:
+            if 'timestamps' in trace and 'values' in trace and 'field' in trace and 'sensor' in trace:
+                column_name = f"{trace['field']}-{trace['sensor']}"
+                df = pd.DataFrame({
+                    'timestamps': pd.to_datetime(trace['timestamps']),
+                    column_name: trace['values']
+                }).set_index('timestamps')
+                dfs.append(df)
+
+        # 合併所有 DataFrame，按時間戳對齊
+        df_all = pd.concat(dfs, axis=1)
+        # 填充缺失值（可以選擇插值或直接用 NaN）
+        df_all = df_all.interpolate(method='time')  # 時間插值
+
+        # 計算相關係數矩陣
+        correlation_matrix = df_all.corr()
+
+        # 使用 Plotly 繪製特徵關聯矩陣
+        fig = ff.create_annotated_heatmap(
+            z=correlation_matrix.values,
+            x=list(correlation_matrix.columns),
+            y=list(correlation_matrix.index),
+            annotation_text=correlation_matrix.round(2).values,
+            colorscale='Blues',
+            showscale=True
+        )
+
+        # 返回整個圖表的 JSON 格式
+        return jsonify({'fig': pio.to_json(fig)})
+
+    except Exception as e:
+        # 錯誤處理
+        print(f"Error: {str(e)}")
+        return jsonify({'error': str(e)}), 400
+
+
 @api.route('/plotly', methods=['POST'])
 @utils.required_login
 def plotly_api():
