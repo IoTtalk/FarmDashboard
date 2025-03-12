@@ -938,3 +938,56 @@ def create_trace(plot_method, x, y, name): # DashBoard通常為時間序列資�
 
     return trace, layout
     
+
+DATATALK_URL = "https://aitalk.danny.iottalk.tw/datatalk/databank/third-Databank/"
+
+@api.route('/proxy', methods=['PUT'])
+def proxy_request():
+    try:
+        # 取得前端傳來的 JSON
+        data = request.json  
+        print("Received Data From DataTalk:", data)  # 印出前端傳來的 JSON {user:'', name:''}
+                
+        if not data:
+          return jsonify({"error": "No data received"}), 400  # 回傳 Bad Request
+
+        
+        # 將請求轉發到 `aitalk.danny.iottalk.tw`
+        response = requests.put(DATATALK_URL, json=data, headers={'Content-Type': 'application/json'})
+
+        # 檢查是否成功
+        if response.status_code == 200:
+            return jsonify(response.json()), 200
+        else:
+            return jsonify({"error": "Failed to connect to DataTalk", "status_code": response.status_code}), response.status_code
+    except Exception as e:
+        print("Error occurred:")
+        return jsonify({"error": str(e)}), 500
+        
+        
+@api.route('/save_datatalk_method', methods=['POST'])
+@utils.required_login
+def save_datatalk_method():
+    """
+    存儲 DataTalk 回傳的 user、name 和 data
+    """
+    try:
+        data = request.json
+        user = data.get('user')
+        name = data.get('name')
+        datatalk_data = json.dumps(data.get('datatalk_data'))  # 轉換為 JSON 字串儲存
+
+        if not user or not name or not datatalk_data:
+            return jsonify({"error": "缺少必要參數"}), 400
+
+        # 建立新紀錄
+        new_entry = db.models.DatatalkMethod(user=user, name=name, datatalk_data=datatalk_data)
+        g.session.add(new_entry)
+        g.session.commit()
+
+        return jsonify({"message": "成功儲存 DataTalk 方法", "id": new_entry.id}), 200
+
+    except Exception as e:
+        log.error(f"Error saving DataTalk method: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+        
