@@ -49,6 +49,22 @@ def render_template(*args, **argv):
              .query(db.models.user)
              .filter(db.models.user.username == session.get('username'))
              .first())
+    # 新增datatalk_methods，並在後端解析JSON(因為jinja2不能使用fromjson)
+    datatalk_methods = []
+    for m in (g.session
+              .query(db.models.DatatalkMethod.id,
+                     db.models.DatatalkMethod.user,
+                     db.models.DatatalkMethod.name,
+                     db.models.DatatalkMethod.datatalk_data)
+              .order_by(db.models.DatatalkMethod.id)
+              .all()):
+        try:
+            datatalk_data = json.loads(m.datatalk_data)  # 解析 JSON
+            datatalk_methods.append([m.id, m.user, m.name, datatalk_data])
+        except json.JSONDecodeError:
+            log.error(f"JSON 解析失敗: {m.datatalk_data}")
+            continue
+  
     return flask_render_template(*args,
                                  fields=fields,
                                  username=session.get('username'),
@@ -56,6 +72,7 @@ def render_template(*args, **argv):
                                  memo=user.memo,
                                  timeout_strikethrough=config.TIMEOUT_STRIKETHROUGH,
                                  i18n=config.i18n,
+                                 datatalk_methods=datatalk_methods,
                                  **argv)
 
 
@@ -133,3 +150,9 @@ def profile():
 @utils.required_superuser
 def management():
     return render_template('management.html')
+
+
+@view_api.route('/plot_number/', methods=['GET'], strict_slashes=False)
+@utils.required_login
+def plot_number_():
+    return render_template('plot_number_of_datas.html')
