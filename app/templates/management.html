@@ -1,7 +1,9 @@
 {% extends 'base/base.html' %} 
 
-{% block page_title %} {{ _('System Management') }} {% endblock %}
-
+{% block header %}
+  {% set header_title = _('System Management') %}
+  {% include 'base/header.html' %}
+{% endblock %}
 
 {% block page_content %}
 <script type="text/x-template" id="field-sensor-table-template">
