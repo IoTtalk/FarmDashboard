@@ -195,8 +195,8 @@ def main():
     session = db.get_session()
 
     for field in (session.query(db.models.field).all()):
-        profile = {'d_name': field.name + '_DataServer',
-                   'dm_name': 'DataServer',
+        profile = {'d_name': field.name,
+                   'dm_name': 'Dashboard',
                    'df_list': ['Alert-I'],
                    'is_sim': False}
         if broker: profile['mqtt_enable'] = True
