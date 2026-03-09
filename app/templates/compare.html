@@ -1,6 +1,9 @@
 {% extends 'base/base.html' %} 
 
-{% block page_title %} {{ _('Data Compare') }} {% endblock %}
+{% block header %}
+  {% set header_title = _('Data Compare') %}
+  {% include 'base/header.html' %}
+{% endblock %}
 
 {% block page_content %}
 <div class="row" id="app">
