@@ -82,6 +82,166 @@
 			"unit" : "%",
 			"icon" : "ion-waterdrop",
 			"bg_color" : "bg-orange"
+		},
+		{
+			"name" : "Widget1",
+			"df_name" : "Widget1-O",
+			"alias" : "Widget1",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-aqua"
+		},
+		{
+			"name" : "Widget2",
+			"df_name" : "Widget2-O",
+			"alias" : "Widget2",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-green"
+		},
+		{
+			"name" : "Widget3",
+			"df_name" : "Widget3-O",
+			"alias" : "Widget3",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-orange"
+		},
+		{
+			"name" : "Widget4",
+			"df_name" : "Widget4-O",
+			"alias" : "Widget4",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-gray"
+		},
+		{
+			"name" : "Widget5",
+			"df_name" : "Widget5-O",
+			"alias" : "Widget5",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-purple"
+		},
+		{
+			"name" : "Widget6",
+			"df_name" : "Widget6-O",
+			"alias" : "Widget6",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-aqua"
+		},
+		{
+			"name" : "Widget7",
+			"df_name" : "Widget7-O",
+			"alias" : "Widget7",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-green"
+		},
+		{
+			"name" : "Widget8",
+			"df_name" : "Widget8-O",
+			"alias" : "Widget8",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-orange"
+		},
+		{
+			"name" : "Widget9",
+			"df_name" : "Widget9-O",
+			"alias" : "Widget9",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-gray"
+		},
+		{
+			"name" : "Widget10",
+			"df_name" : "Widget10-O",
+			"alias" : "Widget10",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-purple"
+		},
+		{
+			"name" : "Widget11",
+			"df_name" : "Widget11-O",
+			"alias" : "Widget11",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-aqua"
+		},
+		{
+			"name" : "Widget12",
+			"df_name" : "Widget12-O",
+			"alias" : "Widget12",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-green"
+		},
+		{
+			"name" : "Widget13",
+			"df_name" : "Widget13-O",
+			"alias" : "Widget13",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-orange"
+		},
+		{
+			"name" : "Widget14",
+			"df_name" : "Widget14-O",
+			"alias" : "Widget14",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-gray"
+		},
+		{
+			"name" : "Widget15",
+			"df_name" : "Widget15-O",
+			"alias" : "Widget15",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-purple"
+		},
+		{
+			"name" : "Widget16",
+			"df_name" : "Widget16-O",
+			"alias" : "Widget16",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-aqua"
+		},
+		{
+			"name" : "Widget17",
+			"df_name" : "Widget17-O",
+			"alias" : "Widget17",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-green"
+		},
+		{
+			"name" : "Widget18",
+			"df_name" : "Widget18-O",
+			"alias" : "Widget18",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-orange"
+		},
+		{
+			"name" : "Widget19",
+			"df_name" : "Widget19-O",
+			"alias" : "Widget19",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-gray"
+		},
+		{
+			"name" : "Widget20",
+			"df_name" : "Widget20-O",
+			"alias" : "Widget20",
+			"unit" : "",
+			"icon" : "",
+			"bg_color" : "bg-purple"
 		}
 	],
 	"field" : [
