@@ -797,7 +797,7 @@ def active_field(field_name):
         session_db.commit()
 
         # ✅ 回到來源頁（沒有就回 dashboard）
-        nxt = request.args.get('next') or '/en/dashboard_dropdown'
+        nxt = request.args.get('next') or '/en/dashboard'
         return redirect(nxt)
 
     except Exception as e:
