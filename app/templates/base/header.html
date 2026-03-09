@@ -16,6 +16,27 @@
       <span class="icon-bar"></span>
     </a>
 
+	<!-- Header title: 文字 or dropdown -->
+	<div class="navbar-text" style="display:inline-block; padding-left: 10px;">
+	  {% if header_dropdown_items %}
+	    <div class="dropdown" style="display:inline;">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+		 style="font-size: 15px; font-weight: 600; color: white;">
+		<span id="current-databank-title">{{ header_title or _('Select Page') }}</span> <span class="caret"></span>
+	      </a>
+	      <ul class="dropdown-menu">
+		{% for item in header_dropdown_items %}
+		  <li><a href="#" onclick="{{ item.onclick }}">{{ item.label }}</a></li>
+		{% endfor %}
+	      </ul>
+	    </div>
+	  {% else %}
+	    <span style="font-size: 15px; font-weight: 600; color: white;">
+	      {{ header_title or _('Default Title') }}
+	    </span>
+	  {% endif %}
+	</div>
+    
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <li class="dropdown">
