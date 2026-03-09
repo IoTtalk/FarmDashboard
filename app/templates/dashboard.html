@@ -1,11 +1,18 @@
 {% extends 'base/base.html' %} 
 
-{% macro tab_title(field) -%}
-  <li {% if field.is_active %}class="active"{% endif %} id="tab_{{field.name}}" onclick="load_iframe({{field.name}})">
-    <a href="#{{field.name}}" data-toggle="tab">{{field.alias}}</a>
-  </li>
-{%- endmacro %}
+{# ------ ⬇ Header 區塊：下拉選單顯示目前 field 名稱並切換內容 ⬇ ------ #}
+{% block header %}
+  {% set active_field = fields | selectattr("is_active") | list | first %}
+  {% set header_title = active_field.alias %}
+  {% set header_dropdown_items = [] %}
+  {% for field in fields %}
+    {% set _ = header_dropdown_items.append({'label': field.alias, 'onclick': "switchField('%s', '%s')" % (field.alias, field.name)}) %}
+  {% endfor %}
 
+  {% include 'base/header.html' %}
+{% endblock %}
+
+{# ------ ⬇ tab_title 與 content_box macro 保留，供 tab_content 使用 ⬇ ------ #}
 {% macro content_box(fieldname, sensor, value='0') -%}
   <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
     <!-- small box -->
@@ -43,27 +50,15 @@
 
 {# ------------------------------------------------------------------------- #}
                                                                                                                                                           
-{% block page_title %} {{ _('Sensor Dashboard') }} {% endblock %}
-
 {% block page_content %}
-  <div class="nav-tabs-custom">
-    <ul class="nav nav-tabs">
-      {% for field in fields %}
-        {{ tab_title(field)}}
-      {% endfor %}
-      <li id="tab_memo">
-        <a href="#memo" data-toggle="tab">{{ _('memo') }}</a>
-      </li>
-    </ul>
-    <div class="tab-content">
-      {% for field in fields %}
-        {{ tab_content(field) }}
-      {% endfor %}
-      <div class="tab-pane" id="memo">
-        <div class="row">
-          <div class="col-xs-12">
-            <textarea id="user_memo" rows="10" style="width: 100%;">{{memo}}</textarea>
-          </div>
+  <div class="tab-content">
+    {% for field in fields %}
+      {{ tab_content(field) }}
+    {% endfor %}
+    <div class="tab-pane" id="memo">
+      <div class="row">
+        <div class="col-xs-12">
+          <textarea id="user_memo" rows="10" style="width: 100%;">{{memo}}</textarea>
         </div>
       </div>
     </div>
@@ -71,60 +66,58 @@
 {% endblock %}
 
 {% block page_script %}
-  <!-- Page script -->
-  <script>
-    function load_iframe(tab_content){
-      let iframe = $(tab_content).find('iframe');
-      if(!iframe.attr('src')){
-        iframe.attr('src', iframe.attr('data-src'));
+<script>
+function switchField(label, fieldName) {
+  document.getElementById('current-databank-title').innerText = label;
+
+  // 切換顯示
+  document.querySelectorAll('.tab-pane').forEach(pane => {
+    pane.classList.remove('active');
+  });
+  document.getElementById(fieldName).classList.add('active');
+
+  // 更新目前選中的 field 名稱（讓 update() 能用）
+  window.currentField = fieldName;
+}
+
+// 原本的 update 函式：定期向 /api/datas/<field> 撈資料
+function update() {
+  const field = window.currentField;
+  if (!field) {
+    setTimeout(update, 1000);
+    return;
+  }
+
+  $.ajax({
+    url: '/api/datas/' + field + '?limit=1',
+    type: 'GET'
+  }).done((data) => {
+    for (const key in data) {
+      if (data[key][0]) {
+        const el = $('#' + field + '_' + key);
+        const timestamp = data[key][0][0];
+        const value = data[key][0][1];
+
+        el.html(value);  // 不判斷過期，直接顯示
+        el.attr('data-original-title', 'The last data was taken at ' + timestamp + '.');
       }
     }
+  }).always(() => {
+    setTimeout(update, 1000);
+  });
+}
 
-    $(() => {
-      // auto change to tab if given from url hash
-      let hash = window.location.hash.replace('#', '');
-      if($('#tab_' + hash).length){
-        $('#tab_' + hash).find('a').click();
-      }
 
-      // update monitor date
-      function update() {
-        if (!$('.active').length) {
-          setTimeout(update, 1000);
-          return;
-        }
-        let field = $('.active').attr('id').replace('tab_', '');
-        let ajax_obj = $.ajax({
-          url: '/api/datas/' + field +'?limit=1',
-          type:'GET'
-        }).done((data) => {
-          let expire_date = new Date();
-          expire_date.setHours(expire_date.getHours() - 1);
-          for(key in data) {
-            if(data[key][0]) {
-              if(new Date(data[key][0][0].replace(/-/g, '/')) < expire_date) {
-                {% if timeout_strikethrough %}
-                  $('#' + field + '_' + key).html('<S>' + data[key][0][1] + '</S>');
-                {% else %}
-                  $('#' + field + '_' + key).html('<Span>' + data[key][0][1] + '</Span>');
-                {% endif %}
+// 頁面載入後初始化
+$(() => {
+  // 從預設 .active 的 tab-pane 中取得 field 名稱
+  const activePane = document.querySelector('.tab-pane.active');
+  if (activePane) {
+    window.currentField = activePane.id;
+  }
 
-                $('#' + field + '_' + key).attr('data-original-title', 'The last data was taken at ' + data[key][0][0] + '.');
-              } else {
-                $('#' + field + '_' + key).html(data[key][0][1]);
-                $('#' + field + '_' + key).attr('data-original-title', '');
-              }
-            }
-          }
-        }).always(() => {
-          setTimeout(update, 1000);
-        });
-      }
-      update(); 
-      $(document).on('keyup', '#user_memo', ()=>{
-        console.log($('#user_memo').val());
-        axios.post('/api/user/memo', {'memo': $('#user_memo').val()});
-      });
-    })
-  </script>
+  update();
+});
+</script>
+
 {% endblock %}
