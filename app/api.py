@@ -26,6 +26,8 @@ from ccmapi.v0.deviceobject import create as create_do
 from ccmapi.v0.alias import set as set_alias
 from . import ccm_utils
 
+ccm_config.config.api_url = "https://classgui.iottalk.tw/api/v0"
+
 log = logging.getLogger("\033[1;33m[API]: \033[0m")
 api = Blueprint('API', __name__)
 
@@ -761,7 +763,6 @@ def api_field():
 
 
     ########## 專案自動化 ##########
-ccm_config.config.api_url = "https://classgui.iottalk.tw/api/v0"
 
 @api.route('/active_field/<field_name>', methods=['GET'])
 @utils.required_login
