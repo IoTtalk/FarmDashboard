@@ -573,7 +573,188 @@ class Turmeric(base):
     __table_args__ = (UniqueConstraint('field',
                                        'timestamp',
                                        name='UC_field_time'),)
+  
+class Widget1(base):
+    __tablename__ = 'widget1'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
 
+class Widget2(base):
+    __tablename__ = 'widget2'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget3(base):
+    __tablename__ = 'widget3'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget4(base):
+    __tablename__ = 'widget4'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget5(base):
+    __tablename__ = 'widget5'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget6(base):
+    __tablename__ = 'widget6'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget7(base):
+    __tablename__ = 'widget7'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget8(base):
+    __tablename__ = 'widget8'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget9(base):
+    __tablename__ = 'widget9'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+
+class Widget10(base):
+    __tablename__ = 'widget10'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget11(base):
+    __tablename__ = 'widget11'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget12(base):
+    __tablename__ = 'widget12'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget13(base):
+    __tablename__ = 'widget13'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget14(base):
+    __tablename__ = 'widget14'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget15(base):
+    __tablename__ = 'widget15'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget16(base):
+    __tablename__ = 'widget16'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget17(base):
+    __tablename__ = 'widget17'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget18(base):
+    __tablename__ = 'widget18'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+class Widget19(base):
+    __tablename__ = 'widget19'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
+
+
+class Widget20(base):
+    __tablename__ = 'widget20'
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
+    field = Column(Integer, ForeignKey('field.id'), primary_key=True, nullable=False)
+    value = Column(Float)
+    __table_args__ = (UniqueConstraint('field',
+                                       'timestamp',
+                                       name='UC_field_time'),)
 
 
 ####################################################
