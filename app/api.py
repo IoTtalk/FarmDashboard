@@ -993,7 +993,7 @@ def sync_odf_from_idf(project_name):
         if has_dashboard_do:
             print(f"⚠️ 專案 {project_name} 已存在 Dashboard DO，跳過建立")
             return jsonify({
-                "url": f"https://1iaolo.iottalk.tw/api/active_field/{device_name}",
+                "url": f"http://localhost:5000/api/active_field/{device_name}",
                 "error": None
             })
 
