@@ -77,11 +77,38 @@
      
         CSM_HOST = 'IoTtalk Server IP'
      
+5. 修改 **api.py**，填寫 **IoTtalk CCMAPI URL**
 
+    填入 **cm_config.config.api_url**， 修改大約在Line 29行附近
+
+     
+        ccm_config.config.api_url = "https://<IoTtalk_domain_name>gui.iottalk.tw/api/v0"
+
+     
+
+    大約在 Line 997 附近，修改  **URL**
     
-5. 修改 **db/db_init.json**，設定 **admin** 密碼
+     
+        "url": f"https://<Your Server IP>/api/active_field/{device_name}"
 
-6. 資料庫初始化：
+
+6. 修改 **app/ccm_utils.py**，一樣設定 **IoTtalk CCMAPI URL**
+
+    填入 **GUI_SERVER_URL**， 修改大約在Line 4行附近
+
+     
+        GUI_SERVER_URL = 'IoTtalk Server IP'+'/'
+
+     
+
+    大約在 Line 5 附近，修改  **CCM_API_URL**
+    
+     
+        CCM_API_URL = GUI_SERVER_URL + "api/v0/"
+    
+7. 修改 **db/db_init.json**，設定 **admin** 密碼
+
+8. 資料庫初始化：
 
     ```sh
     python3 -m db.db init
@@ -91,7 +118,7 @@
 
     * 在MAC上面使用時可能會遇到加密錯誤的錯誤訊息，這時需要安裝套件 cryptography
 
-8. 啟動 Server：
+9. 啟動 Server：
 
     ```sh
     bash startup.sh
