@@ -97,7 +97,7 @@
     填入 **GUI_SERVER_URL**， 修改大約在Line 4行附近
 
      
-        GUI_SERVER_URL = 'IoTtalk Server IP'+'/'
+        GUI_SERVER_URL = 'https://<IoTtalk_domain_name>gui.iottalk.tw/'
 
      
 
