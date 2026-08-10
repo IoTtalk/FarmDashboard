@@ -99,12 +99,6 @@
      
         GUI_SERVER_URL = 'https://<IoTtalk_domain_name>gui.iottalk.tw/'
 
-     
-
-    大約在 Line 5 附近，修改  **CCM_API_URL**
-    
-     
-        CCM_API_URL = GUI_SERVER_URL + "api/v0/"
     
 7. 修改 **db/db_init.json**，設定 **admin** 密碼
 
