@@ -1034,7 +1034,6 @@ def sync_odf_from_idf(project_name):
         dashboard_outputs = sorted(dashboard_odo["dfo"], key=widget_sort_key)
 
         # === Step 7: 建立 Network Applications (一一對應) ===
-        #requests.get('http://localhost:5001/restart_da/')
         for input_dfo, output_dfo in zip(
             [dfo for ido in updated_info["ido"] for dfo in ido["dfo"]],
             dashboard_outputs
@@ -1051,7 +1050,6 @@ def sync_odf_from_idf(project_name):
 
         # === Step 8: 等待 DA 註冊並綁定 ===
         requests.get('http://localhost:5001/restart_da/')
-        #requests.get('http://localhost:5001/signal_da_sync/', params={'project': project_name})
         try:
             do_id = do_id_list[0]
             d_id = wait_for_device_registration(p_id, do_id, device_name, 20, 1)
@@ -1073,11 +1071,10 @@ def sync_odf_from_idf(project_name):
 
         # === Step 10: 更新 field_sensor alias ===
         update_fieldsensor(project_name)
-        #requests.get('http://localhost:5001/restart_da/')
 
         # === Step 11: 回傳 URL ===
         return jsonify({
-            "url": f"https://1iaolo.iottalk.tw/api/active_field/{device_name}",
+            "url": f"http://localhost:5000/api/active_field/{device_name}",
             "error": None
         })
 
