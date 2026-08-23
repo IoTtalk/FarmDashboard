@@ -831,8 +831,6 @@ def auto_create_fieldsensor(updated_info):
             session.add(field)
             session.commit()
             created_field = True
-            #requests.get('http://localhost:5001/restart_da/')
-            #requests.get('http://localhost:5001/signal_da_sync/', params={'project': project_name})
         field_id = field.id
 
         # Step 3: 建立 field_sensor 關聯（若不存在）
