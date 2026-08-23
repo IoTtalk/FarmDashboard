@@ -992,7 +992,7 @@ def sync_odf_from_idf(project_name):
         if has_dashboard_do:
             print(f"⚠️ 專案 {project_name} 已存在 Dashboard DO，跳過建立")
             return jsonify({
-                "url": f"http://localhost:5000/api/active_field/{device_name}",
+                "url": f"http://localhost:{config.port}/api/active_field/{device_name}",
                 "error": None
             })
 
@@ -1047,7 +1047,7 @@ def sync_odf_from_idf(project_name):
                 print(f"❌ Failed to create NA for Input {input_dfo['dfo_id']} → Output {output_dfo['dfo_id']}")
 
         # === Step 8: 等待 DA 註冊並綁定 ===
-        requests.get('http://localhost:5001/restart_da/')
+        requests.get(f'http://localhost:{config.RESTART_SERVER_PORT}/restart_da/')
         try:
             do_id = do_id_list[0]
             d_id = wait_for_device_registration(p_id, do_id, device_name, 20, 1)
@@ -1072,7 +1072,7 @@ def sync_odf_from_idf(project_name):
 
         # === Step 11: 回傳 URL ===
         return jsonify({
-            "url": f"http://localhost:5000/api/active_field/{device_name}",
+            "url": f"http://localhost:{config.port}/api/active_field/{device_name}",
             "error": None
         })
 
