@@ -82,11 +82,11 @@
     填入 **cm_config.config.api_url**， 修改大約在Line 29行附近
 
      
-        ccm_config.config.api_url = "https://<IoTtalk_domain_name>gui.iottalk.tw/api/v0"
+        ccm_config.config.api_url = "https://<IoTtalk_CCMAPI_URL>/api/v0"
 
      
 
-    大約在 Line 997 附近，修改  **URL**
+    大約在 Line 995 附近，修改  **URL**
     
      
         "url": f"https://<Your Server IP>/api/active_field/{device_name}"
@@ -97,7 +97,7 @@
     填入 **GUI_SERVER_URL**， 修改大約在Line 4行附近
 
      
-        GUI_SERVER_URL = 'https://<IoTtalk_domain_name>gui.iottalk.tw/'
+        GUI_SERVER_URL = 'https://<IoTtalk_CCMAPI_URL>/'
 
     
 7. 修改 **db/db_init.json**，設定 **admin** 密碼
